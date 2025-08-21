@@ -1,6 +1,6 @@
-# Movora
+# Mazio
 
-Movora is an OTT platform for streaming movies and TV shows.
+Mazio is an OTT platform for streaming movies and TV shows.
 
 # Tech Stack
 
