@@ -1,4 +1,4 @@
-import { home, saved, search, user } from "./assets/icons";
+import { home, saved, search, user } from "../../assets/icons";
 
 export const TABS = [
   {
