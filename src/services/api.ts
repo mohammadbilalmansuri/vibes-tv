@@ -1,4 +1,4 @@
-import { TMDB_API_BASE_URL, TMDB_API_KEY } from "../constants";
+import { TMDB_API_BASE_URL, TMDB_API_TOKEN } from "../constants";
 
 interface RequestOptions extends RequestInit {
   queryParams?: Record<string, string | number | boolean>;
@@ -20,7 +20,7 @@ const tmdbRequest = async <T>(
     method: options.method ?? "GET",
     headers: {
       accept: "application/json",
-      Authorization: `Bearer ${TMDB_API_KEY}`,
+      Authorization: `Bearer ${TMDB_API_TOKEN}`,
       ...options.headers,
     },
     body: options.body,
