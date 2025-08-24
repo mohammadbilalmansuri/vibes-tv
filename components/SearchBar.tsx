@@ -1,6 +1,6 @@
 import { Image, TextInput, View } from "react-native";
 
-import { search } from "../assets";
+import { search } from "@/assets";
 
 interface Props {
   placeholder: string;

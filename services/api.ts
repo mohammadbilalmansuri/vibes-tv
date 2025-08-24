@@ -1,4 +1,4 @@
-import { TMDB_API_BASE_URL, TMDB_API_TOKEN } from "../constants";
+import { TMDB_API_BASE_URL, TMDB_API_TOKEN } from "@/constants";
 
 interface RequestOptions extends RequestInit {
   queryParams?: Record<string, string | number | boolean>;

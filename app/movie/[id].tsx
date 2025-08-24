@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import getImageUrl from "@/src/utils/getImageUrl";
-import { arrow, play, star } from "../../assets";
-import { useFetch } from "../../hooks";
-import { getMovieDetails } from "../../services/api";
+import { arrow, play, star } from "@/assets";
+import { useFetch } from "@/hooks";
+import { getMovieDetails } from "@/services/api";
+import getImageUrl from "@/utils/getImageUrl";
 
 interface MovieInfoProps {
   label: string;
@@ -32,11 +32,11 @@ export default function MovieDetails() {
   const router = useRouter();
   const { id } = useLocalSearchParams();
 
-  const { data: movie, loading } = useFetch(() =>
+  const { data: movie, isLoading } = useFetch(() =>
     getMovieDetails(id as string)
   );
 
-  if (loading) {
+  if (isLoading) {
     return (
       <SafeAreaView className="bg-primary flex-1">
         <ActivityIndicator />
