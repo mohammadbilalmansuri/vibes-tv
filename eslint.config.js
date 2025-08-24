@@ -1,5 +1,10 @@
 // https://docs.expo.dev/guides/using-eslint/
-import expoConfig from "eslint-config-expo/flat";
-import { defineConfig } from "eslint/config";
+const { defineConfig } = require('eslint/config');
+const expoConfig = require('eslint-config-expo/flat');
 
-export default defineConfig([expoConfig, { ignores: ["dist/*"] }]);
+module.exports = defineConfig([
+  expoConfig,
+  {
+    ignores: ['dist/*'],
+  },
+]);
