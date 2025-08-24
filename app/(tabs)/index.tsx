@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 
-import { bg, logo } from "@/assets";
+import { logo } from "@/assets";
 import MovieCard from "@/components/MovieCard";
 import SearchBar from "@/components/SearchBar";
 import TrendingCard from "@/components/TrendingCard";
@@ -33,7 +33,6 @@ export default function Home() {
 
   return (
     <View className="flex-1 bg-base-600">
-      <Image source={bg} className="absolute w-full z-0" resizeMode="cover" />
       <ScrollView
         className="flex-1 px-5"
         showsVerticalScrollIndicator={false}
