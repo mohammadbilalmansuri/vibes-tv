@@ -46,7 +46,7 @@ export default function Home() {
           <View className="flex-row items-center justify-center mb-6">
             <Image source={logo} className="w-10 h-8" />
             <Text className="text-2xl font-bold text-white ml-3">
-              <Text className="text-primary-400">Mazio</Text>
+              <Text className="text-primary-400">Vibes TV</Text>
             </Text>
           </View>
 
