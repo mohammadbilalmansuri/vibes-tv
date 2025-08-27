@@ -58,6 +58,7 @@ export const createApiClient = (config: ApiConfig) => {
             ? options.body
             : JSON.stringify(options.body)
           : undefined,
+      signal: options.signal,
     });
 
     if (!response.ok) {
