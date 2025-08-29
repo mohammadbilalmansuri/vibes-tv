@@ -4,8 +4,8 @@ import { GENRES_CACHE_CONFIG } from "@/constants";
 import { getMovieGenres, getTVGenres } from "@/services/tmdb";
 
 /**
- * Fetches both movie and TV genres in parallel.
- * @returns Object containing movie genres, tv genres, loading, and error states
+ * Hook for fetching movie and TV genres in parallel.
+ * @returns Object with movieGenres, tvGenres, loading states, errors, and refetch functions.
  */
 export default function useGenres() {
   const results = useQueries({
@@ -23,12 +23,24 @@ export default function useGenres() {
     ],
   });
 
-  const [movieGenres, tvGenres] = results;
+  const [movieGenresResult, tvGenresResult] = results;
 
-  return {
-    isLoading: results.some((r) => r.isLoading),
-    isError: results.some((r) => r.isError),
-    movieGenres: movieGenres.data?.genres ?? [],
-    tvGenres: tvGenres.data?.genres ?? [],
+  const isLoading = results.some((r) => r.isLoading);
+  const isError = results.some((r) => r.isError);
+
+  const errors = {
+    movieGenres: movieGenresResult.error ?? null,
+    tvGenres: tvGenresResult.error ?? null,
   };
+
+  const movieGenres = movieGenresResult.data?.genres ?? [];
+  const tvGenres = tvGenresResult.data?.genres ?? [];
+
+  const refetch = {
+    all: () => results.forEach((r) => r.refetch()),
+    movieGenres: movieGenresResult.refetch,
+    tvGenres: tvGenresResult.refetch,
+  };
+
+  return { isLoading, isError, errors, movieGenres, tvGenres, refetch };
 }
