@@ -1,3 +1,5 @@
+import { useQueries } from "@tanstack/react-query";
+
 import {
   CONTENT_LIST_CACHE_CONFIG,
   NOW_PLAYING_CACHE_CONFIG,
@@ -9,7 +11,6 @@ import {
   getTopRatedMovies,
   getUpcomingMovies,
 } from "@/services/tmdb";
-import { useQueries } from "@tanstack/react-query";
 
 /**
  * Hook for fetching main movie categories in parallel:
