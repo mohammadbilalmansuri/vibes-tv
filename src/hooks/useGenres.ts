@@ -25,22 +25,18 @@ export default function useGenres() {
 
   const [movieGenresResult, tvGenresResult] = results;
 
-  const isLoading = results.some((r) => r.isLoading);
-  const isError = results.some((r) => r.isError);
-
-  const errors = {
-    movieGenres: movieGenresResult.error ?? null,
-    tvGenres: tvGenresResult.error ?? null,
+  return {
+    movieGenres: movieGenresResult.data?.genres ?? [],
+    tvGenres: tvGenresResult.data?.genres ?? [],
+    isLoading: results.some((r) => r.isLoading),
+    errors: {
+      movieGenres: movieGenresResult.error ?? null,
+      tvGenres: tvGenresResult.error ?? null,
+    },
+    refetch: {
+      all: () => results.forEach((r) => r.refetch()),
+      movieGenres: movieGenresResult.refetch,
+      tvGenres: tvGenresResult.refetch,
+    },
   };
-
-  const movieGenres = movieGenresResult.data?.genres ?? [];
-  const tvGenres = tvGenresResult.data?.genres ?? [];
-
-  const refetch = {
-    all: () => results.forEach((r) => r.refetch()),
-    movieGenres: movieGenresResult.refetch,
-    tvGenres: tvGenresResult.refetch,
-  };
-
-  return { isLoading, isError, errors, movieGenres, tvGenres, refetch };
 }
