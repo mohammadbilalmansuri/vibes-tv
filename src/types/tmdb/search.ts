@@ -1,4 +1,8 @@
 import { TMDBResponse } from "./common";
+import { BaseMovie } from "./movies";
+import { BaseTVShow } from "./tv";
+
+export type SearchMode = "multi" | "movie" | "tv";
 
 export type MultiSearchResponse = TMDBResponse<{
   adult: boolean;
@@ -20,3 +24,9 @@ export type MultiSearchResponse = TMDBResponse<{
   vote_average: number;
   vote_count: number;
 }>;
+
+export type SearchMoviesResponse = TMDBResponse<BaseMovie>;
+
+export type SearchTVShowsResponse = TMDBResponse<
+  BaseTVShow & { adult: boolean }
+>;
