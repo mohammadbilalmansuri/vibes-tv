@@ -26,13 +26,13 @@ export default function useTrending() {
   const [trendingMoviesResult, trendingTvShowsResult] = results;
 
   return {
+    trendingMovies: trendingMoviesResult.data?.results ?? [],
+    trendingTvShows: trendingTvShowsResult.data?.results ?? [],
     isLoading: results.some((r) => r.isLoading),
     errors: {
       trendingMovies: trendingMoviesResult.error ?? null,
       trendingTvShows: trendingTvShowsResult.error ?? null,
     },
-    trendingMovies: trendingMoviesResult.data?.results ?? [],
-    trendingTvShows: trendingTvShowsResult.data?.results ?? [],
     refetch: {
       all: () => results.forEach((r) => r.refetch()),
       movies: trendingMoviesResult.refetch,
