@@ -18,7 +18,7 @@ import {
  *
  * @returns Object with TV show category data, loading/error states, and refetch functions.
  */
-export default function useTvShowsCategories() {
+export default function useTvShowCategories() {
   const results = useQueries({
     queries: [
       {
@@ -64,7 +64,7 @@ export default function useTvShowsCategories() {
       onTheAirTvShows: onTheAirTvShowsResult.error ?? null,
     },
     refetch: {
-      all: () => results.forEach((r) => r.refetch()),
+      all: () => Promise.all(results.map((r) => r.refetch())),
       popularTvShows: popularTvShowsResult.refetch,
       topRatedTvShows: topRatedTvShowsResult.refetch,
       airingTodayTvShows: airingTodayTvShowsResult.refetch,
