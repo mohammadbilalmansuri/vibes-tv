@@ -13,7 +13,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "./global.css";
 
-// Query Client with sane mobile defaults
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -66,13 +65,11 @@ export default function RootLayout() {
               animationDuration: 300,
             }}
           >
-            {/* Main Tabs */}
             <Stack.Screen
               name="(tabs)"
               options={{ headerShown: false, gestureEnabled: false }}
             />
 
-            {/* Details */}
             <Stack.Screen
               name="movie/[id]"
               options={{ presentation: "modal", gestureEnabled: true }}
@@ -82,7 +79,6 @@ export default function RootLayout() {
               options={{ presentation: "modal", gestureEnabled: true }}
             />
 
-            {/* Search */}
             <Stack.Screen
               name="search"
               options={{ presentation: "modal", gestureEnabled: true }}
