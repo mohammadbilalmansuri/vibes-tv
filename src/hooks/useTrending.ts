@@ -34,9 +34,9 @@ export default function useTrending() {
       trendingTvShows: trendingTvShowsResult.error ?? null,
     },
     refetch: {
-      all: () => results.forEach((r) => r.refetch()),
-      movies: trendingMoviesResult.refetch,
-      tv: trendingTvShowsResult.refetch,
+      all: () => Promise.all(results.map((r) => r.refetch())),
+      trendingMovies: trendingMoviesResult.refetch,
+      trendingTvShows: trendingTvShowsResult.refetch,
     },
   };
 }
