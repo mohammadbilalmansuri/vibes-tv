@@ -4,12 +4,10 @@ import {
   DiscoverTVShowsResponse,
   GenresResponse,
   MovieDetailResponse,
-  MultiSearchResponse,
   NowPlayingMoviesResponse,
   PopularMoviesResponse,
   PopularTVShowsResponse,
-  SearchMoviesResponse,
-  SearchTVShowsResponse,
+  SearchResponse,
   TopRatedMoviesResponse,
   TopRatedTVShowsResponse,
   TrendingMoviesResponse,
@@ -237,7 +235,7 @@ export function getTVShowVideos(id: number, signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function searchMulti(query: string, page = 1, signal?: AbortSignal) {
-  return apiClient.get<MultiSearchResponse>("/search/multi", {
+  return apiClient.get<SearchResponse>("/search/multi", {
     params: { query, page },
     signal,
   });
@@ -250,7 +248,7 @@ export function searchMulti(query: string, page = 1, signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function searchMovies(query: string, page = 1, signal?: AbortSignal) {
-  return apiClient.get<SearchMoviesResponse>("/search/movie", {
+  return apiClient.get<SearchResponse>("/search/movie", {
     params: { query, page },
     signal,
   });
@@ -263,7 +261,7 @@ export function searchMovies(query: string, page = 1, signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function searchTVShows(query: string, page = 1, signal?: AbortSignal) {
-  return apiClient.get<SearchTVShowsResponse>("/search/tv", {
+  return apiClient.get<SearchResponse>("/search/tv", {
     params: { query, page },
     signal,
   });
