@@ -1,5 +1,4 @@
 import { useQueries } from "@tanstack/react-query";
-
 import { TRENDING_CACHE_CONFIG } from "@/constants";
 import { getTrendingMovies, getTrendingTVShows } from "@/services/tmdb";
 

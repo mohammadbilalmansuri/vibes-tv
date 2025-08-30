@@ -1,5 +1,4 @@
 import { useQueries } from "@tanstack/react-query";
-
 import { DETAIL_CACHE_CONFIG } from "@/constants";
 import { getTVShowDetails, getTVShowVideos } from "@/services/tmdb";
 

@@ -1,5 +1,4 @@
 import { useQueries } from "@tanstack/react-query";
-
 import { GENRES_CACHE_CONFIG } from "@/constants";
 import { getMovieGenres, getTVGenres } from "@/services/tmdb";
 
