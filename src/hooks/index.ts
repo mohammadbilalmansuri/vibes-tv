@@ -5,7 +5,7 @@ export { default as useMovieDetails } from "./useMovieDetails";
 export { default as useMoviesByGenre } from "./useMoviesByGenre";
 export * from "./useSearch";
 export { default as useTrending } from "./useTrending";
-export { default as useTVDetails } from "./useTVDetails";
 export { default as useTVSeasonDetails } from "./useTVSeasonDetails";
 export { default as useTvShowCategories } from "./useTvShowCategories";
+export { default as useTVShowDetails } from "./useTVShowDetails";
 export { default as useTvShowsByGenre } from "./useTvShowsByGenre";
