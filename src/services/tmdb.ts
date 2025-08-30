@@ -226,42 +226,23 @@ export function getTVShowVideos(id: number, signal?: AbortSignal) {
   return apiClient.get<VideosResponse>(`/tv/${id}/videos`, { signal });
 }
 
-// ---------- Search Requests ----------
+// ---------- Search Request ----------
 
 /**
- * Search movies, TV shows, and people in one go.
+ * Search content by mode (multi, movie, or tv).
+ *
+ * @param mode - "multi" | "movie" | "tv"
  * @param query - Search keyword
  * @param page - Page number for pagination (default = 1)
  * @param signal - Abort signal to cancel the request (optional)
  */
-export function searchMulti(query: string, page = 1, signal?: AbortSignal) {
-  return apiClient.get<SearchResponse>("/search/multi", {
-    params: { query, page },
-    signal,
-  });
-}
-
-/**
- * Search for movies by title.
- * @param query - Search keyword
- * @param page - Page number for pagination (default = 1)
- * @param signal - Abort signal to cancel the request (optional)
- */
-export function searchMovies(query: string, page = 1, signal?: AbortSignal) {
-  return apiClient.get<SearchResponse>("/search/movie", {
-    params: { query, page },
-    signal,
-  });
-}
-
-/**
- * Search for TV shows by title.
- * @param query - Search keyword
- * @param page - Page number for pagination (default = 1)
- * @param signal - Abort signal to cancel the request (optional)
- */
-export function searchTVShows(query: string, page = 1, signal?: AbortSignal) {
-  return apiClient.get<SearchResponse>("/search/tv", {
+export function searchContent(
+  mode: "multi" | "movie" | "tv",
+  query: string,
+  page = 1,
+  signal?: AbortSignal
+) {
+  return apiClient.get<SearchResponse>(`/search/${mode}`, {
     params: { query, page },
     signal,
   });
