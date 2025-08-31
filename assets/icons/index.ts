@@ -1,8 +1,8 @@
-export { default as arrow } from "../assets/icons/arrow.png";
-export { default as home } from "../assets/icons/home.png";
-export { default as logo } from "../assets/icons/logo.png";
-export { default as play } from "../assets/icons/play.png";
-export { default as saved } from "../assets/icons/saved.png";
-export { default as search } from "../assets/icons/search.png";
-export { default as star } from "../assets/icons/star.png";
-export { default as user } from "../assets/icons/user.png";
+export { default as arrow } from "./arrow.png";
+export { default as home } from "./home.png";
+export { default as logo } from "./logo.png";
+export { default as play } from "./play.png";
+export { default as saved } from "./saved.png";
+export { default as search } from "./search.png";
+export { default as star } from "./star.png";
+export { default as user } from "./user.png";
