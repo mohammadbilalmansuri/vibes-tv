@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { AppState, AppStateStatus, Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Stack } from "expo-router";
@@ -52,16 +52,12 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
-          <StatusBar
-            style="light"
-            backgroundColor="var(--color-gray-900)"
-            translucent={Platform.OS === "android"}
-          />
+          <StatusBar style="light" translucent={Platform.OS === "android"} />
 
           <Stack
             screenOptions={{
               headerShown: false,
-              contentStyle: { backgroundColor: "var(--color-gray-900)" },
+              contentStyle: { backgroundColor: "var(--color-gray-950)" },
               animationDuration: 300,
             }}
           >
