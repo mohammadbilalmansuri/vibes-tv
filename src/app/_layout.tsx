@@ -1,7 +1,4 @@
-import React, { useEffect } from "react";
-import { AppState, AppStateStatus, Platform } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { Stack } from "expo-router";
+import "@/global.css";
 import NetInfo from "@react-native-community/netinfo";
 import {
   QueryClient,
@@ -9,9 +6,12 @@ import {
   focusManager,
   onlineManager,
 } from "@tanstack/react-query";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect } from "react";
+import { AppState, AppStateStatus, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import "@/global.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,12 +52,12 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
-          <StatusBar style="light" translucent={Platform.OS === "android"} />
+          <StatusBar translucent={Platform.OS === "android"} />
 
           <Stack
             screenOptions={{
               headerShown: false,
-              contentStyle: { backgroundColor: "var(--color-gray-950)" },
+              contentStyle: { backgroundColor: "var(--color-default-950)" },
               animationDuration: 300,
             }}
           >

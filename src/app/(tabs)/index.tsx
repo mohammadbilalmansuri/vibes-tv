@@ -1,9 +1,10 @@
 import { View, Text } from "react-native";
+import React from "react";
 
-export default function TV() {
+export default function Home() {
   return (
     <View>
-      <Text>TV</Text>
+      <Text>Home</Text>
     </View>
   );
 }
