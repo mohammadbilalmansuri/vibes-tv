@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .animate-shimmer {
+    @apply relative inline-block overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:size-full before:bg-gradient-to-r before:from-transparent before:via-black/10 dark:before:via-white/10 before:to-transparent before:animate-shimmer;
+  }
+}
