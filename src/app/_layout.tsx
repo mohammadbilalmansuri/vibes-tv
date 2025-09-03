@@ -27,7 +27,7 @@ const queryClient = new QueryClient({
 });
 
 export default function RootLayout() {
-  // Online/offline detection (recommended pattern)
+  // Online/offline detection
   useEffect(() => {
     onlineManager.setEventListener((setOnline) => {
       const unsubscribe = NetInfo.addEventListener((state) => {
@@ -49,7 +49,7 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
           <StatusBar style="auto" />
