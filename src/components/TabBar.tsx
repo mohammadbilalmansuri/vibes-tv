@@ -1,25 +1,15 @@
 import React from "react";
-import { View, TouchableOpacity, Platform } from "react-native";
+import { View, TouchableOpacity, Platform, Text } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import * as Haptics from "expo-haptics";
-import Animated, {
-  FadeIn,
-  FadeOut,
-  LinearTransition,
-} from "react-native-reanimated";
 import cn from "@/utils/cn";
-import { LucideIcon } from "lucide-react-native";
 
-const AnimatedTouchableOpacity =
-  Animated.createAnimatedComponent(TouchableOpacity);
-const AnimatedText = Animated.Text;
-
-const TabBar: React.FC<BottomTabBarProps> = ({
+const TabBar = ({
   state,
   descriptors,
   navigation,
   insets,
-}) => {
+}: BottomTabBarProps) => {
   const createOnPress = (routeName: string, isFocused: boolean) => {
     return () => {
       if (Platform.OS === "ios" && !isFocused) {
@@ -40,44 +30,30 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 
   return (
     <View
-      className="absolute self-center flex-row justify-center items-center bg-white rounded-full p-2 elevation-lg"
-      style={{ bottom: insets.bottom + 10 }}
+      className="bg-default-500 rounded-full absolute self-center flex-row justify-center items-center p-1 elevation-lg"
+      style={{ bottom: insets.bottom + 8 }}
     >
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label = options.title ?? route.name;
+        const label = descriptors[route.key].options.title ?? route.name;
         const isFocused = state.index === index;
-        const IconComponent = options.tabBarIcon as LucideIcon;
 
         return (
-          <AnimatedTouchableOpacity
+          <TouchableOpacity
             key={route.key}
-            layout={LinearTransition.springify().damping(15).stiffness(150)}
             onPress={createOnPress(route.name, isFocused)}
             className={cn(
-              "flex-row justify-center items-center gap-1 py-2 px-3 rounded-full",
-              { "bg-black": isFocused }
+              "flex-row justify-center items-center gap-1 py-1.5 px-4 rounded-full",
+              { "bg-default-950": isFocused }
             )}
-            activeOpacity={0.7}
           >
-            {IconComponent && (
-              <IconComponent
-                size={20}
-                strokeWidth={2}
-                color={isFocused ? "white" : "black"}
-              />
-            )}
-
-            {isFocused && (
-              <AnimatedText
-                entering={FadeIn.duration(200).delay(50)}
-                exiting={FadeOut.duration(150)}
-                className="text-white font-medium uppercase"
-              >
-                {label.toUpperCase()}
-              </AnimatedText>
-            )}
-          </AnimatedTouchableOpacity>
+            <Text
+              className={cn("font-medium text-lg", {
+                "text-default-50": isFocused,
+              })}
+            >
+              {label}
+            </Text>
+          </TouchableOpacity>
         );
       })}
     </View>
