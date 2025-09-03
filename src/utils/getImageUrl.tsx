@@ -1,5 +1,5 @@
 import { TMDB_IMAGE_BASE_URL } from "@/constants";
-import { ImageSize } from "@/types/tmdb";
+import type { ImageSize } from "@/types/tmdb";
 
 /**
  * Get the full URL for a TMDB image.
