@@ -1,10 +1,11 @@
-import { View, Text } from "react-native";
 import React from "react";
+import { Text } from "react-native";
+import { ScreenView } from "@/components";
 
 export default function Tv() {
   return (
-    <View>
+    <ScreenView>
       <Text>Tv</Text>
-    </View>
+    </ScreenView>
   );
 }

@@ -1,10 +1,11 @@
-import { View, Text } from "react-native";
 import React from "react";
+import { Text } from "react-native";
+import { ScreenView } from "@/components";
 
 export default function Search() {
   return (
-    <View>
+    <ScreenView>
       <Text>Search</Text>
-    </View>
+    </ScreenView>
   );
 }
