@@ -26,7 +26,7 @@ A streaming mobile application built with React Native and the TMDB API. Created
 2. Install dependencies
 
    ```bash
-   pnpm install
+   npm install
    ```
 
 3. Create a TMDB account and generate an API Read Access Token.
@@ -35,5 +35,5 @@ A streaming mobile application built with React Native and the TMDB API. Created
 
 5. Start the development server
    ```bash
-   pnpm start
+   npm run start
    ```
