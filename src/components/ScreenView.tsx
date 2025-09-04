@@ -1,20 +1,27 @@
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import type { ChildProps } from "@/types";
+import { View } from "react-native";
+import {
+  SafeAreaView,
+  SafeAreaViewProps,
+} from "react-native-safe-area-context";
 import cn from "@/utils/cn";
 
-interface ScreenViewProps extends ChildProps {
-  className?: string;
-}
+type ScreenViewProps =
+  | ({ inSafeArea?: true } & SafeAreaViewProps)
+  | ({ inSafeArea: false } & Omit<SafeAreaViewProps, "edges" | "mode">);
 
-const ScreenView = ({ children, className = "" }: ScreenViewProps) => {
+const ScreenView = ({
+  children,
+  inSafeArea = true,
+  className = "",
+  ...rest
+}: ScreenViewProps) => {
+  const Container = inSafeArea ? SafeAreaView : View;
+
   return (
-    <SafeAreaView
-      className={cn("flex-1 bg-default-950", className)}
-      edges={["top", "bottom"]}
-    >
+    <Container className={cn("flex-1 bg-default-950", className)} {...rest}>
       {children}
-    </SafeAreaView>
+    </Container>
   );
 };
 
