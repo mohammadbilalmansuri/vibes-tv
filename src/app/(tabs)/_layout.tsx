@@ -1,6 +1,6 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import { Header, ScreenView, TabBar } from "@/components";
+import { TabHeader, ScreenView, TabBar } from "@/components";
 
 export default function TabsLayout() {
   return (
@@ -8,7 +8,7 @@ export default function TabsLayout() {
       <Tabs
         tabBar={(props) => <TabBar {...props} />}
         screenOptions={{
-          header: () => <Header />,
+          header: () => <TabHeader />,
           tabBarHideOnKeyboard: true,
         }}
       >
