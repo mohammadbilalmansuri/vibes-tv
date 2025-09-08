@@ -11,6 +11,7 @@ import {
   focusManager,
   onlineManager,
 } from "@tanstack/react-query";
+import { DEFAULT_COLORS } from "@/constants";
 import "@/global.css";
 
 const queryClient = new QueryClient({
@@ -49,18 +50,29 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <GestureHandlerRootView>
-      <SafeAreaProvider>
+    <GestureHandlerRootView
+      style={{ flex: 1, backgroundColor: DEFAULT_COLORS[950] }}
+    >
+      <SafeAreaProvider
+        style={{ flex: 1, backgroundColor: DEFAULT_COLORS[950] }}
+      >
         <QueryClientProvider client={queryClient}>
-          <StatusBar style="auto" />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" options={{ gestureEnabled: false }} />
-            <Stack.Screen
-              name="movie/[id]"
-              options={{ presentation: "modal" }}
-            />
-            <Stack.Screen name="tv/[id]" options={{ presentation: "modal" }} />
-            <Stack.Screen name="search" options={{ presentation: "modal" }} />
+          <StatusBar style="light" />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              animation: "fade_from_bottom",
+              animationDuration: 200,
+              gestureEnabled: false,
+              animationTypeForReplace: "pop",
+              freezeOnBlur: true,
+              contentStyle: { backgroundColor: DEFAULT_COLORS[950] },
+            }}
+          >
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="movie/[id]" />
+            <Stack.Screen name="tv/[id]" />
+            <Stack.Screen name="search" />
           </Stack>
         </QueryClientProvider>
       </SafeAreaProvider>
