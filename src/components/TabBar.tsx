@@ -2,34 +2,26 @@ import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import cn from "@/utils/cn";
-import pressWithHaptics from "@/utils/pressWithHaptics";
 
-const TabBar = ({
-  state,
-  descriptors,
-  navigation,
-  insets,
-}: BottomTabBarProps) => {
+const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const createOnPress = (routeName: string, isFocused: boolean) => {
     return () => {
-      pressWithHaptics(() => {
-        const event = navigation.emit({
-          type: "tabPress",
-          target: state.routes.find((r) => r.name === routeName)?.key || "",
-          canPreventDefault: true,
-        });
-
-        if (!isFocused && !event.defaultPrevented) {
-          navigation.navigate(routeName);
-        }
+      const event = navigation.emit({
+        type: "tabPress",
+        target: state.routes.find((r) => r.name === routeName)?.key || "",
+        canPreventDefault: true,
       });
+
+      if (!isFocused && !event.defaultPrevented) {
+        navigation.navigate(routeName);
+      }
     };
   };
 
   return (
     <View
-      className="bg-default-500 rounded-full absolute self-center flex-row justify-center items-center p-1 elevation-lg"
-      style={{ bottom: insets.bottom + 8 }}
+      className="bg-default-500 rounded-full self-center flex-row justify-center items-center p-1 elevation-lg"
+      style={{ bottom: 10 }}
     >
       {state.routes.map((route, index) => {
         const label = descriptors[route.key].options.title ?? route.name;
