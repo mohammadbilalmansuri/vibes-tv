@@ -42,7 +42,7 @@ export default function createApiClient(config: ApiConfig) {
     options: ApiRequestOptions = {}
   ): Promise<T> {
     const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-    const url = new URL(path, baseUrl);
+    const url = new URL(`${baseUrl}${path}`);
 
     if (options.params) {
       Object.entries(options.params).forEach(([key, value]) => {
