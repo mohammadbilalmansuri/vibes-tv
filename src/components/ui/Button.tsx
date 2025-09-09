@@ -7,7 +7,6 @@ import {
   TouchableOpacityProps,
 } from "react-native";
 import { Link, LinkProps } from "expo-router";
-import { ChildProps } from "@/types";
 import cn from "@/utils/cn";
 
 type Variant = "primary" | "secondary";
@@ -42,7 +41,7 @@ const Button = ({
   disabled,
   loading,
   ...props
-}: ButtonProps & ChildProps) => {
+}: ButtonProps) => {
   const isDisabled = disabled || loading;
 
   const baseStyles =
