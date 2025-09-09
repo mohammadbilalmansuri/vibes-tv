@@ -10,8 +10,7 @@ import type {
   SearchResponse,
   TopRatedMoviesResponse,
   TopRatedTVShowsResponse,
-  TrendingMoviesResponse,
-  TrendingTVResponse,
+  TrendingResponse,
   TVSeasonDetailResponse,
   TVShowDetailResponse,
   TVShowsAiringTodayResponse,
@@ -27,17 +26,17 @@ const apiClient = createApiClient({
   headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
 });
 
-// ---------- Movies Requests ----------
-
 /**
- * Get trending movies of the day.
+ * Get trending content of the day.
  * @param signal - Abort signal to cancel the request (optional)
  */
-export function getTrendingMovies(signal?: AbortSignal) {
-  return apiClient.get<TrendingMoviesResponse>("/trending/movie/day", {
+export function getTrending(signal?: AbortSignal) {
+  return apiClient.get<TrendingResponse>("/trending/all/day", {
     signal,
   });
 }
+
+// ---------- Movies Requests ----------
 
 /**
  * Get movies currently playing in theaters.
@@ -117,16 +116,6 @@ export function getMovieVideos(id: number, signal?: AbortSignal) {
 }
 
 // ---------- TV Shows Requests ----------
-
-/**
- * Get trending TV shows of the day.
- * @param signal - Abort signal to cancel the request (optional)
- */
-export function getTrendingTVShows(signal?: AbortSignal) {
-  return apiClient.get<TrendingTVResponse>("/trending/tv/day", {
-    signal,
-  });
-}
 
 /**
  * Get TV shows airing today.
