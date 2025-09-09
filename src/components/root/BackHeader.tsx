@@ -2,11 +2,12 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
-import Logo from "../Logo";
 import { DEFAULT_COLORS } from "@/constants";
+import Logo from "../ui/Logo";
 
 const BackHeader = () => {
   const router = useRouter();
+
   const handleBackPress = () => router.back();
 
   return (
