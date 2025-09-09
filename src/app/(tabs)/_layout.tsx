@@ -1,6 +1,6 @@
 import React from "react";
 import { Tabs } from "expo-router";
-import { TabHeader, ScreenView, TabBar } from "@/components";
+import { ScreenView, TabBar, TabHeader } from "@/components/root";
 
 export default function TabsLayout() {
   return (
