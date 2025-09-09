@@ -12,8 +12,8 @@ import { StatusBar } from "expo-status-bar";
 import NetInfo from "@react-native-community/netinfo";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { DEFAULT_COLORS } from "@/constants";
-import OfflineScreen from "./OfflineScreen";
 import { ChildProps } from "@/types";
+import OfflineScreen from "./OfflineScreen";
 
 const queryClient = new QueryClient({
   defaultOptions: {
