@@ -1,41 +1,22 @@
-import { useQueries } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { TRENDING_CACHE_CONFIG } from "@/constants";
-import { getTrendingMovies, getTrendingTVShows } from "@/services/tmdb";
+import { getTrending } from "@/services/tmdb";
 
 /**
- * Hook for fetching trending movies and TV shows in parallel.
- * @returns Object with movies, tv, loading states, errors, and refetch functions.
+ * Hook for fetching trending content.
+ * @returns Object with content, loading state, error, and refetch function.
  */
 export default function useTrending() {
-  const results = useQueries({
-    queries: [
-      {
-        queryKey: ["trending", "movies"],
-        queryFn: ({ signal }) => getTrendingMovies(signal),
-        ...TRENDING_CACHE_CONFIG,
-      },
-      {
-        queryKey: ["trending", "tv"],
-        queryFn: ({ signal }) => getTrendingTVShows(signal),
-        ...TRENDING_CACHE_CONFIG,
-      },
-    ],
+  const result = useQuery({
+    queryKey: ["trending"],
+    queryFn: ({ signal }) => getTrending(signal),
+    ...TRENDING_CACHE_CONFIG,
   });
 
-  const [trendingMoviesResult, trendingTvShowsResult] = results;
-
   return {
-    trendingMovies: trendingMoviesResult.data?.results ?? [],
-    trendingTvShows: trendingTvShowsResult.data?.results ?? [],
-    isLoading: results.some((r) => r.isLoading),
-    errors: {
-      trendingMovies: trendingMoviesResult.error ?? null,
-      trendingTvShows: trendingTvShowsResult.error ?? null,
-    },
-    refetch: {
-      all: () => Promise.all(results.map((r) => r.refetch())),
-      trendingMovies: trendingMoviesResult.refetch,
-      trendingTvShows: trendingTvShowsResult.refetch,
-    },
+    content: result.data?.results ?? [],
+    isLoading: result.isLoading,
+    error: result.error,
+    refetch: result.refetch,
   };
 }
