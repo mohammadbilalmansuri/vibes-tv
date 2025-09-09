@@ -23,7 +23,7 @@ export default function useTvShowsByGenre(genreId: number) {
   return {
     tvShows: result.data?.pages.flatMap((page) => page.results) ?? [],
     isLoading: result.isLoading,
-    error: result.error ?? null,
+    error: result.error,
     hasNextPage: result.hasNextPage,
     fetchNextPage: result.fetchNextPage,
     isFetchingNextPage: result.isFetchingNextPage,

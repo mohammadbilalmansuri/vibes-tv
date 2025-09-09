@@ -20,7 +20,7 @@ export default function useTvSeasonDetails(tvId: number, seasonNumber: number) {
   return {
     details: result.data ?? null,
     isLoading: result.isLoading,
-    error: result.error ?? null,
+    error: result.error,
     refetch: result.refetch,
   };
 }

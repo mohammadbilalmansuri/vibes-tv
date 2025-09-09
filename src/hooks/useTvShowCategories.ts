@@ -57,10 +57,10 @@ export default function useTvShowCategories() {
     onTheAirTvShows: onTheAirTvShowsResult.data?.results ?? [],
     isLoading: results.some((r) => r.isLoading),
     errors: {
-      popularTvShows: popularTvShowsResult.error ?? null,
-      topRatedTvShows: topRatedTvShowsResult.error ?? null,
-      airingTodayTvShows: airingTodayTvShowsResult.error ?? null,
-      onTheAirTvShows: onTheAirTvShowsResult.error ?? null,
+      popularTvShows: popularTvShowsResult.error,
+      topRatedTvShows: topRatedTvShowsResult.error,
+      airingTodayTvShows: airingTodayTvShowsResult.error,
+      onTheAirTvShows: onTheAirTvShowsResult.error,
     },
     refetch: {
       all: () => Promise.all(results.map((r) => r.refetch())),
