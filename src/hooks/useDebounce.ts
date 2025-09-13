@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 
 /**
  * Hook that debounces a value, delaying updates until after the specified delay.
- *
  * - Optimized for search: resets immediately if value is falsy (e.g., empty string).
  * - Works with any type of value.
- *
  * @param value - The input value to debounce
  * @param delay - Delay in milliseconds (default: 500ms)
  * @returns The debounced value
