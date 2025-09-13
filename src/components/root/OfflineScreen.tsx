@@ -1,16 +1,18 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { WifiOff } from "lucide-react-native";
-import { DEFAULT_COLORS } from "@/constants";
+import { COLORS } from "@/constants";
 
 const OfflineScreen = () => {
   return (
-    <View className="flex-1 items-center justify-center gap-6 p-4">
-      <WifiOff size={48} color={DEFAULT_COLORS.accent} strokeWidth={1.5} />
-      <Text className="text-xl font-semibold text-default-50 text-center">
+    <View className="flex-1 items-center justify-center gap-5 p-5">
+      <View className="bg-shark-secondary p-4 rounded-full">
+        <WifiOff size={28} color={COLORS.yellow} strokeWidth={2} />
+      </View>
+      <Text className="text-xl font-semibold text-white text-center">
         You’re Offline
       </Text>
-      <Text className="text-default-500 text-center -mt-3">
+      <Text className="text-white/60 text-center -mt-3">
         Please check your internet connection.
       </Text>
     </View>
