@@ -43,14 +43,14 @@ const Button = ({
 
   const buttonContent = (
     <TouchableOpacity
-      activeOpacity={0.7}
+      activeOpacity={0.6}
       disabled={isDisabled}
       className={cn(
         "flex-row items-center justify-center rounded-full gap-1 p-4",
         {
           "bg-rose": variant === "primary",
           "bg-shark-tertiary": variant === "secondary",
-          "opacity-70": isDisabled,
+          "opacity-60": isDisabled,
         },
         className
       )}
