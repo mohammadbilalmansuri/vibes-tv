@@ -1,13 +1,13 @@
 import React from "react";
 import { Svg, Path, SvgProps } from "react-native-svg";
-import { COLOR_ROSE } from "@/constants";
+import { COLORS } from "@/constants";
 
 type LogoProps = SvgProps & {
   size?: number;
   color?: string;
 };
 
-const Logo = ({ size = 28, color = COLOR_ROSE[500], ...props }: LogoProps) => {
+const Logo = ({ size = 28, color = COLORS.rose, ...props }: LogoProps) => {
   return (
     <Svg
       viewBox="0 0 512 512"
