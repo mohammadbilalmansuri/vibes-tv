@@ -3,12 +3,8 @@ import { GENRES_CACHE_CONFIG } from "@/constants";
 import { getMovieGenres, getTVGenres } from "@/services/tmdb";
 
 /**
- * Fetches genres in parallel:
- * - Movie Genres
- * - TV Show Genres
- *
- * @returns Array of query results in fixed order:
- * [movieGenres, tvGenres]
+ * Fetches Movie and TV genres in parallel.
+ * @returns [movieGenresResult, tvGenresResult]
  */
 export default function useGenres() {
   return useQueries({
