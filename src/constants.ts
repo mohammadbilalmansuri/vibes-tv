@@ -39,6 +39,22 @@ export const GENRE_DISCOVER_CACHE_CONFIG = {
   gcTime: 24 * 60 * 60 * 1000,
 };
 
-// Theme Colors
+// Color Palette
 
-export { rose as COLOR_ROSE, gray as COLOR_GRAY } from "tailwindcss/colors";
+export const COLORS = {
+  gray: {
+    "50": "#f9fafb",
+    "100": "#f3f4f6",
+    "200": "#e5e7eb",
+    "300": "#d1d5db",
+    "400": "#9ca3af",
+    "500": "#6b7280",
+    "600": "#4b5563",
+    "700": "#374151",
+    "800": "#1f2937",
+    "900": "#111827",
+    "950": "#030712",
+  },
+  rose: "#f43f5e",
+  yellow: "#eab308",
+};
