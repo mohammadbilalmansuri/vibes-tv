@@ -19,7 +19,7 @@ const ScreenView = ({
   const Container = inSafeArea ? SafeAreaView : View;
 
   return (
-    <Container className={cn("flex-1 bg-default-950", className)} {...rest}>
+    <Container className={cn("flex-1 bg-gray-900", className)} {...rest}>
       {children}
     </Container>
   );
