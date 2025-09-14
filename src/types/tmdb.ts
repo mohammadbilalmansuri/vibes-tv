@@ -250,3 +250,4 @@ export type MovieResponseWithDates = ResponseWithDates<BaseMovie>;
 export type TVShowResponse = TMDBResponse<BaseTVShow>;
 
 export type Content = BaseMovie | BaseTVShow;
+export type ContentResponse = MovieResponse | TVShowResponse;
