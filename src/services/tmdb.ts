@@ -1,22 +1,15 @@
 import { TMDB_API_BASE_URL, TMDB_API_TOKEN } from "@/constants";
 import type {
-  DiscoverMoviesResponse,
-  DiscoverTVShowsResponse,
   GenresResponse,
-  MovieDetailResponse,
-  NowPlayingMoviesResponse,
-  PopularMoviesResponse,
-  PopularTVShowsResponse,
+  TVShowDetails,
+  MovieDetails,
   SearchResponse,
-  TopRatedMoviesResponse,
-  TopRatedTVShowsResponse,
   TrendingResponse,
-  TVSeasonDetailResponse,
-  TVShowDetailResponse,
-  TVShowsAiringTodayResponse,
-  TVShowsOnTheAirResponse,
-  UpcomingMoviesResponse,
   VideosResponse,
+  MovieResponse,
+  MovieResponseWithDates,
+  TVShowResponse,
+  TVSeasonDetails,
 } from "@/types/tmdb";
 import createApiClient from "./api";
 
@@ -31,9 +24,7 @@ const apiClient = createApiClient({
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getTrending(signal?: AbortSignal) {
-  return apiClient.get<TrendingResponse>("/trending/all/day", {
-    signal,
-  });
+  return apiClient.get<TrendingResponse>("/trending/all/day", { signal });
 }
 
 // ---------- Movies Requests ----------
@@ -43,7 +34,7 @@ export function getTrending(signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getNowPlayingMovies(signal?: AbortSignal) {
-  return apiClient.get<NowPlayingMoviesResponse>("/movie/now_playing", {
+  return apiClient.get<MovieResponseWithDates>("/movie/now_playing", {
     signal,
   });
 }
@@ -53,7 +44,7 @@ export function getNowPlayingMovies(signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getPopularMovies(signal?: AbortSignal) {
-  return apiClient.get<PopularMoviesResponse>("/movie/popular", { signal });
+  return apiClient.get<MovieResponse>("/movie/popular", { signal });
 }
 
 /**
@@ -61,7 +52,7 @@ export function getPopularMovies(signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getTopRatedMovies(signal?: AbortSignal) {
-  return apiClient.get<TopRatedMoviesResponse>("/movie/top_rated", { signal });
+  return apiClient.get<MovieResponse>("/movie/top_rated", { signal });
 }
 
 /**
@@ -69,7 +60,7 @@ export function getTopRatedMovies(signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getUpcomingMovies(signal?: AbortSignal) {
-  return apiClient.get<UpcomingMoviesResponse>("/movie/upcoming", { signal });
+  return apiClient.get<MovieResponseWithDates>("/movie/upcoming", { signal });
 }
 
 /**
@@ -83,7 +74,7 @@ export function getMoviesByGenre(
   page = 1,
   signal?: AbortSignal
 ) {
-  return apiClient.get<DiscoverMoviesResponse>("/discover/movie", {
+  return apiClient.get<MovieResponse>("/discover/movie", {
     params: { with_genres: genreId, page },
     signal,
   });
@@ -103,7 +94,7 @@ export function getMovieGenres(signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getMovieDetails(id: number, signal?: AbortSignal) {
-  return apiClient.get<MovieDetailResponse>(`/movie/${id}`, { signal });
+  return apiClient.get<MovieDetails>(`/movie/${id}`, { signal });
 }
 
 /**
@@ -122,9 +113,7 @@ export function getMovieVideos(id: number, signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getTVShowsAiringToday(signal?: AbortSignal) {
-  return apiClient.get<TVShowsAiringTodayResponse>("/tv/airing_today", {
-    signal,
-  });
+  return apiClient.get<TVShowResponse>("/tv/airing_today", { signal });
 }
 
 /**
@@ -132,9 +121,7 @@ export function getTVShowsAiringToday(signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getTVShowsOnTheAir(signal?: AbortSignal) {
-  return apiClient.get<TVShowsOnTheAirResponse>("/tv/on_the_air", {
-    signal,
-  });
+  return apiClient.get<TVShowResponse>("/tv/on_the_air", { signal });
 }
 
 /**
@@ -142,7 +129,7 @@ export function getTVShowsOnTheAir(signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getPopularTVShows(signal?: AbortSignal) {
-  return apiClient.get<PopularTVShowsResponse>("/tv/popular", { signal });
+  return apiClient.get<TVShowResponse>("/tv/popular", { signal });
 }
 
 /**
@@ -150,9 +137,7 @@ export function getPopularTVShows(signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getTopRatedTVShows(signal?: AbortSignal) {
-  return apiClient.get<TopRatedTVShowsResponse>("/tv/top_rated", {
-    signal,
-  });
+  return apiClient.get<TVShowResponse>("/tv/top_rated", { signal });
 }
 
 /**
@@ -166,7 +151,7 @@ export function getTVShowsByGenre(
   page = 1,
   signal?: AbortSignal
 ) {
-  return apiClient.get<DiscoverTVShowsResponse>("/discover/tv", {
+  return apiClient.get<TVShowResponse>("/discover/tv", {
     params: { with_genres: genreId, page },
     signal,
   });
@@ -186,7 +171,7 @@ export function getTVGenres(signal?: AbortSignal) {
  * @param signal - Abort signal to cancel the request (optional)
  */
 export function getTVShowDetails(id: number, signal?: AbortSignal) {
-  return apiClient.get<TVShowDetailResponse>(`/tv/${id}`, { signal });
+  return apiClient.get<TVShowDetails>(`/tv/${id}`, { signal });
 }
 
 /**
@@ -200,10 +185,9 @@ export function getTVSeasonDetails(
   seasonNumber: number,
   signal?: AbortSignal
 ) {
-  return apiClient.get<TVSeasonDetailResponse>(
-    `/tv/${tvId}/season/${seasonNumber}`,
-    { signal }
-  );
+  return apiClient.get<TVSeasonDetails>(`/tv/${tvId}/season/${seasonNumber}`, {
+    signal,
+  });
 }
 
 /**
