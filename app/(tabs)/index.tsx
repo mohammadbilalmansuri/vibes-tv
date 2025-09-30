@@ -8,15 +8,13 @@ import {
   View,
 } from "react-native";
 
-import { useFetch } from "@/src/hooks";
-import { getMovies } from "../../services/api";
-import { getTrendingMovies } from "../../services/appwrite";
-
-import { bg, logo } from "@/src/assets";
-
-import MovieCard from "../../components/MovieCard";
-import SearchBar from "../../components/SearchBar";
-import TrendingCard from "../../components/TrendingCard";
+import { bg, logo } from "@/assets";
+import MovieCard from "@/components/MovieCard";
+import SearchBar from "@/components/SearchBar";
+import TrendingCard from "@/components/TrendingCard";
+import { useFetch } from "@/hooks";
+import { getMovies } from "@/services/api";
+import { getTrendingMovies } from "@/services/appwrite";
 
 export default function Home() {
   const router = useRouter();
@@ -34,7 +32,7 @@ export default function Home() {
   } = useFetch(() => getMovies());
 
   return (
-    <View className="flex-1 bg-primary">
+    <View className="flex-1 bg-base-600">
       <Image source={bg} className="absolute w-full z-0" resizeMode="cover" />
 
       <ScrollView

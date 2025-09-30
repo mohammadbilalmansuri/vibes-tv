@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 
-import { useFetch } from "@/src/hooks";
-import { getMovies } from "../../services/api";
-import { updateSearchCount } from "../../services/appwrite";
-
-import { bg, logo } from "@/src/assets";
-import { MovieCard } from "@/src/components";
-import SearchBar from "../../components/SearchBar";
+import { bg, logo } from "@/assets";
+import { MovieCard } from "@/components";
+import SearchBar from "@/components/SearchBar";
+import { useFetch } from "@/hooks";
+import { getMovies } from "@/services/api";
+import { updateSearchCount } from "@/services/appwrite";
 
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState("");

@@ -1,11 +1,12 @@
 import { Client, Databases, ID, Query } from "react-native-appwrite";
+
 import {
   APPWRITE_COLLECTION_ID,
   APPWRITE_DATABASE_ID,
   APPWRITE_ENDPOINT,
   APPWRITE_PROJECT_ID,
-} from "../constants";
-import getImageUrl from "../utils/getImageUrl";
+} from "@/constants";
+import getImageUrl from "@/utils/getImageUrl";
 
 const client = new Client()
   .setEndpoint(APPWRITE_ENDPOINT)
