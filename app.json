@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "mazio",
-    "slug": "mazio",
+    "name": "vibes-tv",
+    "slug": "vibes-tv",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
-    "scheme": "mazio",
+    "scheme": "vibes-tv",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": { "supportsTablet": true },
