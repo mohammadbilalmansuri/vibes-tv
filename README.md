@@ -1,6 +1,6 @@
-# Mazio
+# Vibes TV
 
-Mazio is an OTT platform for streaming movies and TV shows.
+Vibes TV is an OTT platform for streaming movies and TV shows.
 
 # Tech Stack
 
