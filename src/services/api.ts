@@ -1,126 +1,133 @@
-import { TMDB_API_BASE_URL, TMDB_API_TOKEN } from "@/constants";
-import {
-  MediaType,
-  Movie,
-  MovieDetails,
-  SearchResult,
-  TimeWindow,
-  TMDBResponse,
-  TVShow,
-  TVShowDetails,
-} from "@/types";
+import { ApiConfig, ApiRequestOptions } from "@/types";
+import { ApiError } from "@/utils/apiError";
 
-// Base API configuration
-const API_CONFIG = {
-  headers: {
-    Authorization: `Bearer ${TMDB_API_TOKEN}`,
-    "Content-Type": "application/json",
-  },
-};
+/**
+ * Creates a typed API client for making HTTP requests.
+ *
+ * Features:
+ * - Base URL normalization
+ * - Query parameter handling
+ * - JSON/FormData body support
+ * - Standardized error handling with `ApiError`
+ *
+ * @param config - API configuration (base URL, default headers, etc.)
+ * @returns An object with `request`, `get`, `post`, `put`, `patch`, and `delete` methods.
+ */
+export const createApiClient = (config: ApiConfig) => {
+  const baseUrl = config.baseUrl.endsWith("/")
+    ? config.baseUrl.slice(0, -1)
+    : config.baseUrl;
 
-// Generic fetch function with error handling
-async function apiRequest<T>(endpoint: string): Promise<T> {
-  try {
-    const response = await fetch(`${TMDB_API_BASE_URL}${endpoint}`, API_CONFIG);
+  /**
+   * Executes an HTTP request.
+   *
+   * @typeParam T - Expected response type
+   * @param endpoint - API endpoint (with or without leading `/`)
+   * @param options - Request options (method, headers, params, body, etc.)
+   * @returns Parsed JSON response as type `T`
+   * @throws {ApiError} If the response status is not OK
+   */
+  async function request<T>(
+    endpoint: string,
+    options: ApiRequestOptions = {}
+  ): Promise<T> {
+    const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+    const url = new URL(path, baseUrl);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (options.params) {
+      Object.entries(options.params).forEach(([key, value]) => {
+        url.searchParams.append(key, String(value));
+      });
     }
 
-    return await response.json();
-  } catch (error) {
-    console.error("API request failed:", error);
-    throw error;
+    const headers: Record<string, string> = {
+      ...(config.headers || {}),
+      ...(options.headers || {}),
+    };
+
+    if (options.body && !(options.body instanceof FormData)) {
+      headers["Content-Type"] = headers["Content-Type"] ?? "application/json";
+    }
+
+    const response = await fetch(url.toString(), {
+      method: options.method || "GET",
+      headers,
+      body:
+        options.body && options.method !== "GET"
+          ? options.body instanceof FormData
+            ? options.body
+            : JSON.stringify(options.body)
+          : undefined,
+    });
+
+    if (!response.ok) {
+      let errorBody: unknown;
+      try {
+        errorBody = await response.json();
+      } catch {
+        errorBody = await response.text();
+      }
+      throw new ApiError(response.status, response.statusText, errorBody);
+    }
+
+    return (await response.json()) as T;
   }
-}
 
-// Movie API functions
-export const movieApi = {
-  // Get latest movies (discover with recent release dates)
-  getLatest: (page: number = 1) =>
-    apiRequest<TMDBResponse<Movie>>(
-      `discover/movie?page=${page}&sort_by=release_date.desc&primary_release_date.lte=${new Date().toISOString().split("T")[0]}`
-    ),
+  return {
+    /**
+     * Sends a GET request.
+     *
+     * @typeParam T - Expected response type
+     * @param endpoint - API endpoint
+     * @param options - Request options without `method` or `body`
+     */
+    get: <T>(
+      endpoint: string,
+      options?: Omit<ApiRequestOptions, "method" | "body">
+    ) => request<T>(endpoint, { ...options, method: "GET" }),
 
-  // Get popular movies
-  getPopular: (page: number = 1) =>
-    apiRequest<TMDBResponse<Movie>>(`movie/popular?page=${page}`),
+    /**
+     * Sends a POST request.
+     *
+     * @typeParam T - Expected response type
+     * @param endpoint - API endpoint
+     * @param options - Request options including `body`
+     */
+    post: <T>(endpoint: string, options?: Omit<ApiRequestOptions, "method">) =>
+      request<T>(endpoint, { ...options, method: "POST" }),
 
-  // Get upcoming movies
-  getUpcoming: (page: number = 1) =>
-    apiRequest<TMDBResponse<Movie>>(`movie/upcoming?page=${page}`),
+    /**
+     * Sends a PUT request.
+     *
+     * @typeParam T - Expected response type
+     * @param endpoint - API endpoint
+     * @param options - Request options including `body`
+     */
+    put: <T>(endpoint: string, options?: Omit<ApiRequestOptions, "method">) =>
+      request<T>(endpoint, { ...options, method: "PUT" }),
 
-  // Get trending movies
-  getTrending: (timeWindow: TimeWindow = "week") =>
-    apiRequest<TMDBResponse<Movie>>(`trending/movie/${timeWindow}`),
+    /**
+     * Sends a PATCH request.
+     *
+     * @typeParam T - Expected response type
+     * @param endpoint - API endpoint
+     * @param options - Request options including `body`
+     */
+    patch: <T>(endpoint: string, options?: Omit<ApiRequestOptions, "method">) =>
+      request<T>(endpoint, { ...options, method: "PATCH" }),
 
-  // Get movie details
-  getDetails: (id: number) => apiRequest<MovieDetails>(`movie/${id}`),
+    /**
+     * Sends a DELETE request.
+     *
+     * @typeParam T - Expected response type
+     * @param endpoint - API endpoint
+     * @param options - Request options without `method` or `body`
+     */
+    delete: <T>(
+      endpoint: string,
+      options?: Omit<ApiRequestOptions, "method" | "body">
+    ) => request<T>(endpoint, { ...options, method: "DELETE" }),
 
-  // Search movies
-  search: (query: string, page: number = 1) =>
-    apiRequest<TMDBResponse<Movie>>(
-      `search/movie?query=${encodeURIComponent(query)}&page=${page}`
-    ),
-};
-
-// TV Show API functions
-export const tvApi = {
-  // Get latest TV shows (discover with recent air dates)
-  getLatest: (page: number = 1) =>
-    apiRequest<TMDBResponse<TVShow>>(
-      `discover/tv?page=${page}&sort_by=first_air_date.desc&first_air_date.lte=${new Date().toISOString().split("T")[0]}`
-    ),
-
-  // Get popular TV shows
-  getPopular: (page: number = 1) =>
-    apiRequest<TMDBResponse<TVShow>>(`tv/popular?page=${page}`),
-
-  // Get airing today
-  getAiringToday: (page: number = 1) =>
-    apiRequest<TMDBResponse<TVShow>>(`tv/airing_today?page=${page}`),
-
-  // Get on the air (currently airing)
-  getOnTheAir: (page: number = 1) =>
-    apiRequest<TMDBResponse<TVShow>>(`tv/on_the_air?page=${page}`),
-
-  // Get trending TV shows
-  getTrending: (timeWindow: TimeWindow = "week") =>
-    apiRequest<TMDBResponse<TVShow>>(`trending/tv/${timeWindow}`),
-
-  // Get TV show details
-  getDetails: (id: number) => apiRequest<TVShowDetails>(`tv/${id}`),
-
-  // Search TV shows
-  search: (query: string, page: number = 1) =>
-    apiRequest<TMDBResponse<TVShow>>(
-      `search/tv?query=${encodeURIComponent(query)}&page=${page}`
-    ),
-};
-
-// Multi-search API (searches both movies and TV shows)
-export const searchApi = {
-  multi: (query: string, page: number = 1) =>
-    apiRequest<TMDBResponse<SearchResult>>(
-      `search/multi?query=${encodeURIComponent(query)}&page=${page}`
-    ),
-};
-
-// Combined trending API
-export const trendingApi = {
-  getAll: (mediaType: MediaType, timeWindow: TimeWindow = "week") =>
-    apiRequest<TMDBResponse<Movie | TVShow>>(
-      `trending/${mediaType}/${timeWindow}`
-    ),
-};
-
-// Utility functions for image URLs
-export const getImageUrl = (path: string | null, size: string = "w500") => {
-  if (!path) return null;
-  return `https://image.tmdb.org/t/p/${size}${path}`;
-};
-
-export const getBackdropUrl = (path: string | null, size: string = "w1280") => {
-  if (!path) return null;
-  return `https://image.tmdb.org/t/p/${size}${path}`;
+    request,
+  };
 };
