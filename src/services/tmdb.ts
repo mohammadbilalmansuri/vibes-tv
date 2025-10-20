@@ -1,68 +1,114 @@
 import { TMDB_API_BASE_URL, TMDB_API_TOKEN } from "@/constants";
 import { createApiClient } from "./api";
 
-// Singleton API client for TMDB
 const apiClient = createApiClient({
   baseUrl: TMDB_API_BASE_URL,
   headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
 });
 
-/** Get trending content (movies + TV) for today */
-export const getTrendingAll = () => apiClient.get("/trending/all/day");
+/**
+ * Fetch trending (movies + TV combined).
+ *
+ * @param page - Page number for pagination (default: 1)
+ */
+export const getTrendingAll = (page: number = 1) =>
+  apiClient.get("/trending/all/day", { params: { page } });
 
-/** Movie-related TMDB requests */
+/** Movie-related requests. */
 export const movieRequests = {
-  /** Get trending movies */
-  getTrending: () => apiClient.get("/trending/movie/day"),
+  /**
+   * Fetch popular movies.
+   * @param page - Page number for pagination
+   */
+  getPopular: (page: number = 1) =>
+    apiClient.get("/movie/popular", { params: { page } }),
 
-  /** Get popular movies */
-  getPopular: () => apiClient.get("/movie/popular"),
+  /**
+   * Fetch upcoming movies.
+   * @param page - Page number for pagination
+   */
+  getUpcoming: (page: number = 1) =>
+    apiClient.get("/movie/upcoming", { params: { page } }),
 
-  /** Get upcoming movies */
-  getUpcoming: () => apiClient.get("/movie/upcoming"),
-
-  /** Get movie genres */
-  getGenres: () => apiClient.get("/genre/movie/list"),
-
-  /** Discover movies by genre */
-  getByGenre: (genreId: number) =>
+  /**
+   * Discover movies by genre.
+   * @param genreId - TMDB genre ID
+   * @param page - Page number for pagination
+   */
+  getByGenre: (genreId: number, page: number = 1) =>
     apiClient.get("/discover/movie", {
-      params: { with_genres: genreId },
+      params: { with_genres: genreId, page },
     }),
 
-  /** Get movie details by ID */
+  /** Fetch list of movie genres. */
+  getGenres: () => apiClient.get("/genre/movie/list"),
+
+  /**
+   * Fetch detailed information about a specific movie.
+   * @param id - TMDB movie ID
+   */
   getDetails: (id: number) => apiClient.get(`/movie/${id}`),
 };
 
-/** TV-related TMDB requests */
+/** TV-related requests. */
 export const tvRequests = {
-  /** Get trending TV shows */
-  getTrending: () => apiClient.get("/trending/tv/day"),
+  /**
+   * Fetch popular TV shows.
+   * @param page - Page number for pagination
+   */
+  getPopular: (page: number = 1) =>
+    apiClient.get("/tv/popular", { params: { page } }),
 
-  /** Get popular TV shows */
-  getPopular: () => apiClient.get("/tv/popular"),
+  /**
+   * Fetch upcoming TV shows.
+   * @param page - Page number for pagination
+   */
+  getUpcoming: (page: number = 1) =>
+    apiClient.get("/tv/upcoming", { params: { page } }),
 
-  /** Get upcoming/on-air TV shows */
-  getUpcoming: () => apiClient.get("/tv/on_the_air"),
-
-  /** Get TV show genres */
-  getGenres: () => apiClient.get("/genre/tv/list"),
-
-  /** Discover TV shows by genre */
-  getByGenre: (genreId: number) =>
+  /**
+   * Discover TV shows by genre.
+   * @param genreId - TMDB genre ID
+   * @param page - Page number for pagination
+   */
+  getByGenre: (genreId: number, page: number = 1) =>
     apiClient.get("/discover/tv", {
-      params: { with_genres: genreId },
+      params: { with_genres: genreId, page },
     }),
 
-  /** Get TV show details by ID */
+  /** Fetch list of TV genres. */
+  getGenres: () => apiClient.get("/genre/tv/list"),
+
+  /**
+   * Fetch detailed information about a specific TV show.
+   * @param id - TMDB TV show ID
+   */
   getDetails: (id: number) => apiClient.get(`/tv/${id}`),
 };
 
-/** Search-related TMDB requests */
+/** Search-related requests. */
 export const searchRequests = {
-  /** Search across movies, TV shows, and people */
-  multi: (query: string) =>
-    apiClient.get("/search/multi", {
-      params: { query },
-    }),
+  /**
+   * Search across movies, TV, and people.
+   * @param query - Search term
+   * @param page - Page number for pagination
+   */
+  multi: (query: string, page: number = 1) =>
+    apiClient.get("/search/multi", { params: { query, page } }),
+
+  /**
+   * Search only movies.
+   * @param query - Search term
+   * @param page - Page number for pagination
+   */
+  movie: (query: string, page: number = 1) =>
+    apiClient.get("/search/movie", { params: { query, page } }),
+
+  /**
+   * Search only TV shows.
+   * @param query - Search term
+   * @param page - Page number for pagination
+   */
+  tv: (query: string, page: number = 1) =>
+    apiClient.get("/search/tv", { params: { query, page } }),
 };
