@@ -311,19 +311,3 @@ export interface TVSeasonDetailResponse {
   season_number: number;
   vote_average: number;
 }
-
-export interface TVEpisodeDetailResponse {
-  air_date: string;
-  crew: CrewMember[];
-  episode_number: number;
-  guest_stars: GuestStar[];
-  name: string;
-  overview: string;
-  id: number;
-  production_code: string;
-  runtime: number;
-  season_number: number;
-  still_path: string;
-  vote_average: number;
-  vote_count: number;
-}
