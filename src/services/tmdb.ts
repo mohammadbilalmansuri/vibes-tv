@@ -31,21 +31,34 @@ const apiClient = createApiClient({
 /** Movie-related requests */
 export const movieRequests = {
   /** Get trending movies of the day. */
-  getTrending: () =>
-    apiClient.get<TrendingMoviesResponse>("/trending/movie/day"),
+  getTrending: (page = 1) =>
+    apiClient.get<TrendingMoviesResponse>("/trending/movie/day", {
+      params: { page },
+    }),
 
   /** Get movies currently playing in theaters. */
-  getNowPlaying: () =>
-    apiClient.get<NowPlayingMoviesResponse>("/movie/now_playing"),
+  getNowPlaying: (page = 1) =>
+    apiClient.get<NowPlayingMoviesResponse>("/movie/now_playing", {
+      params: { page },
+    }),
 
   /** Get a list of popular movies. */
-  getPopular: () => apiClient.get<PopularMoviesResponse>("/movie/popular"),
+  getPopular: (page = 1) =>
+    apiClient.get<PopularMoviesResponse>("/movie/popular", {
+      params: { page },
+    }),
 
   /** Get a list of top-rated movies. */
-  getTopRated: () => apiClient.get<TopRatedMoviesResponse>("/movie/top_rated"),
+  getTopRated: (page = 1) =>
+    apiClient.get<TopRatedMoviesResponse>("/movie/top_rated", {
+      params: { page },
+    }),
 
   /** Get a list of upcoming movies. */
-  getUpcoming: () => apiClient.get<UpcomingMoviesResponse>("/movie/upcoming"),
+  getUpcoming: (page = 1) =>
+    apiClient.get<UpcomingMoviesResponse>("/movie/upcoming", {
+      params: { page },
+    }),
 
   /**
    * Discover movies by genre.
@@ -78,20 +91,30 @@ export const movieRequests = {
 /** TV-related requests */
 export const tvRequests = {
   /** Get trending TV shows of the day. */
-  getTrending: () => apiClient.get<TrendingTVResponse>("/trending/tv/day"),
+  getTrending: (page = 1) =>
+    apiClient.get<TrendingTVResponse>("/trending/tv/day", { params: { page } }),
 
   /** Get TV shows airing today. */
-  getAiringToday: () =>
-    apiClient.get<TVShowsAiringTodayResponse>("/tv/airing_today"),
+  getAiringToday: (page = 1) =>
+    apiClient.get<TVShowsAiringTodayResponse>("/tv/airing_today", {
+      params: { page },
+    }),
 
   /** Get TV shows currently on the air. */
-  getOnTheAir: () => apiClient.get<TVShowsOnTheAirResponse>("/tv/on_the_air"),
+  getOnTheAir: (page = 1) =>
+    apiClient.get<TVShowsOnTheAirResponse>("/tv/on_the_air", {
+      params: { page },
+    }),
 
   /** Get a list of popular TV shows. */
-  getPopular: () => apiClient.get<PopularTVShowsResponse>("/tv/popular"),
+  getPopular: (page = 1) =>
+    apiClient.get<PopularTVShowsResponse>("/tv/popular", { params: { page } }),
 
   /** Get a list of top-rated TV shows. */
-  getTopRated: () => apiClient.get<TopRatedTVShowsResponse>("/tv/top_rated"),
+  getTopRated: (page = 1) =>
+    apiClient.get<TopRatedTVShowsResponse>("/tv/top_rated", {
+      params: { page },
+    }),
 
   /**
    * Discover TV shows by genre.
