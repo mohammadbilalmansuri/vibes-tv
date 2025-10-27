@@ -8,14 +8,13 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { Platform } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import "./global.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 2, // 2 minutes
-      gcTime: 1000 * 60 * 30, // 30 minutes
+      staleTime: 1000 * 60 * 5,
+      gcTime: 1000 * 60 * 30,
       retry: 2,
       refetchOnReconnect: true,
       refetchOnWindowFocus: false,
@@ -24,18 +23,15 @@ const queryClient = new QueryClient({
 });
 
 export default function RootLayout() {
-  // React Query focus manager integration for RN
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
-      if (state.isConnected) {
-        focusManager.setFocused(true);
-      }
+      if (state.isConnected) focusManager.setFocused(true);
     });
     return () => unsubscribe();
   }, []);
 
   return (
-    <SafeAreaProvider>
+    <>
       <QueryClientProvider client={queryClient}>
         <StatusBar
           style="light"
@@ -45,7 +41,7 @@ export default function RootLayout() {
         <Stack
           screenOptions={{
             headerShown: false,
-            contentStyle: { backgroundColor: "#030712" }, // secondary-950
+            contentStyle: { backgroundColor: "var(--color-gray-900)" },
             animation: "slide_from_right",
             animationDuration: 300,
           }}
@@ -65,11 +61,31 @@ export default function RootLayout() {
               presentation: "modal",
               gestureEnabled: true,
               animation: "slide_from_bottom",
-              animationDuration: 400,
+              animationDuration: 300,
+            }}
+          />
+          <Stack.Screen
+            name="tv/[id]"
+            options={{
+              headerShown: false,
+              presentation: "modal",
+              gestureEnabled: true,
+              animation: "slide_from_bottom",
+              animationDuration: 300,
+            }}
+          />
+          <Stack.Screen
+            name="search"
+            options={{
+              headerShown: false,
+              presentation: "modal",
+              gestureEnabled: true,
+              animation: "slide_from_bottom",
+              animationDuration: 300,
             }}
           />
         </Stack>
       </QueryClientProvider>
-    </SafeAreaProvider>
+    </>
   );
 }
