@@ -9,6 +9,7 @@ export interface ApiRequestOptions {
   headers?: Record<string, string>;
   params?: Record<string, string | number | boolean>;
   body?: unknown;
+  signal?: AbortSignal;
 }
 
 /* TMDB API Response Types */
@@ -311,3 +312,12 @@ export interface TVSeasonDetailResponse {
   season_number: number;
   vote_average: number;
 }
+
+export type ImageSize =
+  | "w92"
+  | "w154"
+  | "w185"
+  | "w342"
+  | "w500"
+  | "w780"
+  | "original";
