@@ -1,27 +1,5 @@
 import { TMDB_API_BASE_URL, TMDB_API_TOKEN } from "@/constants";
-import {
-  DiscoverMoviesResponse,
-  DiscoverTVShowsResponse,
-  GenresResponse,
-  ImageSize,
-  MovieDetailResponse,
-  MultiSearchResponse,
-  NowPlayingMoviesResponse,
-  PopularMoviesResponse,
-  PopularTVShowsResponse,
-  SearchMoviesResponse,
-  SearchTVShowsResponse,
-  TopRatedMoviesResponse,
-  TopRatedTVShowsResponse,
-  TrendingMoviesResponse,
-  TrendingTVResponse,
-  TVSeasonDetailResponse,
-  TVShowDetailResponse,
-  TVShowsAiringTodayResponse,
-  TVShowsOnTheAirResponse,
-  UpcomingMoviesResponse,
-  VideosResponse,
-} from "@/types";
+import * as TMDBTypes from "@/types/tmdb";
 import { createApiClient } from "./api";
 
 const apiClient = createApiClient({
@@ -29,153 +7,182 @@ const apiClient = createApiClient({
   headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
 });
 
-/** Movie-related requests */
+/** Movie-related TMDB requests */
 export const movieRequests = {
-  /** Get trending movies of the day. */
-  getTrending: (page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<TrendingMoviesResponse>("/trending/movie/day", {
-      params: { page },
-      ...options,
+  /**
+   * Get trending movies of the day.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getTrending: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.TrendingMoviesResponse>("/trending/movie/day", {
+      signal,
     }),
 
-  /** Get movies currently playing in theaters. */
-  getNowPlaying: (page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<NowPlayingMoviesResponse>("/movie/now_playing", {
-      params: { page },
-      ...options,
+  /**
+   * Get movies currently playing in theaters.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getNowPlaying: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.NowPlayingMoviesResponse>("/movie/now_playing", {
+      signal,
     }),
 
-  /** Get a list of popular movies. */
-  getPopular: (page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<PopularMoviesResponse>("/movie/popular", {
-      params: { page },
-      ...options,
+  /**
+   * Get a list of popular movies.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getPopular: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.PopularMoviesResponse>("/movie/popular", {
+      signal,
     }),
 
-  /** Get a list of top-rated movies. */
-  getTopRated: (page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<TopRatedMoviesResponse>("/movie/top_rated", {
-      params: { page },
-      ...options,
+  /**
+   * Get a list of top-rated movies.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getTopRated: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.TopRatedMoviesResponse>("/movie/top_rated", {
+      signal,
     }),
 
-  /** Get a list of upcoming movies. */
-  getUpcoming: (page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<UpcomingMoviesResponse>("/movie/upcoming", {
-      params: { page },
-      ...options,
+  /**
+   * Get a list of upcoming movies.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getUpcoming: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.UpcomingMoviesResponse>("/movie/upcoming", {
+      signal,
     }),
 
   /**
    * Discover movies by genre.
-   * @param genreId - TMDB Genre ID
+   * @param genreId - TMDB genre ID
    * @param page - Page number for pagination (default = 1)
+   * @param signal - Abort signal to cancel the request (optional)
    */
-  getByGenre: (genreId: number, page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<DiscoverMoviesResponse>("/discover/movie", {
+  getByGenre: (genreId: number, page = 1, signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.DiscoverMoviesResponse>("/discover/movie", {
       params: { with_genres: genreId, page },
-      ...options,
+      signal,
     }),
 
-  /** Get list of all movie genres. */
-  getGenres: (options?: { signal?: AbortSignal }) =>
-    apiClient.get<GenresResponse>("/genre/movie/list", options),
+  /**
+   * Get list of all movie genres.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getGenres: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.GenresResponse>("/genre/movie/list", { signal }),
 
   /**
    * Get detailed information about a movie by ID.
    * @param id - Movie ID
+   * @param signal - Abort signal to cancel the request (optional)
    */
-  getDetails: (id: number, options?: { signal?: AbortSignal }) =>
-    apiClient.get<MovieDetailResponse>(`/movie/${id}`, options),
+  getDetails: (id: number, signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.MovieDetailResponse>(`/movie/${id}`, { signal }),
 
   /**
    * Get official videos (trailers, teasers, etc.) for a movie.
    * @param id - Movie ID
+   * @param signal - Abort signal to cancel the request (optional)
    */
-  getVideos: (id: number, options?: { signal?: AbortSignal }) =>
-    apiClient.get<VideosResponse>(`/movie/${id}/videos`, options),
+  getVideos: (id: number, signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.VideosResponse>(`/movie/${id}/videos`, { signal }),
 };
 
 /** TV-related requests */
 export const tvRequests = {
-  /** Get trending TV shows of the day. */
-  getTrending: (page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<TrendingTVResponse>("/trending/tv/day", {
-      params: { page },
-      ...options,
+  /**
+   * Get trending TV shows of the day.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getTrending: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.TrendingTVResponse>("/trending/tv/day", { signal }),
+
+  /**
+   * Get TV shows airing today.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getAiringToday: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.TVShowsAiringTodayResponse>("/tv/airing_today", {
+      signal,
     }),
 
-  /** Get TV shows airing today. */
-  getAiringToday: (page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<TVShowsAiringTodayResponse>("/tv/airing_today", {
-      params: { page },
-      ...options,
+  /**
+   * Get TV shows currently on the air.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getOnTheAir: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.TVShowsOnTheAirResponse>("/tv/on_the_air", {
+      signal,
     }),
 
-  /** Get TV shows currently on the air. */
-  getOnTheAir: (page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<TVShowsOnTheAirResponse>("/tv/on_the_air", {
-      params: { page },
-      ...options,
-    }),
+  /**
+   * Get a list of popular TV shows.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getPopular: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.PopularTVShowsResponse>("/tv/popular", { signal }),
 
-  /** Get a list of popular TV shows. */
-  getPopular: (page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<PopularTVShowsResponse>("/tv/popular", {
-      params: { page },
-      ...options,
-    }),
-
-  /** Get a list of top-rated TV shows. */
-  getTopRated: (page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<TopRatedTVShowsResponse>("/tv/top_rated", {
-      params: { page },
-      ...options,
+  /**
+   * Get a list of top-rated TV shows.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getTopRated: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.TopRatedTVShowsResponse>("/tv/top_rated", {
+      signal,
     }),
 
   /**
    * Discover TV shows by genre.
-   * @param genreId - TMDB Genre ID
+   * @param genreId - TMDB genre ID
    * @param page - Page number for pagination (default = 1)
+   * @param signal - Abort signal to cancel the request (optional)
    */
-  getByGenre: (genreId: number, page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<DiscoverTVShowsResponse>("/discover/tv", {
+  getByGenre: (genreId: number, page = 1, signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.DiscoverTVShowsResponse>("/discover/tv", {
       params: { with_genres: genreId, page },
-      ...options,
+      signal,
     }),
 
-  /** Get list of all TV genres. */
-  getGenres: (options?: { signal?: AbortSignal }) =>
-    apiClient.get<GenresResponse>("/genre/tv/list", options),
+  /**
+   * Get list of all TV genres.
+   * @param signal - Abort signal to cancel the request (optional)
+   */
+  getGenres: (signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.GenresResponse>("/genre/tv/list", { signal }),
 
   /**
    * Get detailed information about a TV show by ID.
    * @param id - TV show ID
+   * @param signal - Abort signal to cancel the request (optional)
    */
-  getDetails: (id: number, options?: { signal?: AbortSignal }) =>
-    apiClient.get<TVShowDetailResponse>(`/tv/${id}`, options),
+  getDetails: (id: number, signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.TVShowDetailResponse>(`/tv/${id}`, { signal }),
 
   /**
    * Get details for a specific TV season.
    * @param tvId - TV show ID
    * @param seasonNumber - Season number
+   * @param signal - Abort signal to cancel the request (optional)
    */
   getSeasonDetails: (
     tvId: number,
     seasonNumber: number,
-    options?: { signal?: AbortSignal }
+    signal?: AbortSignal
   ) =>
-    apiClient.get<TVSeasonDetailResponse>(
+    apiClient.get<TMDBTypes.TVSeasonDetailResponse>(
       `/tv/${tvId}/season/${seasonNumber}`,
-      options
+      { signal }
     ),
 
   /**
    * Get official videos (trailers, teasers, etc.) for a TV show.
    * @param id - TV show ID
+   * @param signal - Abort signal to cancel the request (optional)
    */
-  getVideos: (id: number, options?: { signal?: AbortSignal }) =>
-    apiClient.get<VideosResponse>(`/tv/${id}/videos`, options),
+  getVideos: (id: number, signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.VideosResponse>(`/tv/${id}/videos`, { signal }),
 };
 
 /** Search-related requests */
@@ -184,42 +191,35 @@ export const searchRequests = {
    * Search movies, TV shows, and people in one go.
    * @param query - Search keyword
    * @param page - Page number for pagination (default = 1)
+   * @param signal - Abort signal to cancel the request (optional)
    */
-  multi: (query: string, page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<MultiSearchResponse>("/search/multi", {
+  multi: (query: string, page = 1, signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.MultiSearchResponse>("/search/multi", {
       params: { query, page },
-      ...options,
+      signal,
     }),
 
   /**
    * Search for movies by title.
    * @param query - Search keyword
    * @param page - Page number for pagination (default = 1)
+   * @param signal - Abort signal to cancel the request (optional)
    */
-  movie: (query: string, page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<SearchMoviesResponse>("/search/movie", {
+  movie: (query: string, page = 1, signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.SearchMoviesResponse>("/search/movie", {
       params: { query, page },
-      ...options,
+      signal,
     }),
 
   /**
    * Search for TV shows by title.
    * @param query - Search keyword
    * @param page - Page number for pagination (default = 1)
+   * @param signal - Abort signal to cancel the request (optional)
    */
-  tv: (query: string, page = 1, options?: { signal?: AbortSignal }) =>
-    apiClient.get<SearchTVShowsResponse>("/search/tv", {
+  tv: (query: string, page = 1, signal?: AbortSignal) =>
+    apiClient.get<TMDBTypes.SearchTVShowsResponse>("/search/tv", {
       params: { query, page },
-      ...options,
+      signal,
     }),
-};
-
-/**
- * Get the full URL for a TMDB image.
- * @param path - The image path (should start with '/')
- * @param size - The image size key
- * @returns Fully-qualified image URL
- */
-export const getImageUrl = (path: string, size: ImageSize) => {
-  return `https://image.tmdb.org/t/p/${size}${path}`;
 };
