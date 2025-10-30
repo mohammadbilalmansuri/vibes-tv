@@ -4,7 +4,7 @@
  * @param args - Class names as strings, objects, or arrays
  * @returns Single space-separated class name string
  */
-export const cn = (
+const cn = (
   ...args: (
     | string
     | Record<string, boolean>
@@ -23,3 +23,5 @@ export const cn = (
     .filter(Boolean)
     .join(" ");
 };
+
+export default cn;

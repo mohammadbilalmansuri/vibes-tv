@@ -4,7 +4,7 @@
  * Provides status code, status text, and optional response body.
  * Includes helper methods for common error handling.
  */
-export class ApiError extends Error {
+export default class ApiError extends Error {
   constructor(
     public status: number,
     public statusText: string,
