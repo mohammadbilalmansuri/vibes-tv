@@ -30,9 +30,6 @@ export type TVShowsAiringTodayResponse = TMDBResponse<BaseTVShow>;
 export type TVShowsOnTheAirResponse = TMDBResponse<BaseTVShow>;
 export type PopularTVShowsResponse = TMDBResponse<BaseTVShow>;
 export type TopRatedTVShowsResponse = TMDBResponse<BaseTVShow>;
-export type SearchTVShowsResponse = TMDBResponse<
-  BaseTVShow & { adult: boolean }
->;
 export type DiscoverTVShowsResponse = TMDBResponse<BaseTVShow>;
 
 export interface Creator {

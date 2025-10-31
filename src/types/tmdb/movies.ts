@@ -35,7 +35,6 @@ export type TopRatedMoviesResponse = TMDBResponse<BaseMovie>;
 export type UpcomingMoviesResponse = TMDBResponse<BaseMovie> & {
   dates: DateRange;
 };
-export type SearchMoviesResponse = TMDBResponse<BaseMovie>;
 export type DiscoverMoviesResponse = TMDBResponse<BaseMovie>;
 
 export interface MovieDetailResponse {
