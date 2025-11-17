@@ -1,47 +1,51 @@
+import { useInfiniteQuery } from "@tanstack/react-query";
+
 import { searchMovies, searchMulti, searchTVShows } from "@/services/tmdb";
 import {
   MultiSearchResponse,
   SearchMoviesResponse,
   SearchTVShowsResponse,
 } from "@/types/tmdb";
-import { useInfiniteQuery } from "@tanstack/react-query";
 
 type PagedResponse = { page: number; total_pages: number };
 
-/**
- * Custom React Query hook for searching movies, TV shows, or mixed results.
- *
- * This hook supports three modes:
- * - `"multi"` → returns movies, TV shows, and people
- * - `"movie"` → returns only movies
- * - `"tv"` → returns only TV shows
- *
- * Each query is cached separately by mode + query string.
- *
- * @param query - The search text input from user
- * @param mode - The search type ("multi" | "movie" | "tv")
- */
+interface BaseSearchReturn<T> {
+  results: T[];
+  isLoading: boolean;
+  error: Error | null;
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  refetch: () => void;
+}
 
-export default function useSearch(
+/**
+ * Hook for searching TMDB content (movies, TV shows, or mixed results).
+ *
+ * - `"multi"` → movies, TV shows, and people
+ * - `"movie"` → movies only
+ * - `"tv"` → TV shows only
+ *
+ * Each search is cached separately by mode + query string.
+ * Supports infinite pagination with consistent return shape.
+ */
+export function useSearch(
   query: string,
   mode: "multi"
-): ReturnType<typeof useInfiniteQuery<MultiSearchResponse>>;
+): BaseSearchReturn<MultiSearchResponse["results"][number]>;
 
-export default function useSearch(
+export function useSearch(
   query: string,
   mode: "movie"
-): ReturnType<typeof useInfiniteQuery<SearchMoviesResponse>>;
+): BaseSearchReturn<SearchMoviesResponse["results"][number]>;
 
-export default function useSearch(
+export function useSearch(
   query: string,
   mode: "tv"
-): ReturnType<typeof useInfiniteQuery<SearchTVShowsResponse>>;
+): BaseSearchReturn<SearchTVShowsResponse["results"][number]>;
 
-export default function useSearch(
-  query: string,
-  mode: "multi" | "movie" | "tv"
-) {
-  return useInfiniteQuery({
+export function useSearch(query: string, mode: "multi" | "movie" | "tv") {
+  const result = useInfiniteQuery({
     queryKey: ["search", mode, query],
     queryFn: ({
       pageParam,
@@ -59,4 +63,14 @@ export default function useSearch(
       lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
     initialPageParam: 1,
   });
+
+  return {
+    results: result.data?.pages.flatMap((page: any) => page.results) ?? [],
+    isLoading: result.isLoading,
+    error: result.error ?? null,
+    fetchNextPage: result.fetchNextPage,
+    hasNextPage: result.hasNextPage ?? false,
+    isFetchingNextPage: result.isFetchingNextPage,
+    refetch: result.refetch,
+  };
 }
