@@ -9,7 +9,7 @@ import { getTVShowDetails, getTVShowVideos } from "@/services/tmdb";
  * @param tvId - The TMDB TV show ID
  * @returns Object with tv show details, videos, loading/error states
  */
-export default function useTVShowDetails(tvId: number) {
+export default function useTVDetails(tvId: number) {
   const results = useQueries({
     queries: [
       {
@@ -38,7 +38,7 @@ export default function useTVShowDetails(tvId: number) {
       videos: videosResult.error ?? null,
     },
     refetch: {
-      all: () => results.forEach((r) => r.refetch()),
+      all: () => Promise.all(results.map((r) => r.refetch())),
       details: detailsResult.refetch,
       videos: videosResult.refetch,
     },
