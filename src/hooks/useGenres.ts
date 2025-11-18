@@ -34,7 +34,7 @@ export default function useGenres() {
       tvGenres: tvGenresResult.error ?? null,
     },
     refetch: {
-      all: () => results.forEach((r) => r.refetch()),
+      all: () => Promise.all(results.map((r) => r.refetch())),
       movieGenres: movieGenresResult.refetch,
       tvGenres: tvGenresResult.refetch,
     },

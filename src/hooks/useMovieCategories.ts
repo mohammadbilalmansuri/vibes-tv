@@ -64,7 +64,7 @@ export default function useMovieCategories() {
       nowPlayingMovies: nowPlayingMoviesResult.error ?? null,
     },
     refetch: {
-      all: () => results.forEach((r) => r.refetch()),
+      all: () => Promise.all(results.map((r) => r.refetch())),
       popularMovies: popularMoviesResult.refetch,
       topRatedMovies: topRatedMoviesResult.refetch,
       upcomingMovies: upcomingMoviesResult.refetch,
