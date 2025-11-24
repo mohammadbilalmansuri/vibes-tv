@@ -1,4 +1,7 @@
-import { DEFAULT_CACHE_CONFIG } from "@/constants";
+import { useEffect } from "react";
+import { AppState, AppStateStatus, Platform } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { Stack } from "expo-router";
 import NetInfo from "@react-native-community/netinfo";
 import {
   QueryClient,
@@ -6,10 +9,6 @@ import {
   focusManager,
   onlineManager,
 } from "@tanstack/react-query";
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
-import { AppState, AppStateStatus, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "./global.css";
@@ -19,10 +18,11 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 2,
+      staleTime: 5 * 60 * 1000,
+      gcTime: 30 * 60 * 1000,
       refetchOnReconnect: true,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
-      ...DEFAULT_CACHE_CONFIG,
     },
   },
 });

@@ -6,11 +6,6 @@ export const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 
 // React Query Cache Configurations
 
-export const DEFAULT_CACHE_CONFIG = {
-  staleTime: 5 * 60 * 1000,
-  gcTime: 30 * 60 * 1000,
-};
-
 export const GENRES_CACHE_CONFIG = {
   staleTime: 24 * 60 * 60 * 1000,
   gcTime: 7 * 24 * 60 * 60 * 1000,
