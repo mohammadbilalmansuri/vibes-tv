@@ -1,5 +1,4 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-
 import { GENRE_DISCOVER_CACHE_CONFIG } from "@/constants";
 import { getMoviesByGenre } from "@/services/tmdb";
 
@@ -14,8 +13,10 @@ export default function useMoviesByGenre(genreId: number) {
     queryKey: ["movies", "genre", genreId],
     queryFn: ({ pageParam = 1, signal }) =>
       getMoviesByGenre(genreId, pageParam, signal),
-    getNextPageParam: (lastPage) =>
-      lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
+    getNextPageParam: (lastPageResponse) =>
+      lastPageResponse.page < lastPageResponse.total_pages
+        ? lastPageResponse.page + 1
+        : undefined,
     initialPageParam: 1,
     enabled: !!genreId,
     ...GENRE_DISCOVER_CACHE_CONFIG,

@@ -1,5 +1,4 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-
 import { GENRE_DISCOVER_CACHE_CONFIG } from "@/constants";
 import { getTVShowsByGenre } from "@/services/tmdb";
 
