@@ -3,7 +3,7 @@ export { default as useGenres } from "./useGenres";
 export { default as useMovieCategories } from "./useMovieCategories";
 export { default as useMovieDetails } from "./useMovieDetails";
 export { default as useMoviesByGenre } from "./useMoviesByGenre";
-export * from "./useSearch";
+export { default as useSearch } from "./useSearch";
 export { default as useTrending } from "./useTrending";
 export { default as useTVSeasonDetails } from "./useTVSeasonDetails";
 export { default as useTvShowCategories } from "./useTvShowCategories";
