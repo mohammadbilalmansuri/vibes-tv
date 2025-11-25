@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import "./global.css";
+import "@/global.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
