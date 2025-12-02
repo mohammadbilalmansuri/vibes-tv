@@ -4,6 +4,21 @@
 
 @layer utilities {
   .animate-shimmer {
-    @apply relative inline-block overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:size-full before:bg-gradient-to-r before:from-transparent before:via-black/10 dark:before:via-white/10 before:to-transparent before:animate-shimmer;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 0, 0, 0.1),
+        transparent
+      );
+      animation: shimmer 1.5s infinite;
+    }
   }
 }
