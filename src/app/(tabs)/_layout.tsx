@@ -5,7 +5,10 @@ import { Film, House, Tv } from "lucide-react-native";
 
 export default function TabsLayout() {
   return (
-    <Tabs tabBar={(props) => <TabBar {...props} />}>
+    <Tabs
+      tabBar={(props) => <TabBar {...props} />}
+      screenOptions={{ headerShown: false }}
+    >
       <Tabs.Screen
         name="index"
         options={{ title: "House", tabBarIcon: House }}
