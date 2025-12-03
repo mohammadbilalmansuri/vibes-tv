@@ -1,4 +1,9 @@
-import "@/global.css";
+import React, { useEffect } from "react";
+import { AppState, AppStateStatus } from "react-native";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import NetInfo from "@react-native-community/netinfo";
 import {
   QueryClient,
@@ -6,12 +11,7 @@ import {
   focusManager,
   onlineManager,
 } from "@tanstack/react-query";
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
-import { AppState, AppStateStatus, Platform } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import "@/global.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,33 +52,15 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <QueryClientProvider client={queryClient}>
-          <StatusBar translucent={Platform.OS === "android"} />
-
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: { backgroundColor: "var(--color-default-950)" },
-              animationDuration: 300,
-            }}
-          >
-            <Stack.Screen
-              name="(tabs)"
-              options={{ headerShown: false, gestureEnabled: false }}
-            />
-
+          <StatusBar style="auto" />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" options={{ gestureEnabled: false }} />
             <Stack.Screen
               name="movie/[id]"
-              options={{ presentation: "modal", gestureEnabled: true }}
+              options={{ presentation: "modal" }}
             />
-            <Stack.Screen
-              name="tv/[id]"
-              options={{ presentation: "modal", gestureEnabled: true }}
-            />
-
-            <Stack.Screen
-              name="search"
-              options={{ presentation: "modal", gestureEnabled: true }}
-            />
+            <Stack.Screen name="tv/[id]" options={{ presentation: "modal" }} />
+            <Stack.Screen name="search" options={{ presentation: "modal" }} />
           </Stack>
         </QueryClientProvider>
       </SafeAreaProvider>
