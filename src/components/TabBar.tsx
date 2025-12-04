@@ -40,7 +40,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 
   return (
     <View
-      className="absolute self-center flex-row justify-center items-center bg-white rounded-full p-2 shadow-2xl elevation-lg"
+      className="absolute self-center flex-row justify-center items-center bg-white rounded-full p-2 elevation-lg"
       style={{ bottom: insets.bottom + 10 }}
     >
       {state.routes.map((route, index) => {
@@ -64,7 +64,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
               <IconComponent
                 size={20}
                 strokeWidth={2}
-                color={isFocused ? "white" : "var(--color-gray-400)"}
+                color={isFocused ? "white" : "black"}
               />
             )}
 
