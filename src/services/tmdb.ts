@@ -1,5 +1,5 @@
 import { TMDB_API_BASE_URL, TMDB_API_TOKEN } from "@/constants";
-import {
+import type {
   DiscoverMoviesResponse,
   DiscoverTVShowsResponse,
   GenresResponse,

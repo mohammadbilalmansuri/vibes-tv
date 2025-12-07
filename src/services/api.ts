@@ -1,4 +1,4 @@
-import { ApiConfig, ApiRequestOptions } from "@/types/api";
+import type { ApiConfig, ApiRequestOptions } from "@/types";
 import ApiError from "@/utils/apiError";
 
 // Retry helper with exponential backoff.
