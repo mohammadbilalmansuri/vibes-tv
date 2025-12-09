@@ -1,7 +1,6 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import { TabBar } from "@/components";
-import { Film, House, Tv } from "lucide-react-native";
 
 export default function TabsLayout() {
   return (
@@ -9,15 +8,9 @@ export default function TabsLayout() {
       tabBar={(props) => <TabBar {...props} />}
       screenOptions={{ headerShown: false }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{ title: "House", tabBarIcon: House }}
-      />
-      <Tabs.Screen
-        name="movies"
-        options={{ title: "Movies", tabBarIcon: Film }}
-      />
-      <Tabs.Screen name="tv" options={{ title: "TV", tabBarIcon: Tv }} />
+      <Tabs.Screen name="index" options={{ title: "Home" }} />
+      <Tabs.Screen name="movies" options={{ title: "Movies" }} />
+      <Tabs.Screen name="tv" options={{ title: "TV" }} />
     </Tabs>
   );
 }
