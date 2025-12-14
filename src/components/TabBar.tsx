@@ -1,8 +1,8 @@
 import React from "react";
-import { View, TouchableOpacity, Platform, Text } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import * as Haptics from "expo-haptics";
 import cn from "@/utils/cn";
+import pressWithHaptics from "@/utils/pressWithHaptics";
 
 const TabBar = ({
   state,
@@ -12,19 +12,17 @@ const TabBar = ({
 }: BottomTabBarProps) => {
   const createOnPress = (routeName: string, isFocused: boolean) => {
     return () => {
-      if (Platform.OS === "ios" && !isFocused) {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      }
+      pressWithHaptics(() => {
+        const event = navigation.emit({
+          type: "tabPress",
+          target: state.routes.find((r) => r.name === routeName)?.key || "",
+          canPreventDefault: true,
+        });
 
-      const event = navigation.emit({
-        type: "tabPress",
-        target: state.routes.find((r) => r.name === routeName)?.key || "",
-        canPreventDefault: true,
+        if (!isFocused && !event.defaultPrevented) {
+          navigation.navigate(routeName);
+        }
       });
-
-      if (!isFocused && !event.defaultPrevented) {
-        navigation.navigate(routeName);
-      }
     };
   };
 
@@ -45,6 +43,7 @@ const TabBar = ({
               "flex-row justify-center items-center gap-1 py-1.5 px-4 rounded-full",
               { "bg-default-950": isFocused }
             )}
+            activeOpacity={0.5}
           >
             <Text
               className={cn("font-medium text-lg", {
