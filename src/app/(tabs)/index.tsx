@@ -4,7 +4,7 @@ import { ScreenView } from "@/components";
 
 export default function Home() {
   return (
-    <ScreenView>
+    <ScreenView inSafeArea={false}>
       <Text>Home</Text>
     </ScreenView>
   );

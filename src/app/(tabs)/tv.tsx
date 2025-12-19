@@ -4,7 +4,7 @@ import { ScreenView } from "@/components";
 
 export default function Tv() {
   return (
-    <ScreenView>
+    <ScreenView inSafeArea={false}>
       <Text>Tv</Text>
     </ScreenView>
   );
