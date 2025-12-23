@@ -9,7 +9,7 @@ import { getTVSeasonDetails } from "@/services/tmdb";
  * @param seasonNumber - The season number to fetch
  * @returns Object with season details, loading/error states, and refetch
  */
-export default function useTVSeasonDetails(tvId: number, seasonNumber: number) {
+export default function useTvSeasonDetails(tvId: number, seasonNumber: number) {
   const result = useQuery({
     queryKey: ["tv", "season", tvId, seasonNumber],
     queryFn: ({ signal }) => getTVSeasonDetails(tvId, seasonNumber, signal),

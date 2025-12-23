@@ -8,7 +8,7 @@ import { getTVShowDetails, getTVShowVideos } from "@/services/tmdb";
  * @param tvId - The TMDB TV show ID
  * @returns Object with tv show details, videos, loading/error states
  */
-export default function useTVDetails(tvId: number) {
+export default function useTvShowDetails(tvId: number) {
   const results = useQueries({
     queries: [
       {
