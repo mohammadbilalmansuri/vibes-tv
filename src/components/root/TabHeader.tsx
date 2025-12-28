@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { Search } from "lucide-react-native";
 import { DEFAULT_COLORS } from "@/constants";
-import Logo from "../Logo";
+import Logo from "../ui/Logo";
 
 const TabHeader = () => {
   const router = useRouter();
