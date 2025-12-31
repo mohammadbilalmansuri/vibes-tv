@@ -3,7 +3,8 @@ import { Text } from "react-native";
 import { useRouter } from "expo-router";
 import { AlertTriangle } from "lucide-react-native";
 import { DEFAULT_COLORS } from "@/constants";
-import { Button, ScreenView } from "@/components";
+import { Button } from "@/components/ui";
+import { ScreenView } from "@/components/root";
 
 export default function NotFound() {
   const router = useRouter();
