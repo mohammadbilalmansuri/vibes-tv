@@ -21,7 +21,7 @@ export interface DateRange {
 
 export interface ProductionCompany {
   id: number;
-  logo_path?: string | null;
+  logo_path?: string;
   name: string;
   origin_country: string;
 }
@@ -39,7 +39,7 @@ export interface SpokenLanguage {
 
 export interface Network {
   id: number;
-  logo_path?: string | null;
+  logo_path?: string;
   name: string;
   origin_country: string;
 }
@@ -75,14 +75,14 @@ export type ImageSize =
 
 export interface BaseMovie {
   adult: boolean;
-  backdrop_path?: string | null;
+  backdrop_path?: string;
   genre_ids: number[];
   id: number;
   original_language: string;
   original_title: string;
   overview: string;
   popularity: number;
-  poster_path?: string | null;
+  poster_path?: string;
   release_date: string;
   title: string;
   video: boolean;
@@ -90,9 +90,8 @@ export interface BaseMovie {
   vote_count: number;
 }
 
-export type TrendingMoviesResponse = TMDBResponse<
-  BaseMovie & { media_type: string }
->;
+export type TrendingResponse = TMDBResponse<BaseMovie & { media_type: string }>;
+
 export type NowPlayingMoviesResponse = TMDBResponse<BaseMovie> & {
   dates: DateRange;
 };
@@ -105,18 +104,18 @@ export type DiscoverMoviesResponse = TMDBResponse<BaseMovie>;
 
 export interface MovieDetailResponse {
   adult: boolean;
-  backdrop_path?: string | null;
+  backdrop_path?: string;
   belongs_to_collection?: unknown;
   budget: number;
   genres: Genre[];
-  homepage?: string | null;
+  homepage?: string;
   id: number;
-  imdb_id?: string | null;
+  imdb_id?: string;
   original_language: string;
   original_title: string;
   overview: string;
   popularity: number;
-  poster_path?: string | null;
+  poster_path?: string;
   production_companies: ProductionCompany[];
   production_countries: ProductionCountry[];
   release_date: string;
@@ -124,7 +123,7 @@ export interface MovieDetailResponse {
   runtime: number;
   spoken_languages: SpokenLanguage[];
   status: string;
-  tagline?: string | null;
+  tagline?: string;
   title: string;
   video: boolean;
   vote_average: number;
@@ -134,7 +133,7 @@ export interface MovieDetailResponse {
 // TV Show Types
 
 export interface BaseTVShow {
-  backdrop_path?: string | null;
+  backdrop_path?: string;
   first_air_date: string;
   genre_ids: number[];
   id: number;
@@ -144,14 +143,11 @@ export interface BaseTVShow {
   original_name: string;
   overview: string;
   popularity: number;
-  poster_path?: string | null;
+  poster_path?: string;
   vote_average: number;
   vote_count: number;
 }
 
-export type TrendingTVResponse = TMDBResponse<
-  BaseTVShow & { adult: boolean; media_type: string }
->;
 export type TVShowsAiringTodayResponse = TMDBResponse<BaseTVShow>;
 export type TVShowsOnTheAirResponse = TMDBResponse<BaseTVShow>;
 export type PopularTVShowsResponse = TMDBResponse<BaseTVShow>;
@@ -163,7 +159,7 @@ export interface Creator {
   credit_id: string;
   name: string;
   gender: number;
-  profile_path?: string | null;
+  profile_path?: string;
 }
 
 export interface CrewMember {
@@ -177,7 +173,7 @@ export interface CrewMember {
   name: string;
   original_name: string;
   popularity: number;
-  profile_path?: string | null;
+  profile_path?: string;
 }
 
 export interface GuestStar {
@@ -191,7 +187,7 @@ export interface GuestStar {
   name: string;
   original_name: string;
   popularity: number;
-  profile_path?: string | null;
+  profile_path?: string;
 }
 
 export interface LastEpisodeToAir {
@@ -206,7 +202,7 @@ export interface LastEpisodeToAir {
   runtime: number;
   season_number: number;
   show_id: number;
-  still_path?: string | null;
+  still_path?: string;
 }
 
 export interface Season {
@@ -215,26 +211,26 @@ export interface Season {
   id: number;
   name: string;
   overview: string;
-  poster_path?: string | null;
+  poster_path?: string;
   season_number: number;
   vote_average: number;
 }
 
 export interface TVShowDetailResponse {
   adult: boolean;
-  backdrop_path?: string | null;
+  backdrop_path?: string;
   created_by: Creator[];
   episode_run_time: number[];
   first_air_date: string;
   genres: Genre[];
-  homepage?: string | null;
+  homepage?: string;
   id: number;
   in_production: boolean;
   languages: string[];
   last_air_date: string;
   last_episode_to_air: LastEpisodeToAir;
   name: string;
-  next_episode_to_air?: string | null;
+  next_episode_to_air?: string;
   networks: Network[];
   number_of_episodes: number;
   number_of_seasons: number;
@@ -243,13 +239,13 @@ export interface TVShowDetailResponse {
   original_name: string;
   overview: string;
   popularity: number;
-  poster_path?: string | null;
+  poster_path?: string;
   production_companies: ProductionCompany[];
   production_countries: ProductionCountry[];
   seasons: Season[];
   spoken_languages: SpokenLanguage[];
   status: string;
-  tagline?: string | null;
+  tagline?: string;
   type: string;
   vote_average: number;
   vote_count: number;
@@ -265,7 +261,7 @@ export interface Episode {
   runtime: number;
   season_number: number;
   show_id: number;
-  still_path?: string | null;
+  still_path?: string;
   vote_average: number;
   vote_count: number;
   crew: CrewMember[];
@@ -279,7 +275,7 @@ export interface TVSeasonDetailResponse {
   name: string;
   overview: string;
   id: number;
-  poster_path?: string | null;
+  poster_path?: string;
   season_number: number;
   vote_average: number;
 }
