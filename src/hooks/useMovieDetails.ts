@@ -32,10 +32,7 @@ export default function useMovieDetails(movieId: number) {
     details: detailsResult.data ?? null,
     videos: videosResult.data?.results ?? [],
     isLoading: results.some((r) => r.isLoading),
-    errors: {
-      details: detailsResult.error ?? null,
-      videos: videosResult.error ?? null,
-    },
+    errors: { details: detailsResult.error, videos: videosResult.error },
     refetch: {
       all: () => Promise.all(results.map((r) => r.refetch())),
       details: detailsResult.refetch,

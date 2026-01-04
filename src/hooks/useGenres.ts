@@ -29,8 +29,8 @@ export default function useGenres() {
     tvGenres: tvGenresResult.data?.genres ?? [],
     isLoading: results.some((r) => r.isLoading),
     errors: {
-      movieGenres: movieGenresResult.error ?? null,
-      tvGenres: tvGenresResult.error ?? null,
+      movieGenres: movieGenresResult.error,
+      tvGenres: tvGenresResult.error,
     },
     refetch: {
       all: () => Promise.all(results.map((r) => r.refetch())),

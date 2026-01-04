@@ -57,10 +57,10 @@ export default function useMovieCategories() {
     nowPlayingMovies: nowPlayingMoviesResult.data?.results ?? [],
     isLoading: results.some((r) => r.isLoading),
     errors: {
-      popularMovies: popularMoviesResult.error ?? null,
-      topRatedMovies: topRatedMoviesResult.error ?? null,
-      upcomingMovies: upcomingMoviesResult.error ?? null,
-      nowPlayingMovies: nowPlayingMoviesResult.error ?? null,
+      popularMovies: popularMoviesResult.error,
+      topRatedMovies: topRatedMoviesResult.error,
+      upcomingMovies: upcomingMoviesResult.error,
+      nowPlayingMovies: nowPlayingMoviesResult.error,
     },
     refetch: {
       all: () => Promise.all(results.map((r) => r.refetch())),

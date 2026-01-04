@@ -25,7 +25,7 @@ export default function useMoviesByGenre(genreId: number) {
   return {
     movies: result.data?.pages.flatMap((page) => page.results) ?? [],
     isLoading: result.isLoading,
-    error: result.error ?? null,
+    error: result.error,
     hasNextPage: result.hasNextPage,
     fetchNextPage: result.fetchNextPage,
     isFetchingNextPage: result.isFetchingNextPage,

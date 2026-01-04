@@ -30,7 +30,7 @@ export default function useSearch(
   return {
     results: result.data?.pages.flatMap((page) => page.results) ?? [],
     isLoading: result.isLoading,
-    error: result.error ?? null,
+    error: result.error,
     fetchNextPage: result.fetchNextPage,
     hasNextPage: result.hasNextPage,
     isFetchingNextPage: result.isFetchingNextPage,
