@@ -1,50 +1,52 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet, ViewStyle, DimensionValue } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withRepeat,
   withTiming,
+  Easing,
 } from "react-native-reanimated";
 import { DEFAULT_COLORS } from "@/constants";
+import cn from "@/utils/cn";
 
 export type SkeletonProps = {
-  width?: DimensionValue;
-  height?: DimensionValue;
-  borderRadius?: number;
-  style?: ViewStyle;
+  className?: string;
   duration?: number;
+  travel?: number;
 };
 
 const Skeleton = ({
-  width = "100%",
-  height = 20,
-  borderRadius = 8,
-  style,
+  className = "w-full h-5 rounded-2xl",
   duration = 1000,
+  travel = 300,
 }: SkeletonProps) => {
   const progress = useSharedValue(-1);
 
   useEffect(() => {
-    progress.value = withRepeat(withTiming(1, { duration }), -1, false);
-  }, []);
+    progress.value = withRepeat(
+      withTiming(2, { duration, easing: Easing.linear }),
+      -1,
+      false
+    );
+  }, [duration]);
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: progress.value * 300 }],
+    transform: [{ translateX: progress.value * travel }],
   }));
 
   return (
     <View
-      style={[styles.container, { width, height, borderRadius }, style]}
+      className={cn("bg-default-900 overflow-hidden", className)}
       accessibilityRole="progressbar"
     >
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
         <LinearGradient
           colors={[
-            DEFAULT_COLORS[800],
+            DEFAULT_COLORS[900],
             DEFAULT_COLORS[700],
-            DEFAULT_COLORS[800],
+            DEFAULT_COLORS[900],
           ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
@@ -54,12 +56,5 @@ const Skeleton = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: DEFAULT_COLORS[800],
-    overflow: "hidden",
-  },
-});
 
 export default Skeleton;
