@@ -12,7 +12,7 @@ export default function NotFound() {
   const handleGoHome = () => router.push("/");
 
   return (
-    <ScreenView className="flex-1 items-center justify-center gap-6">
+    <ScreenView className="flex-1 items-center justify-center gap-6 p-4">
       <AlertTriangle
         size={48}
         color={DEFAULT_COLORS.accent}
