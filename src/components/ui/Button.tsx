@@ -45,7 +45,7 @@ const Button = ({
   const isDisabled = disabled || loading;
 
   const baseStyles =
-    "flex-row items-center justify-center rounded-full gap-2 px-5 py-3.5";
+    "flex-row items-center justify-center rounded-full gap-1 px-6 py-3";
   const variantStyles =
     variant === "primary" ? "bg-default-accent" : "bg-default-800";
   const disabledStyles = isDisabled ? "opacity-50" : "";
@@ -54,7 +54,9 @@ const Button = ({
   const content = (
     <View className={cn(baseStyles, variantStyles, disabledStyles, className)}>
       {loading ? (
-        <ActivityIndicator className={cn("text-current", indicatorClassName)} />
+        <ActivityIndicator
+          className={cn("text-default-50", indicatorClassName)}
+        />
       ) : children ? (
         children
       ) : (
