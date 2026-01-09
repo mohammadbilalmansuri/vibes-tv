@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, {
   useSharedValue,
@@ -13,12 +13,14 @@ import cn from "@/utils/cn";
 
 export type SkeletonProps = {
   className?: string;
+  style?: StyleProp<ViewStyle>;
   duration?: number;
   travel?: number;
 };
 
 const Skeleton = ({
   className = "w-full h-5 rounded-2xl",
+  style,
   duration = 1000,
   travel = 300,
 }: SkeletonProps) => {
@@ -40,6 +42,7 @@ const Skeleton = ({
     <View
       className={cn("bg-default-900 overflow-hidden", className)}
       accessibilityRole="progressbar"
+      style={style}
     >
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
         <LinearGradient
