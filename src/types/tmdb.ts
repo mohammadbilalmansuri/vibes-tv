@@ -1,30 +1,41 @@
-export interface TMDBResponse<T> {
+// Base interfaces and utilities
+interface TMDBResponse<T> {
   page: number;
   results: T[];
   total_pages: number;
   total_results: number;
 }
 
-export interface Genre {
-  id: number;
-  name: string;
-}
-
-export interface GenresResponse {
-  genres: Genre[];
-}
-
-export interface DateRange {
+interface DateRange {
   maximum: string;
   minimum: string;
 }
 
-export interface ProductionCompany {
+// Common entities used across different types
+interface BaseEntity {
   id: number;
-  logo_path?: string;
   name: string;
+}
+
+interface EntityWithLogo extends BaseEntity {
+  logo_path: string;
   origin_country: string;
 }
+
+interface PersonBase {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+}
+
+// Reusable components
+export type ProductionCompany = EntityWithLogo;
+export type Network = EntityWithLogo;
 
 export interface ProductionCountry {
   iso_3166_1: string;
@@ -37,12 +48,7 @@ export interface SpokenLanguage {
   name: string;
 }
 
-export interface Network {
-  id: number;
-  logo_path?: string;
-  name: string;
-  origin_country: string;
-}
+export type Genre = BaseEntity;
 
 export interface Video {
   iso_639_1: string;
@@ -57,11 +63,6 @@ export interface Video {
   id: string;
 }
 
-export interface VideosResponse {
-  id: number;
-  results: Video[];
-}
-
 export type ImageSize =
   | "w92"
   | "w154"
@@ -71,126 +72,59 @@ export type ImageSize =
   | "w780"
   | "original";
 
-// Movie Types
-
-export interface BaseMovie {
-  adult: boolean;
-  backdrop_path?: string;
+// Core content interface that both movies and TV shows extend
+interface ContentCommon {
+  backdrop_path: string;
   genre_ids: number[];
   id: number;
   original_language: string;
-  original_title: string;
   overview: string;
   popularity: number;
-  poster_path?: string;
-  release_date: string;
-  title: string;
-  video: boolean;
+  poster_path: string;
   vote_average: number;
   vote_count: number;
 }
 
-export type TrendingResponse = TMDBResponse<BaseMovie & { media_type: string }>;
-
-export type NowPlayingMoviesResponse = TMDBResponse<BaseMovie> & {
-  dates: DateRange;
-};
-export type PopularMoviesResponse = TMDBResponse<BaseMovie>;
-export type TopRatedMoviesResponse = TMDBResponse<BaseMovie>;
-export type UpcomingMoviesResponse = TMDBResponse<BaseMovie> & {
-  dates: DateRange;
-};
-export type DiscoverMoviesResponse = TMDBResponse<BaseMovie>;
-
-export interface MovieDetailResponse {
+// Base movie and TV show types
+export interface BaseMovie extends ContentCommon {
   adult: boolean;
-  backdrop_path?: string;
-  belongs_to_collection?: unknown;
-  budget: number;
-  genres: Genre[];
-  homepage?: string;
-  id: number;
-  imdb_id?: string;
-  original_language: string;
   original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path?: string;
-  production_companies: ProductionCompany[];
-  production_countries: ProductionCountry[];
   release_date: string;
-  revenue: number;
-  runtime: number;
-  spoken_languages: SpokenLanguage[];
-  status: string;
-  tagline?: string;
   title: string;
   video: boolean;
-  vote_average: number;
-  vote_count: number;
 }
 
-// TV Show Types
-
-export interface BaseTVShow {
-  backdrop_path?: string;
+export interface BaseTVShow extends ContentCommon {
   first_air_date: string;
-  genre_ids: number[];
-  id: number;
   name: string;
   origin_country: string[];
-  original_language: string;
   original_name: string;
-  overview: string;
-  popularity: number;
-  poster_path?: string;
-  vote_average: number;
-  vote_count: number;
 }
 
-export type TVShowsAiringTodayResponse = TMDBResponse<BaseTVShow>;
-export type TVShowsOnTheAirResponse = TMDBResponse<BaseTVShow>;
-export type PopularTVShowsResponse = TMDBResponse<BaseTVShow>;
-export type TopRatedTVShowsResponse = TMDBResponse<BaseTVShow>;
-export type DiscoverTVShowsResponse = TMDBResponse<BaseTVShow>;
+// Extended detail types using utility types to reduce repetition
+interface DetailCommon {
+  genres: Genre[];
+  homepage: string;
+  production_companies: ProductionCompany[];
+  production_countries: ProductionCountry[];
+  spoken_languages: SpokenLanguage[];
+  status: string;
+}
 
-export interface Creator {
-  id: number;
+export interface Movie extends Omit<BaseMovie, "genre_ids">, DetailCommon {
+  belongs_to_collection: unknown;
+  budget: number;
+  imdb_id: string;
+  revenue: number;
+  runtime: number;
+  tagline: string;
+}
+
+export interface Creator extends PersonBase {
   credit_id: string;
-  name: string;
-  gender: number;
-  profile_path?: string;
 }
 
-export interface CrewMember {
-  department: string;
-  job: string;
-  credit_id: string;
-  adult: boolean;
-  gender: number;
-  id: number;
-  known_for_department: string;
-  name: string;
-  original_name: string;
-  popularity: number;
-  profile_path?: string;
-}
-
-export interface GuestStar {
-  character: string;
-  credit_id: string;
-  order: number;
-  adult: boolean;
-  gender: number;
-  id: number;
-  known_for_department: string;
-  name: string;
-  original_name: string;
-  popularity: number;
-  profile_path?: string;
-}
-
-export interface LastEpisodeToAir {
+interface EpisodeBase {
   id: number;
   name: string;
   overview: string;
@@ -198,11 +132,14 @@ export interface LastEpisodeToAir {
   vote_count: number;
   air_date: string;
   episode_number: number;
-  production_code: string;
   runtime: number;
   season_number: number;
+}
+
+export interface LastEpisodeToAir extends EpisodeBase {
+  production_code: string;
   show_id: number;
-  still_path?: string;
+  still_path: string;
 }
 
 export interface Season {
@@ -211,59 +148,45 @@ export interface Season {
   id: number;
   name: string;
   overview: string;
-  poster_path?: string;
+  poster_path: string;
   season_number: number;
   vote_average: number;
 }
 
-export interface TVShowDetailResponse {
-  adult: boolean;
-  backdrop_path?: string;
+export interface TVShow extends Omit<BaseTVShow, "genre_ids">, DetailCommon {
   created_by: Creator[];
   episode_run_time: number[];
-  first_air_date: string;
-  genres: Genre[];
-  homepage?: string;
-  id: number;
   in_production: boolean;
   languages: string[];
   last_air_date: string;
   last_episode_to_air: LastEpisodeToAir;
-  name: string;
-  next_episode_to_air?: string;
+  next_episode_to_air: string;
   networks: Network[];
   number_of_episodes: number;
   number_of_seasons: number;
   origin_country: string[];
-  original_language: string;
-  original_name: string;
-  overview: string;
-  popularity: number;
-  poster_path?: string;
-  production_companies: ProductionCompany[];
-  production_countries: ProductionCountry[];
   seasons: Season[];
-  spoken_languages: SpokenLanguage[];
-  status: string;
-  tagline?: string;
+  tagline: string;
   type: string;
-  vote_average: number;
-  vote_count: number;
 }
 
-export interface Episode {
-  air_date: string;
-  episode_number: number;
-  id: number;
-  name: string;
-  overview: string;
+// Person-related types with shared base
+export interface CrewMember extends PersonBase {
+  department: string;
+  job: string;
+  credit_id: string;
+}
+
+export interface GuestStar extends PersonBase {
+  character: string;
+  credit_id: string;
+  order: number;
+}
+
+export interface Episode extends EpisodeBase {
   production_code: string;
-  runtime: number;
-  season_number: number;
   show_id: number;
-  still_path?: string;
-  vote_average: number;
-  vote_count: number;
+  still_path: string;
   crew: CrewMember[];
   guest_stars: GuestStar[];
 }
@@ -275,33 +198,60 @@ export interface TVSeasonDetailResponse {
   name: string;
   overview: string;
   id: number;
-  poster_path?: string;
+  poster_path: string;
   season_number: number;
   vote_average: number;
 }
 
-// Search Types
-
+// Search types with better inheritance
 export type SearchMode = "multi" | "movie" | "tv";
 
-export type SearchResponse = TMDBResponse<{
+export interface SearchResult extends ContentCommon {
   adult: boolean;
-  backdrop_path: string;
   first_air_date?: string;
-  genre_ids: number[];
-  id: number;
-  media_type?: string;
+  media_type: string;
   name?: string;
   origin_country?: string[];
-  original_language: string;
   original_name?: string;
   original_title?: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
   release_date?: string;
   title?: string;
   video?: boolean;
-  vote_average: number;
-  vote_count: number;
-}>;
+}
+
+export interface TrendingContent extends BaseMovie {
+  media_type: string;
+}
+
+// Response types using generic utility pattern
+interface ResponseWithDates<T> extends TMDBResponse<T> {
+  dates: DateRange;
+}
+
+// Simplified response type definitions
+export interface GenresResponse {
+  genres: Genre[];
+}
+
+export interface VideosResponse {
+  id: number;
+  results: Video[];
+}
+
+// Response types using the generic pattern
+export type TrendingResponse = TMDBResponse<TrendingContent>;
+export type SearchResponse = TMDBResponse<SearchResult>;
+
+export type NowPlayingMoviesResponse = ResponseWithDates<BaseMovie>;
+export type PopularMoviesResponse = TMDBResponse<BaseMovie>;
+export type TopRatedMoviesResponse = TMDBResponse<BaseMovie>;
+export type UpcomingMoviesResponse = ResponseWithDates<BaseMovie>;
+export type DiscoverMoviesResponse = TMDBResponse<BaseMovie>;
+export type MovieDetailResponse = TMDBResponse<Movie>;
+
+export type TVShowsAiringTodayResponse = TMDBResponse<BaseTVShow>;
+export type TVShowsOnTheAirResponse = TMDBResponse<BaseTVShow>;
+export type PopularTVShowsResponse = TMDBResponse<BaseTVShow>;
+export type TopRatedTVShowsResponse = TMDBResponse<BaseTVShow>;
+export type DiscoverTVShowsResponse = TMDBResponse<BaseTVShow>;
+export type TVShowDetailResponse = TMDBResponse<TVShow>;
