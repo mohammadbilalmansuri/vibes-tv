@@ -4,10 +4,10 @@ import { getMovieGenres, getTVGenres } from "@/services/tmdb";
 
 /**
  * Hook for fetching movie and TV genres in parallel.
- * @returns Object with movieGenres, tvGenres, loading states, errors, and refetch functions.
+ * @returns An array with two query results: [movieGenresResult, tvGenresResult].
  */
 export default function useGenres() {
-  const results = useQueries({
+  return useQueries({
     queries: [
       {
         queryKey: ["genres", "movie"],
@@ -21,21 +21,4 @@ export default function useGenres() {
       },
     ],
   });
-
-  const [movieGenresResult, tvGenresResult] = results;
-
-  return {
-    movieGenres: movieGenresResult.data?.genres ?? [],
-    tvGenres: tvGenresResult.data?.genres ?? [],
-    isLoading: results.some((r) => r.isLoading),
-    errors: {
-      movieGenres: movieGenresResult.error,
-      tvGenres: tvGenresResult.error,
-    },
-    refetch: {
-      all: () => Promise.all(results.map((r) => r.refetch())),
-      movieGenres: movieGenresResult.refetch,
-      tvGenres: tvGenresResult.refetch,
-    },
-  };
 }
