@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AppState, AppStateStatus } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -10,9 +10,9 @@ import {
 } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
 import NetInfo from "@react-native-community/netinfo";
-import { useNetInfo } from "@react-native-community/netinfo";
 import { DEFAULT_COLORS } from "@/constants";
 import { ChildProps } from "@/types";
+import { GenreProvider } from "./GenreProvider";
 import OfflineScreen from "./OfflineScreen";
 
 const queryClient = new QueryClient({
@@ -29,25 +29,23 @@ const queryClient = new QueryClient({
 });
 
 export default function AppProvider({ children }: ChildProps) {
-  const netInfo = useNetInfo();
+  const [isOnline, setIsOnline] = useState(true);
 
-  // Online/offline detection
   useEffect(() => {
     onlineManager.setEventListener((setOnline) => {
       const unsubscribe = NetInfo.addEventListener((state) => {
-        setOnline(!!state.isConnected);
+        const connected = !!state.isConnected;
+        setOnline(connected);
+        setIsOnline(connected);
       });
       return () => unsubscribe();
     });
   }, []);
 
-  // Foreground/background detection
   useEffect(() => {
     const subscription = AppState.addEventListener(
       "change",
-      (status: AppStateStatus) => {
-        focusManager.setFocused(status === "active");
-      }
+      (status: AppStateStatus) => focusManager.setFocused(status === "active")
     );
     return () => subscription.remove();
   }, []);
@@ -60,8 +58,10 @@ export default function AppProvider({ children }: ChildProps) {
         style={{ flex: 1, backgroundColor: DEFAULT_COLORS[950] }}
       >
         <QueryClientProvider client={queryClient}>
-          <StatusBar style="light" />
-          {netInfo.isConnected === false ? <OfflineScreen /> : children}
+          <GenreProvider>
+            <StatusBar style="light" backgroundColor={DEFAULT_COLORS[950]} />
+            {isOnline ? children : <OfflineScreen />}
+          </GenreProvider>
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
