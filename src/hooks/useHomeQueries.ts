@@ -24,7 +24,7 @@ import {
  * [trending, popularMovies, popularTV, topRatedMovies, topRatedTV]
  */
 export default function useHomeQueries() {
-  const results = useQueries({
+  return useQueries({
     queries: [
       {
         queryKey: ["trending"],
@@ -53,9 +53,4 @@ export default function useHomeQueries() {
       },
     ],
   });
-
-  return results.map((result) => ({
-    ...result,
-    data: result.data?.results ?? [],
-  }));
 }

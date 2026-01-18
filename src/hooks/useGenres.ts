@@ -8,7 +8,7 @@ import { getMovieGenres, getTVGenres } from "@/services/tmdb";
  * [movieGenres, tvGenres]
  */
 export default function useGenres() {
-  const results = useQueries({
+  return useQueries({
     queries: [
       {
         queryKey: ["genres", "movie"],
@@ -22,9 +22,4 @@ export default function useGenres() {
       },
     ],
   });
-
-  return results.map((result) => ({
-    ...result,
-    data: result.data?.genres ?? [],
-  }));
 }
