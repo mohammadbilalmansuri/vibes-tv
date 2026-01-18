@@ -4,10 +4,11 @@ import { getMovieGenres, getTVGenres } from "@/services/tmdb";
 
 /**
  * Hook for fetching movie and TV genres in parallel.
- * @returns An array with two query results: [movieGenresResult, tvGenresResult].
+ * @returns An array with two query results:
+ * [movieGenres, tvGenres]
  */
 export default function useGenres() {
-  return useQueries({
+  const results = useQueries({
     queries: [
       {
         queryKey: ["genres", "movie"],
@@ -21,4 +22,9 @@ export default function useGenres() {
       },
     ],
   });
+
+  return results.map((result) => ({
+    ...result,
+    data: result.data?.genres ?? [],
+  }));
 }
