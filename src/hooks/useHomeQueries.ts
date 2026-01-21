@@ -14,7 +14,7 @@ import {
 
 /**
  * Fetches home screen data in parallel:
- * - Trending (mixed: movies + TV shows + persons)
+ * - Trending (mixed: movies, TV shows, persons)
  * - Popular Movies
  * - Popular TV Shows
  * - Top Rated Movies
