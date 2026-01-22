@@ -72,6 +72,8 @@ export type ImageSize =
   | "w780"
   | "original";
 
+export type ContentType = "movie" | "tv";
+
 // Core content interface that both movies and TV shows extend
 interface ContentCommon {
   backdrop_path: string;
@@ -100,6 +102,8 @@ export interface BaseTVShow extends ContentCommon {
   origin_country: string[];
   original_name: string;
 }
+
+export type Content = BaseMovie | BaseTVShow;
 
 // Extended detail types using utility types to reduce repetition
 interface DetailCommon {
