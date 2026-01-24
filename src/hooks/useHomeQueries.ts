@@ -19,9 +19,7 @@ import {
  * - Popular TV Shows
  * - Top Rated Movies
  * - Top Rated TV Shows
- *
- * @returns Array of query results in fixed order:
- * [trending, popularMovies, popularTV, topRatedMovies, topRatedTV]
+ * @returns [trendingResult, popularMoviesResult, popularTVResult, topRatedMoviesResult, topRatedTVResult]
  */
 export default function useHomeQueries() {
   return useQueries({
