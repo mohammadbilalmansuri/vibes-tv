@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
   Easing,
 } from "react-native-reanimated";
-import { DEFAULT_COLORS } from "@/constants";
+import { COLORS } from "@/constants";
 import cn from "@/utils/cn";
 
 export type SkeletonProps = {
@@ -40,17 +40,13 @@ const Skeleton = ({
 
   return (
     <View
-      className={cn("bg-default-900 overflow-hidden", className)}
+      className={cn("bg-gray-800 overflow-hidden", className)}
       accessibilityRole="progressbar"
       style={style}
     >
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
         <LinearGradient
-          colors={[
-            DEFAULT_COLORS[900],
-            DEFAULT_COLORS[700],
-            DEFAULT_COLORS[900],
-          ]}
+          colors={[COLORS.gray[800], COLORS.gray[700], COLORS.gray[800]]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={StyleSheet.absoluteFill}
