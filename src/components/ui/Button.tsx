@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Text,
-  View,
   TouchableOpacity,
   ActivityIndicator,
   TouchableOpacityProps,
@@ -9,11 +8,9 @@ import {
 import { Link, LinkProps } from "expo-router";
 import cn from "@/utils/cn";
 
-type Variant = "primary" | "secondary";
-
 interface BaseButtonProps extends Omit<TouchableOpacityProps, "style"> {
   title?: string;
-  variant?: Variant;
+  variant?: "primary" | "secondary";
   className?: string;
   textClassName?: string;
   indicatorClassName?: string;
@@ -42,44 +39,46 @@ const Button = ({
   loading,
   ...props
 }: ButtonProps) => {
-  const isDisabled = disabled || loading;
+  const isDisabled = !!(disabled || loading);
 
-  const baseStyles =
-    "flex-row items-center justify-center rounded-full gap-1 px-6 py-3";
-  const variantStyles =
-    variant === "primary" ? "bg-default-accent" : "bg-default-800";
-  const disabledStyles = isDisabled ? "opacity-50" : "";
-  const textStyles = "text-default-50 font-medium";
-
-  const content = (
-    <View className={cn(baseStyles, variantStyles, disabledStyles, className)}>
+  const buttonContent = (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      disabled={isDisabled}
+      className={cn(
+        "flex-row items-center justify-center rounded-full gap-1 p-4",
+        {
+          "bg-rose": variant === "primary",
+          "bg-shark-tertiary": variant === "secondary",
+          "opacity-70": isDisabled,
+        },
+        className
+      )}
+      {...props}
+    >
       {loading ? (
-        <ActivityIndicator
-          className={cn("text-default-50", indicatorClassName)}
-        />
+        <ActivityIndicator className={cn("text-white", indicatorClassName)} />
       ) : children ? (
         children
       ) : (
-        <Text className={cn(textStyles, textClassName)}>{title}</Text>
+        <Text
+          className={cn("text-white font-medium leading-none", textClassName)}
+        >
+          {title}
+        </Text>
       )}
-    </View>
+    </TouchableOpacity>
   );
 
   if (href) {
     return (
       <Link href={href} asChild>
-        <TouchableOpacity activeOpacity={0.5} disabled={isDisabled} {...props}>
-          {content}
-        </TouchableOpacity>
+        {buttonContent}
       </Link>
     );
   }
 
-  return (
-    <TouchableOpacity activeOpacity={0.7} disabled={isDisabled} {...props}>
-      {content}
-    </TouchableOpacity>
-  );
+  return buttonContent;
 };
 
 export default Button;
