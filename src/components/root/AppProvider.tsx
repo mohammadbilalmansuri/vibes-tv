@@ -10,10 +10,13 @@ import {
 } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
 import NetInfo from "@react-native-community/netinfo";
-import { DEFAULT_COLORS } from "@/constants";
+import * as SplashScreen from "expo-splash-screen";
+import { COLORS } from "@/constants";
 import { ChildProps } from "@/types";
-import { GenreProvider } from "./GenreProvider";
 import OfflineScreen from "./OfflineScreen";
+import AppBootstrap from "./AppBootstrap";
+
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,16 +55,18 @@ export default function AppProvider({ children }: ChildProps) {
 
   return (
     <GestureHandlerRootView
-      style={{ flex: 1, backgroundColor: DEFAULT_COLORS[950] }}
+      style={{ flex: 1, backgroundColor: COLORS.shark.primary }}
     >
       <SafeAreaProvider
-        style={{ flex: 1, backgroundColor: DEFAULT_COLORS[950] }}
+        style={{ flex: 1, backgroundColor: COLORS.shark.primary }}
       >
         <QueryClientProvider client={queryClient}>
-          <GenreProvider>
-            <StatusBar style="light" backgroundColor={DEFAULT_COLORS[950]} />
-            {isOnline ? children : <OfflineScreen />}
-          </GenreProvider>
+          <StatusBar style="light" />
+          {isOnline ? (
+            <AppBootstrap>{children}</AppBootstrap>
+          ) : (
+            <OfflineScreen />
+          )}
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
