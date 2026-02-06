@@ -1,30 +1,24 @@
 import React from "react";
-import { Text } from "react-native";
-import { useRouter } from "expo-router";
-import { AlertTriangle } from "lucide-react-native";
-import { DEFAULT_COLORS } from "@/constants";
-import { Button } from "@/components/ui";
-import { ScreenView } from "@/components/root";
+import { Text, View } from "react-native";
+import { CircleOff } from "lucide-react-native";
+import { COLORS } from "@/constants";
+import { BackHeader, ScreenView } from "@/components/root";
 
 export default function NotFound() {
-  const router = useRouter();
-
-  const handleGoHome = () => router.push("/");
-
   return (
-    <ScreenView className="flex-1 items-center justify-center gap-6 p-4">
-      <AlertTriangle
-        size={48}
-        color={DEFAULT_COLORS.accent}
-        strokeWidth={1.5}
-      />
-      <Text className="text-xl font-semibold text-default-50 text-center">
-        Page Not Found
-      </Text>
-      <Text className="text-default-500 text-center -mt-3">
-        The page you’re looking for doesn’t exist.
-      </Text>
-      <Button title="Go to Home" variant="secondary" onPress={handleGoHome} />
+    <ScreenView>
+      <BackHeader />
+      <View className="flex-1 justify-center items-center gap-5 p-5">
+        <View className="bg-shark-secondary p-4 rounded-full">
+          <CircleOff size={28} color={COLORS.yellow} />
+        </View>
+        <Text className="text-xl font-semibold text-white text-center">
+          Unmatched Route
+        </Text>
+        <Text className="text-white/60 text-center -mt-2">
+          The route you are trying to access does not exist.
+        </Text>
+      </View>
     </ScreenView>
   );
 }
