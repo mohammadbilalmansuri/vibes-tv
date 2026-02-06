@@ -20,7 +20,7 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
 
   return (
     <View
-      className="bg-default-500 rounded-full self-center flex-row justify-center items-center p-1 elevation-lg"
+      className="bg-white rounded-full self-center flex-row justify-center items-center p-1 elevation-lg"
       style={{ bottom: 10 }}
     >
       {state.routes.map((route, index) => {
@@ -32,15 +32,16 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
             key={route.key}
             onPress={createOnPress(route.name, isFocused)}
             className={cn(
-              "flex-row justify-center items-center gap-1 py-1.5 px-4 rounded-full",
-              { "bg-default-950": isFocused }
+              "flex-row justify-center items-center gap-1 py-3 px-4 rounded-full",
+              { "bg-rose": isFocused }
             )}
-            activeOpacity={0.5}
+            activeOpacity={0.6}
           >
             <Text
-              className={cn("font-medium text-lg", {
-                "text-default-50": isFocused,
-              })}
+              className={cn(
+                "font-medium text-lg leading-none",
+                isFocused ? "text-white" : "text-shark-secondary"
+              )}
             >
               {label}
             </Text>
