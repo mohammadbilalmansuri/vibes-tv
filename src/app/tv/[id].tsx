@@ -1,12 +1,10 @@
 import React from "react";
 import { Text } from "react-native";
-import { ScreenView } from "@/components";
-import { useTvShowDetails } from "@/hooks";
+import { ScreenView } from "@/components/root";
 import { useLocalSearchParams } from "expo-router";
 
 export default function TVShow() {
   const { id } = useLocalSearchParams();
-  const { details, isLoading, errors, refetch } = useTvShowDetails(Number(id));
 
   return (
     <ScreenView>
