@@ -1,27 +1,36 @@
 import React from "react";
-import { Text } from "react-native";
-import { ScreenView, Skeleton } from "@/components";
-import { useGenres, useTrending } from "@/hooks";
+import { ScrollView } from "react-native";
+import { useRouter } from "expo-router";
+import useHomeQueries from "@/hooks/useHomeQueries";
+import useGenres from "@/hooks/useGenres";
+import TrendingSection from "@/components/TrendingSection";
+import { ScreenView } from "@/components/root";
 
 export default function Home() {
-  const {
-    trendingMovies,
-    trendingTvShows,
-    isLoading: trendingLoading,
-    errors: trendingErrors,
-    refetch: trendingRefetch,
-  } = useTrending();
-  const {
-    tvGenres,
-    movieGenres,
-    isLoading: genresLoading,
-    errors: genresErrors,
-    refetch: genresRefetch,
-  } = useGenres();
+  const router = useRouter();
+  const [
+    trendingResult,
+    popularMoviesResult,
+    popularTvShowsResult,
+    topRatedMoviesResult,
+    topRatedTvShowsResult,
+  ] = useHomeQueries();
+
+  const handleItemPress = (type: "movie" | "tv", id: number) => {
+    router.push(`/${type}/${String(id)}`);
+  };
 
   return (
     <ScreenView inSafeArea={false}>
-      <Text>Home</Text>
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+        <TrendingSection
+          data={trendingResult.data?.results ?? []}
+          isLoading={trendingResult.isLoading}
+          isError={trendingResult.isError}
+          error={trendingResult.error}
+          // genres={movieGenresResult.data?.genres ?? []}
+        />
+      </ScrollView>
     </ScreenView>
   );
 }

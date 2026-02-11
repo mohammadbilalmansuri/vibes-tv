@@ -28,7 +28,7 @@ interface TrendingSectionProps {
   isLoading: boolean;
   isError: boolean;
   error: Error | null;
-  genres: Genre[];
+  // genres: Genre[];
 }
 
 const TrendingSection = ({
@@ -36,7 +36,6 @@ const TrendingSection = ({
   isLoading,
   isError,
   error,
-  genres,
 }: TrendingSectionProps) => {
   const flatListRef = useRef<FlatList<TrendingContent>>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -93,14 +92,14 @@ const TrendingSection = ({
             ? (item.vote_average / 2).toFixed(1)
             : "N/A";
 
-          const itemGenres =
-            genres && item.genre_ids?.length
-              ? item.genre_ids
-                  .map((id) => genres.find((g) => g.id === id)?.name)
-                  .filter(Boolean)
-                  .slice(0, 2)
-                  .join(" • ")
-              : null;
+          // const itemGenres =
+          //   genres && item.genre_ids?.length
+          //     ? item.genre_ids
+          //         .map((id) => genres.find((g) => g.id === id)?.name)
+          //         .filter(Boolean)
+          //         .slice(0, 2)
+          //         .join(" • ")
+          //     : null;
 
           return (
             <View style={{ width: SCREEN_WIDTH }} className="px-5">
@@ -124,11 +123,11 @@ const TrendingSection = ({
                       <Star size={16} color="#FFD700" fill="#FFD700" />
                       <Text className="text-white font-semibold">{rating}</Text>
                     </View>
-                    {itemGenres && (
+                    {/* {itemGenres && (
                       <Text className="text-white/90 text-sm font-medium bg-black/30 backdrop-blur-sm rounded-full px-3 py-1">
                         {itemGenres}
                       </Text>
-                    )}
+                    )} */}
                   </View>
 
                   <TouchableOpacity
