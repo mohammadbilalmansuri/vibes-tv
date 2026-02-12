@@ -5,7 +5,7 @@ import type { ImageSize } from "@/types/tmdb";
  * Get the full URL for a TMDB image.
  * @param path - The image path given by tmdb
  * @param size - The image size key
- * @returns Fully-qualified image URL
+ * @returns Fully-qualified image URL or empty string if path is invalid
  */
 const getImageUrl = (path: string, size: ImageSize = "original") => {
   if (path.trim() === "") return "";
