@@ -107,7 +107,7 @@ export interface BaseTVShow extends ContentCommon {
   original_name: string;
 }
 
-interface DetailCommon {
+interface CommonDetails {
   genres: Genre[];
   homepage?: string;
   production_companies: ProductionCompany[];
@@ -118,9 +118,9 @@ interface DetailCommon {
 
 // Movies
 
-export interface MovieDetail
+export interface MovieDetails
   extends Omit<BaseMovie, "genre_ids">,
-    DetailCommon {
+    CommonDetails {
   belongs_to_collection?: unknown;
   budget: number;
   imdb_id?: string;
@@ -148,14 +148,14 @@ export interface Season extends SeasonBase {
   episode_count?: number;
 }
 
-export interface TVSeasonDetail extends SeasonBase {
+export interface TVSeasonDetails extends SeasonBase {
   _id: string;
   episodes: Episode[];
 }
 
-export interface TVShowDetail
+export interface TVShowDetails
   extends Omit<BaseTVShow, "genre_ids">,
-    DetailCommon {
+    CommonDetails {
   created_by: Creator[];
   episode_run_time: number[];
   in_production: boolean;
