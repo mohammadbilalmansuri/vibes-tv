@@ -118,7 +118,9 @@ interface DetailCommon {
 
 // Movies
 
-export interface Movie extends Omit<BaseMovie, "genre_ids">, DetailCommon {
+export interface MovieDetail
+  extends Omit<BaseMovie, "genre_ids">,
+    DetailCommon {
   belongs_to_collection?: unknown;
   budget: number;
   imdb_id?: string;
@@ -151,7 +153,9 @@ export interface TVSeasonDetail extends SeasonBase {
   episodes: Episode[];
 }
 
-export interface TVShow extends Omit<BaseTVShow, "genre_ids">, DetailCommon {
+export interface TVShowDetail
+  extends Omit<BaseTVShow, "genre_ids">,
+    DetailCommon {
   created_by: Creator[];
   episode_run_time: number[];
   in_production: boolean;
