@@ -8,7 +8,7 @@ const cn = (
   ...args: (
     | string
     | Record<string, boolean>
-    | Array<string | Record<string, boolean>>
+    | (string | Record<string, boolean>)[]
   )[]
 ): string => {
   return args
