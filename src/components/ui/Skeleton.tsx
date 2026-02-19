@@ -32,7 +32,7 @@ const Skeleton = ({
       -1,
       false
     );
-  }, [duration]);
+  }, [duration, progress]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: progress.value * travel }],
