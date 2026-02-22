@@ -18,7 +18,7 @@ export default function RootLayout() {
       >
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="movie/[id]" />
-        <Stack.Screen name="tv/[id]" />
+        <Stack.Screen name="tv-show/[id]" />
         <Stack.Screen name="search" />
         <Stack.Screen name="+not-found" />
       </Stack>
