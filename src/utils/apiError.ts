@@ -1,9 +1,3 @@
-/**
- * Custom error class for API requests.
- *
- * Provides status code, status text, and optional response body.
- * Includes helper methods for common error handling.
- */
 export default class ApiError extends Error {
   constructor(
     public status: number,
@@ -13,7 +7,6 @@ export default class ApiError extends Error {
     super(`API Error: ${status} ${statusText}`);
     this.name = "ApiError";
 
-    // Preserve stack trace (V8 engines like Node/Chrome)
     if (Error.captureStackTrace) {
       Error.captureStackTrace(this, ApiError);
     }
