@@ -8,17 +8,15 @@
     "scheme": "vibestv",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true,
-      "icon": "./assets/icons/app-icon.png"
-    },
+    "ios": { "supportsTablet": true, "icon": "./assets/icons/app-icon.png" },
     "android": {
       "adaptiveIcon": {
+        "backgroundColor": "#f43f5e",
         "foregroundImage": "./assets/icons/adaptive-icon.png",
-        "monochromeImage": "./assets/icons/adaptive-icon.png",
-        "backgroundColor": "#f43f5e"
+        "monochromeImage": "./assets/icons/adaptive-icon.png"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
     },
     "web": {
       "bundler": "metro",
@@ -37,8 +35,6 @@
         }
       ]
     ],
-    "experiments": {
-      "typedRoutes": true
-    }
+    "experiments": { "typedRoutes": true, "reactCompiler": true }
   }
 }
