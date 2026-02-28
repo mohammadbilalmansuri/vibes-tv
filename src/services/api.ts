@@ -1,7 +1,6 @@
 import type { ApiConfig, ApiRequestOptions } from "@/types";
 import ApiError from "@/utils/apiError";
 
-// Retry helper with exponential backoff.
 async function retryWithBackoff<T>(
   fn: () => Promise<T>,
   retries = 3,
@@ -16,13 +15,11 @@ async function retryWithBackoff<T>(
   }
 }
 
-/** Creates a typed API client for making HTTP requests. */
 export default function createApiClient(config: ApiConfig) {
   const baseUrl = config.baseUrl.endsWith("/")
     ? config.baseUrl.slice(0, -1)
     : config.baseUrl;
 
-  // Interceptors
   const beforeRequest =
     config.interceptors?.beforeRequest ??
     ((options: ApiRequestOptions) => options);
