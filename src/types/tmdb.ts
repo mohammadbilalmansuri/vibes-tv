@@ -1,5 +1,3 @@
-// Base interfaces and utilities
-
 interface TMDBResponse<T> {
   page: number;
   results: T[];
@@ -11,8 +9,6 @@ interface DateRange {
   maximum: string;
   minimum: string;
 }
-
-// Common entities
 
 interface BaseEntity {
   id: number;
@@ -76,8 +72,6 @@ export type ImageSize =
 
 export type ContentType = "movie" | "tv";
 
-// Core content interface
-
 interface ContentCommon {
   backdrop_path: string | null;
   genre_ids: number[];
@@ -89,8 +83,6 @@ interface ContentCommon {
   vote_average: number;
   vote_count: number;
 }
-
-// Base movie and TV show types
 
 export interface BaseMovie extends ContentCommon {
   adult: boolean;
@@ -116,8 +108,6 @@ interface CommonDetails {
   status?: string;
 }
 
-// Movies
-
 export interface MovieDetails
   extends Omit<BaseMovie, "genre_ids">,
     CommonDetails {
@@ -128,8 +118,6 @@ export interface MovieDetails
   runtime?: number;
   tagline?: string;
 }
-
-// TV Shows
 
 export interface Creator extends PersonBase {
   credit_id: string;
@@ -172,8 +160,6 @@ export interface TVShowDetails
   type: string;
 }
 
-// Episodes
-
 interface EpisodeBase {
   id: number;
   name: string;
@@ -206,8 +192,6 @@ export interface Episode extends EpisodeBase {
   guest_stars?: GuestStar[];
 }
 
-// Search & Trending
-
 export type SearchMode = "multi" | "movie" | "tv";
 
 export interface SearchResult extends ContentCommon {
@@ -226,8 +210,6 @@ export interface SearchResult extends ContentCommon {
 export interface TrendingContent extends BaseMovie {
   media_type: string;
 }
-
-// Response types
 
 interface ResponseWithDates<T> extends TMDBResponse<T> {
   dates: DateRange;
