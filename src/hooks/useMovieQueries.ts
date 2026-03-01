@@ -13,10 +13,6 @@ import {
   getMovieVideos,
 } from "@/services/tmdb";
 
-/**
- * Fetches Now Playing and Upcoming movies in parallel.
- * @returns [nowPlayingMoviesResult, upcomingMoviesResult]
- */
 export function useNowPlayingAndUpcomingMovies() {
   return useQueries({
     queries: [
@@ -34,11 +30,6 @@ export function useNowPlayingAndUpcomingMovies() {
   });
 }
 
-/**
- * Fetches movies for a specific genre with infinite scrolling.
- * @param genreId - TMDB genre ID
- * @returns Infinite query result containing pages of movies for the genre
- */
 export function useMoviesByGenre(genreId: number) {
   return useInfiniteQuery({
     queryKey: ["movies", "genre", genreId],
@@ -54,11 +45,6 @@ export function useMoviesByGenre(genreId: number) {
   });
 }
 
-/**
- * Fetches movie details and videos in parallel.
- * @param movieId - TMDB movie ID
- * @returns [movieDetailsResult, movieVideosResult]
- */
 export function useMovieDetails(movieId: number) {
   return useQueries({
     queries: [

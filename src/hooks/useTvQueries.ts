@@ -13,10 +13,6 @@ import {
   getTVShowsByGenre,
 } from "@/services/tmdb";
 
-/**
- * Fetches Airing Today and On The Air TV shows in parallel.
- * @returns [airingTodayTvShowsResult, onTheAirTvShowsResult]
- */
 export function useAiringAndOnTheAirTVShows() {
   return useQueries({
     queries: [
@@ -34,11 +30,6 @@ export function useAiringAndOnTheAirTVShows() {
   });
 }
 
-/**
- * Fetches TV shows for a specific genre with infinite scrolling.
- * @param genreId - TMDB genre ID
- * @returns Infinite query result containing pages of TV shows
- */
 export function useTVShowsByGenre(genreId: number) {
   return useInfiniteQuery({
     queryKey: ["tv", "genre", genreId],
@@ -52,11 +43,6 @@ export function useTVShowsByGenre(genreId: number) {
   });
 }
 
-/**
- * Fetches TV show details and videos in parallel.
- * @param tvId - TMDB TV show ID
- * @returns [tvShowDetailsResult, tvShowVideosResult]
- */
 export function useTVShowDetails(tvId: number) {
   return useQueries({
     queries: [
@@ -76,13 +62,7 @@ export function useTVShowDetails(tvId: number) {
   });
 }
 
-/**
- * Fetches details of a specific TV season.
- * @param tvId - TMDB TV show ID
- * @param seasonNumber - Season number
- * @returns Object containing season details and query state
- */
-export function useTVSeasonDetails(tvId: number, seasonNumber: number) {
+export function useTVSeason(tvId: number, seasonNumber: number) {
   return useQuery({
     queryKey: ["tv", "season", tvId, seasonNumber],
     queryFn: ({ signal }) => getTVSeasonDetails(tvId, seasonNumber, signal),

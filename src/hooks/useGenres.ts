@@ -2,10 +2,6 @@ import { useQueries } from "@tanstack/react-query";
 import { GENRES_CACHE_CONFIG } from "@/constants";
 import { getMovieGenres, getTVGenres } from "@/services/tmdb";
 
-/**
- * Fetches Movie and TV genres in parallel.
- * @returns [movieGenresResult, tvGenresResult]
- */
 export default function useGenres() {
   return useQueries({
     queries: [

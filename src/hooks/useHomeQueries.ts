@@ -12,15 +12,6 @@ import {
   getTopRatedTVShows,
 } from "@/services/tmdb";
 
-/**
- * Fetches home screen data in parallel:
- * - Trending (mixed: movies, TV shows, persons)
- * - Popular Movies
- * - Popular TV Shows
- * - Top Rated Movies
- * - Top Rated TV Shows
- * @returns [trendingResult, popularMoviesResult, popularTVResult, topRatedMoviesResult, topRatedTVResult]
- */
 export default function useHomeQueries() {
   return useQueries({
     queries: [
