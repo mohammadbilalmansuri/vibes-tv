@@ -1,4 +1,3 @@
-import React from "react";
 import {
   View,
   Text,
@@ -33,7 +32,7 @@ interface DetailHeroProps {
   overview: string;
   rating: number;
   releaseDate: string;
-  runtime?: number; // For movies
+  runtime?: number;
   genres: Genre[];
   contentType: ContentType;
   onPlayPress: () => void;
@@ -85,7 +84,6 @@ const DetailHero = ({
 
   return (
     <View style={styles.container}>
-      {/* Background Image */}
       <Image
         source={{ uri: backdropUrl }}
         style={StyleSheet.absoluteFillObject}
@@ -95,14 +93,12 @@ const DetailHero = ({
         transition={300}
       />
 
-      {/* Gradients for better text readability */}
       <LinearGradient
         colors={["rgba(0,0,0,0.7)", "transparent", "rgba(0,0,0,0.9)"]}
         locations={[0, 0.4, 1]}
         style={StyleSheet.absoluteFillObject}
       />
 
-      {/* Back Button */}
       <View className="absolute top-12 left-4 z-10">
         <TouchableOpacity
           onPress={() => router.back()}
@@ -112,7 +108,6 @@ const DetailHero = ({
         </TouchableOpacity>
       </View>
 
-      {/* Share Button */}
       {onSharePress && (
         <View className="absolute top-12 right-4 z-10">
           <TouchableOpacity
@@ -124,15 +119,12 @@ const DetailHero = ({
         </View>
       )}
 
-      {/* Content */}
       <View className="flex-1 justify-end pb-8">
         <ScrollView
           contentContainerStyle={styles.contentContainer}
           showsVerticalScrollIndicator={false}
         >
-          {/* Poster and Title Section */}
           <View className="flex-row px-4 mb-6">
-            {/* Poster */}
             <View className="mr-4">
               <Image
                 source={{ uri: posterUrl }}
@@ -144,7 +136,6 @@ const DetailHero = ({
               />
             </View>
 
-            {/* Title and Meta Info */}
             <View className="flex-1 justify-end">
               <Text
                 className="text-white text-2xl font-bold mb-2"
@@ -162,7 +153,6 @@ const DetailHero = ({
                 </Text>
               )}
 
-              {/* Rating and Meta */}
               <View className="flex-row items-center mb-3">
                 <View className="flex-row items-center mr-4">
                   <Star size={16} fill={COLORS.yellow} color={COLORS.yellow} />
@@ -188,7 +178,6 @@ const DetailHero = ({
                 )}
               </View>
 
-              {/* Genres */}
               <View className="flex-row flex-wrap mb-4">
                 {genres.slice(0, 3).map((genre, index) => (
                   <View
@@ -202,7 +191,6 @@ const DetailHero = ({
                 ))}
               </View>
 
-              {/* Status for TV Shows */}
               {contentType === "tv" && status && (
                 <Text className="text-white/60 text-sm mb-3">
                   Status: {status}
@@ -211,10 +199,8 @@ const DetailHero = ({
             </View>
           </View>
 
-          {/* Action Buttons */}
           <View className="px-4 mb-6">
             <View className="flex-row gap-3">
-              {/* Play Button */}
               <TouchableOpacity
                 onPress={onPlayPress}
                 className="flex-1 bg-white px-6 py-4 rounded-xl flex-row items-center justify-center"
@@ -225,7 +211,6 @@ const DetailHero = ({
                 </Text>
               </TouchableOpacity>
 
-              {/* Watchlist Button */}
               {onWatchlistPress && (
                 <TouchableOpacity
                   onPress={onWatchlistPress}
@@ -237,7 +222,6 @@ const DetailHero = ({
             </View>
           </View>
 
-          {/* Overview */}
           <View className="px-4">
             <Text className="text-white text-base leading-6" numberOfLines={4}>
               {overview}

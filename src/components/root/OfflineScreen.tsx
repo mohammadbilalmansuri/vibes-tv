@@ -1,4 +1,3 @@
-import React from "react";
 import { View, Text } from "react-native";
 import { WifiOff } from "lucide-react-native";
 import { COLORS } from "@/constants";
@@ -11,7 +10,7 @@ const OfflineScreen = () => {
         <WifiOff size={28} color={COLORS.yellow} strokeWidth={1.5} />
       </View>
       <Text className="text-xl font-semibold text-white text-center">
-        You’re Offline
+        You're Offline
       </Text>
       <Text className="text-white/60 text-center -mt-2">
         Please check your internet connection.

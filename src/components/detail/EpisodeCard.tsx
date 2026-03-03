@@ -1,4 +1,3 @@
-import React from "react";
 import {
   View,
   Text,
@@ -13,24 +12,24 @@ import getImageUrl from "@/utils/getImageUrl";
 import type { Episode } from "@/types";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const CARD_WIDTH = (SCREEN_WIDTH - 48) / 2; // 2 cards per row with padding
-const CARD_HEIGHT = CARD_WIDTH * (9 / 16); // 16:9 aspect ratio for episode thumbnails
+const CARD_WIDTH = (SCREEN_WIDTH - 48) / 2;
+const CARD_HEIGHT = CARD_WIDTH * (9 / 16);
 
 interface EpisodeCardProps {
   episode: Episode;
   onPress: () => void;
   showNumber?: boolean;
   isWatched?: boolean;
-  progress?: number; // 0-1 for watch progress
+  progress?: number;
 }
 
-const EpisodeCard = ({
+function EpisodeCard({
   episode,
   onPress,
   showNumber = true,
   isWatched = false,
   progress = 0,
-}: EpisodeCardProps) => {
+}: EpisodeCardProps) {
   const thumbnailUrl = getImageUrl(episode.still_path || "", "w500");
 
   const formatRuntime = (minutes: number) => {
@@ -62,7 +61,6 @@ const EpisodeCard = ({
       style={styles.container}
     >
       <View className="bg-zinc-900 rounded-xl overflow-hidden">
-        {/* Thumbnail */}
         <View className="relative" style={{ height: CARD_HEIGHT }}>
           {episode.still_path ? (
             <Image
@@ -79,14 +77,12 @@ const EpisodeCard = ({
             </View>
           )}
 
-          {/* Play Button Overlay */}
           <View className="absolute inset-0 items-center justify-center">
             <View className="bg-black/70 p-3 rounded-full">
               <Play size={16} fill={COLORS.white} color={COLORS.white} />
             </View>
           </View>
 
-          {/* Episode Number Badge */}
           {showNumber && (
             <View className="absolute top-2 left-2">
               <View className="bg-black/80 px-2 py-1 rounded">
@@ -97,7 +93,6 @@ const EpisodeCard = ({
             </View>
           )}
 
-          {/* Runtime Badge */}
           {episode.runtime && episode.runtime > 0 && (
             <View className="absolute top-2 right-2">
               <View className="bg-black/80 px-2 py-1 rounded flex-row items-center">
@@ -109,7 +104,6 @@ const EpisodeCard = ({
             </View>
           )}
 
-          {/* Progress Bar */}
           {progress > 0 && (
             <View className="absolute bottom-0 left-0 right-0">
               <View className="bg-white/20 h-1">
@@ -121,7 +115,6 @@ const EpisodeCard = ({
             </View>
           )}
 
-          {/* Watched Indicator */}
           {isWatched && (
             <View className="absolute bottom-2 right-2">
               <View className="bg-green-500 p-1 rounded-full">
@@ -131,9 +124,7 @@ const EpisodeCard = ({
           )}
         </View>
 
-        {/* Episode Info */}
         <View className="p-3">
-          {/* Title */}
           <Text
             className="text-white text-sm font-semibold mb-1"
             numberOfLines={2}
@@ -141,7 +132,6 @@ const EpisodeCard = ({
             {episode.name}
           </Text>
 
-          {/* Air Date and Rating */}
           <View className="flex-row items-center justify-between mb-2">
             <Text className="text-white/60 text-xs">
               {formatAirDate(episode.air_date)}
@@ -157,7 +147,6 @@ const EpisodeCard = ({
             )}
           </View>
 
-          {/* Overview */}
           {episode.overview && (
             <Text className="text-white/60 text-xs leading-4" numberOfLines={3}>
               {episode.overview}
@@ -167,7 +156,7 @@ const EpisodeCard = ({
       </View>
     </TouchableOpacity>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

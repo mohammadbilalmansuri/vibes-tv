@@ -1,4 +1,3 @@
-import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import cn from "@/utils/cn";

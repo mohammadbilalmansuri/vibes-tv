@@ -1,4 +1,3 @@
-import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
