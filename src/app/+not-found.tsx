@@ -1,4 +1,3 @@
-import React from "react";
 import { Text, View } from "react-native";
 import { CircleOff } from "lucide-react-native";
 import { COLORS } from "@/constants";
