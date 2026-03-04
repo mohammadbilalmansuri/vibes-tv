@@ -1,10 +1,10 @@
 import type { ApiConfig, ApiRequestOptions } from "@/types";
-import ApiError from "@/utils/apiError";
+import { ApiError } from "@/utils";
 
 async function retryWithBackoff<T>(
   fn: () => Promise<T>,
   retries = 3,
-  delay = 500
+  delay = 500,
 ): Promise<T> {
   try {
     return await fn();
@@ -36,7 +36,7 @@ export default function createApiClient(config: ApiConfig) {
 
   async function request<T>(
     endpoint: string,
-    options: ApiRequestOptions = {}
+    options: ApiRequestOptions = {},
   ): Promise<T> {
     const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
     const url = new URL(`${baseUrl}${path}`);
@@ -97,7 +97,7 @@ export default function createApiClient(config: ApiConfig) {
   return {
     get: <T>(
       endpoint: string,
-      options?: Omit<ApiRequestOptions, "method" | "body">
+      options?: Omit<ApiRequestOptions, "method" | "body">,
     ) => request<T>(endpoint, { ...options, method: "GET" }),
 
     post: <T>(endpoint: string, options?: Omit<ApiRequestOptions, "method">) =>
@@ -111,7 +111,7 @@ export default function createApiClient(config: ApiConfig) {
 
     delete: <T>(
       endpoint: string,
-      options?: Omit<ApiRequestOptions, "method" | "body">
+      options?: Omit<ApiRequestOptions, "method" | "body">,
     ) => request<T>(endpoint, { ...options, method: "DELETE" }),
 
     request,

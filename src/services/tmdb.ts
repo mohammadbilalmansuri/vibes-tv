@@ -5,7 +5,6 @@ import type {
   MovieDetails,
   SearchResponse,
   TrendingResponse,
-  VideosResponse,
   MovieResponse,
   MovieResponseWithDates,
   TVShowResponse,
@@ -62,10 +61,6 @@ export function getMovieDetails(id: number, signal?: AbortSignal) {
   return apiClient.get<MovieDetails>(`/movie/${id}`, { signal });
 }
 
-export function getMovieVideos(id: number, signal?: AbortSignal) {
-  return apiClient.get<VideosResponse>(`/movie/${id}/videos`, { signal });
-}
-
 // TV Shows Requests
 
 export function getTVShowsAiringToday(signal?: AbortSignal) {
@@ -111,10 +106,6 @@ export function getTVSeasonDetails(
   return apiClient.get<TVSeasonDetails>(`/tv/${tvId}/season/${seasonNumber}`, {
     signal,
   });
-}
-
-export function getTVShowVideos(id: number, signal?: AbortSignal) {
-  return apiClient.get<VideosResponse>(`/tv/${id}/videos`, { signal });
 }
 
 // Search Request
