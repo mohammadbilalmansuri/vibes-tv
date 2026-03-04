@@ -12,7 +12,7 @@ const cn = (
         ? Object.entries(item)
             .filter(([, value]) => Boolean(value))
             .map(([key]) => key)
-        : item
+        : item,
     )
     .filter(Boolean)
     .join(" ");
