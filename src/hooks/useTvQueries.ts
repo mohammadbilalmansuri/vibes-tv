@@ -6,7 +6,6 @@ import {
 } from "@/constants";
 import {
   getTVShowDetails,
-  getTVShowVideos,
   getTVSeasonDetails,
   getTVShowsAiringToday,
   getTVShowsOnTheAir,
@@ -44,22 +43,13 @@ export function useTVShowsByGenre(genreId: number) {
 }
 
 export function useTVShowDetails(tvId: number) {
-  return useQueries({
-    queries: [
-      {
-        queryKey: ["tv", "details", tvId],
-        queryFn: ({ signal }) => getTVShowDetails(tvId, signal),
-        enabled: !!tvId,
-        ...DETAIL_CACHE_CONFIG,
-      },
-      {
-        queryKey: ["tv", "videos", tvId],
-        queryFn: ({ signal }) => getTVShowVideos(tvId, signal),
-        enabled: !!tvId,
-        ...DETAIL_CACHE_CONFIG,
-      },
-    ],
+  const result = useQuery({
+    queryKey: ["tv", "details", tvId],
+    queryFn: ({ signal }) => getTVShowDetails(tvId, signal),
+    enabled: !!tvId,
+    ...DETAIL_CACHE_CONFIG,
   });
+  return [result] as const;
 }
 
 export function useTVSeason(tvId: number, seasonNumber: number) {
