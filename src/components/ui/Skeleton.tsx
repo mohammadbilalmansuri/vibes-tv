@@ -9,7 +9,7 @@ import Animated, {
   Easing,
 } from "react-native-reanimated";
 import { COLORS } from "@/constants";
-import cn from "@/utils/cn";
+import { cn } from "@/utils";
 
 export type SkeletonProps = {
   className?: string;
@@ -30,7 +30,7 @@ const Skeleton = ({
     progress.value = withRepeat(
       withTiming(2, { duration, easing: Easing.linear }),
       -1,
-      false
+      false,
     );
   }, [duration, progress]);
 

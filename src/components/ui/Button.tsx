@@ -5,7 +5,7 @@ import {
   TouchableOpacityProps,
 } from "react-native";
 import { Link, LinkProps } from "expo-router";
-import cn from "@/utils/cn";
+import { cn } from "@/utils";
 
 interface BaseButtonProps extends Omit<TouchableOpacityProps, "style"> {
   title?: string;
@@ -51,7 +51,7 @@ const Button = ({
           "bg-shark-tertiary": variant === "secondary",
           "opacity-60": isDisabled,
         },
-        className
+        className,
       )}
       {...props}
     >

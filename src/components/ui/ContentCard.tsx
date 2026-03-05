@@ -1,4 +1,3 @@
-import React from "react";
 import { View, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,11 +5,11 @@ import { Play } from "lucide-react-native";
 import Animated, {
   useAnimatedStyle,
   interpolate,
-  Extrapolate,
+  Extrapolation,
   SharedValue,
 } from "react-native-reanimated";
 
-import getImageUrl from "@/utils/getImageUrl";
+import { getImageUrl } from "@/utils";
 import type { Content, ContentType } from "@/types";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -21,13 +20,12 @@ interface ContentCardProps {
   onPress?: (type: ContentType, id: number) => void;
   onPlayPress?: (type: ContentType, id: number) => void;
   style?: object;
-  // For animations in horizontal lists
   scrollX?: SharedValue<number>;
   index?: number;
   itemWidth?: number;
 }
 
-const ContentCard = ({
+function ContentCard({
   item,
   variant,
   onPress,
@@ -36,11 +34,10 @@ const ContentCard = ({
   scrollX,
   index,
   itemWidth,
-}: ContentCardProps) => {
+}: ContentCardProps) {
   const isMovie = "title" in item;
   const contentType: ContentType = isMovie ? "movie" : "tv";
 
-  // Better image selection with fallbacks
   const primaryImage =
     variant === "trending"
       ? item.backdrop_path || item.poster_path
@@ -57,7 +54,6 @@ const ContentCard = ({
     ? getImageUrl(fallbackImage, variant === "trending" ? "w780" : "w500")
     : undefined;
 
-  // Animation style for horizontal lists
   const animatedStyle = useAnimatedStyle(() => {
     if (!scrollX || index === undefined || !itemWidth) {
       return {};
@@ -73,14 +69,14 @@ const ContentCard = ({
       scrollX.value,
       inputRange,
       [0.85, 1, 0.85],
-      Extrapolate.CLAMP
+      Extrapolation.CLAMP,
     );
 
     const opacity = interpolate(
       scrollX.value,
       inputRange,
       [0.6, 1, 0.6],
-      Extrapolate.CLAMP
+      Extrapolation.CLAMP,
     );
 
     return {
@@ -93,7 +89,7 @@ const ContentCard = ({
     return (
       <Animated.View
         style={[styles.trendingCard, style, animatedStyle]}
-        className="relative rounded-2xl overflow-hidden bg-zinc-800"
+        className="relative rounded-2xl overflow-hidden bg-shark-secondary"
       >
         <Image
           source={{
@@ -124,7 +120,6 @@ const ContentCard = ({
           style={StyleSheet.absoluteFillObject}
         />
 
-        {/* Centered Play Button */}
         <View className="absolute inset-0 items-center justify-center">
           <TouchableOpacity
             activeOpacity={0.7}
@@ -138,7 +133,6 @@ const ContentCard = ({
     );
   }
 
-  // Compact variant for horizontal lists - simple rounded image only
   return (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -165,14 +159,14 @@ const ContentCard = ({
       </Animated.View>
     </TouchableOpacity>
   );
-};
+}
 
 const PADDING_HORIZONTAL = 20;
 const TRENDING_ITEM_WIDTH = SCREEN_WIDTH - PADDING_HORIZONTAL * 2;
-const TRENDING_ITEM_HEIGHT = TRENDING_ITEM_WIDTH * (3 / 2); // Changed to 2:3 aspect ratio
+const TRENDING_ITEM_HEIGHT = TRENDING_ITEM_WIDTH * (3 / 2);
 
 const COMPACT_CARD_WIDTH = 120;
-const COMPACT_IMAGE_HEIGHT = COMPACT_CARD_WIDTH * (3 / 2); // Also 2:3 aspect ratio
+const COMPACT_IMAGE_HEIGHT = COMPACT_CARD_WIDTH * (3 / 2);
 
 const styles = StyleSheet.create({
   trendingCard: {
