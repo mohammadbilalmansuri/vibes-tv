@@ -3,7 +3,7 @@ import {
   SafeAreaView,
   SafeAreaViewProps,
 } from "react-native-safe-area-context";
-import cn from "@/utils/cn";
+import { cn } from "@/utils";
 
 type ScreenViewProps =
   | ({ inSafeArea?: true } & SafeAreaViewProps)
