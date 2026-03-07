@@ -1,11 +1,5 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -24,7 +18,7 @@ interface TabNavigatorProps {
   tabs: Tab[];
   initialTab?: string;
   onTabChange?: (tabKey: string) => void;
-  sticky?: boolean; // Whether tabs stick to top when scrolling
+  sticky?: boolean;
 }
 
 const TabNavigator = ({
@@ -51,10 +45,8 @@ const TabNavigator = ({
 
   const TabBar = () => (
     <View
-      className={`bg-black/95 ${sticky ? "sticky top-0 z-10" : ""}`}
-      style={styles.tabBar}
+      className={`bg-black/95 border-b border-white/10 ${sticky ? "sticky top-0 z-10" : ""}`}
     >
-      {/* Tab Buttons */}
       <View className="flex-row">
         {tabs.map((tab, index) => (
           <TouchableOpacity
@@ -74,22 +66,14 @@ const TabNavigator = ({
         ))}
       </View>
 
-      {/* Animated Indicator */}
       <Animated.View
-        style={[
-          styles.indicator,
-          {
-            width: tabWidth,
-          },
-          indicatorStyle,
-        ]}
-        className="bg-white h-0.5"
+        style={[{ width: tabWidth }, indicatorStyle]}
+        className="bg-white h-0.5 absolute bottom-0"
       />
     </View>
   );
 
-  // Initialize indicator position
-  React.useEffect(() => {
+  useEffect(() => {
     const initialIndex = tabs.findIndex((tab) => tab.key === activeTab);
     if (initialIndex !== -1) {
       indicatorPosition.value = initialIndex * tabWidth;
@@ -99,23 +83,9 @@ const TabNavigator = ({
   return (
     <View className="flex-1">
       <TabBar />
-
-      {/* Tab Content */}
       <View className="flex-1">{activeTabContent}</View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  tabBar: {
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(255, 255, 255, 0.1)",
-  },
-  indicator: {
-    position: "absolute",
-    bottom: 0,
-    height: 2,
-  },
-});
 
 export default TabNavigator;
