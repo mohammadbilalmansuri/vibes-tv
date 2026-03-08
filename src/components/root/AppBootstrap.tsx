@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { CircleAlert, RefreshCw } from "lucide-react-native";

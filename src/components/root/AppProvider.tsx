@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AppState, AppStateStatus } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -48,7 +48,7 @@ export default function AppProvider({ children }: ChildProps) {
   useEffect(() => {
     const subscription = AppState.addEventListener(
       "change",
-      (status: AppStateStatus) => focusManager.setFocused(status === "active")
+      (status: AppStateStatus) => focusManager.setFocused(status === "active"),
     );
     return () => subscription.remove();
   }, []);
