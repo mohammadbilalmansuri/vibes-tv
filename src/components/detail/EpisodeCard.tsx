@@ -8,7 +8,7 @@ import {
 import { Image } from "expo-image";
 import { Play, Clock, Star } from "lucide-react-native";
 import { COLORS } from "@/constants";
-import getImageUrl from "@/utils/getImageUrl";
+import { getImageUrl } from "@/utils";
 import type { Episode } from "@/types";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -30,7 +30,7 @@ function EpisodeCard({
   isWatched = false,
   progress = 0,
 }: EpisodeCardProps) {
-  const thumbnailUrl = getImageUrl(episode.still_path || "", "w500");
+  const thumbnailUrl = getImageUrl(episode.still_path ?? null, "w500");
 
   const formatRuntime = (minutes: number) => {
     if (!minutes) return "";

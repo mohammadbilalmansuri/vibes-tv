@@ -19,7 +19,7 @@ import {
 } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { COLORS } from "@/constants";
-import getImageUrl from "@/utils/getImageUrl";
+import { getImageUrl } from "@/utils";
 import type { Genre, ContentType } from "@/types";
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -179,7 +179,7 @@ const DetailHero = ({
               </View>
 
               <View className="flex-row flex-wrap mb-4">
-                {genres.slice(0, 3).map((genre, index) => (
+                {genres.slice(0, 3).map((genre) => (
                   <View
                     key={genre.id}
                     className="bg-white/20 px-3 py-1 rounded-full mr-2 mb-2"

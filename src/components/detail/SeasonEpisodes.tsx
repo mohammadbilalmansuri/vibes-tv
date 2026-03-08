@@ -1,11 +1,10 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   View,
   Text,
   ScrollView,
   FlatList,
   TouchableOpacity,
-  StyleSheet,
   Dimensions,
 } from "react-native";
 import { ChevronDown, Calendar, Play, Info } from "lucide-react-native";
@@ -51,7 +50,6 @@ const SeasonSelector = ({
 
   return (
     <View className="mb-4">
-      {/* Current Season Button */}
       <TouchableOpacity
         onPress={() => setIsExpanded(!isExpanded)}
         className="bg-zinc-900 p-4 rounded-xl flex-row items-center justify-between"
@@ -85,12 +83,11 @@ const SeasonSelector = ({
         />
       </TouchableOpacity>
 
-      {/* Season Dropdown */}
       {isExpanded && (
         <View className="bg-zinc-800 rounded-xl mt-2 overflow-hidden">
           <ScrollView style={{ maxHeight: 300 }}>
             {seasons
-              .sort((a, b) => b.season_number - a.season_number) // Latest season first
+              .sort((a, b) => b.season_number - a.season_number)
               .map((season) => (
                 <TouchableOpacity
                   key={season.id}
@@ -177,18 +174,16 @@ const SeasonEpisodes = ({
   initialSeasonNumber,
   onEpisodePress,
 }: SeasonEpisodesProps) => {
-  // Default to latest season or season 1
   const defaultSeason =
     initialSeasonNumber ||
     Math.max(
-      ...seasons.filter((s) => s.season_number > 0).map((s) => s.season_number)
+      ...seasons.filter((s) => s.season_number > 0).map((s) => s.season_number),
     ) ||
     1;
 
   const [selectedSeasonNumber, setSelectedSeasonNumber] =
     useState(defaultSeason);
 
-  // Fetch current season data
   const {
     data: seasonData,
     isLoading,
@@ -197,7 +192,7 @@ const SeasonEpisodes = ({
 
   const currentSeason = useMemo(
     () => seasons.find((s) => s.season_number === selectedSeasonNumber),
-    [seasons, selectedSeasonNumber]
+    [seasons, selectedSeasonNumber],
   );
 
   const handleEpisodePress = (episode: Episode) => {
@@ -222,7 +217,6 @@ const SeasonEpisodes = ({
 
   const renderLoadingSkeleton = () => (
     <View>
-      {/* Season info skeleton */}
       <View className="bg-zinc-900 p-4 rounded-xl mb-4">
         <Skeleton className="w-40 h-5 rounded mb-2" />
         <Skeleton className="w-32 h-4 rounded mb-1" />
@@ -230,7 +224,6 @@ const SeasonEpisodes = ({
         <Skeleton className="w-full h-16 rounded" />
       </View>
 
-      {/* Episodes skeleton */}
       <View className="flex-row flex-wrap justify-between">
         {Array.from({ length: 6 }).map((_, i) => (
           <View
@@ -262,7 +255,6 @@ const SeasonEpisodes = ({
 
   return (
     <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
-      {/* Season Selector */}
       <SeasonSelector
         seasons={seasons}
         selectedSeason={selectedSeasonNumber}
@@ -282,10 +274,8 @@ const SeasonEpisodes = ({
         </View>
       ) : seasonData && currentSeason ? (
         <>
-          {/* Season Information */}
           <SeasonInfo season={currentSeason} />
 
-          {/* Episodes Grid */}
           {seasonData.episodes && seasonData.episodes.length > 0 ? (
             <View>
               <Text className="text-white text-lg font-bold mb-4">
@@ -298,7 +288,7 @@ const SeasonEpisodes = ({
                 keyExtractor={(item) => `episode-${item.id}`}
                 numColumns={2}
                 scrollEnabled={false}
-                columnWrapperStyle={styles.row}
+                columnWrapperClassName="justify-between"
                 contentContainerStyle={{ paddingBottom: 20 }}
               />
             </View>
@@ -315,11 +305,5 @@ const SeasonEpisodes = ({
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  row: {
-    justifyContent: "space-between",
-  },
-});
 
 export default SeasonEpisodes;

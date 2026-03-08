@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -11,7 +11,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 interface Tab {
   key: string;
   title: string;
-  content: React.ReactNode;
+  content: ReactNode;
 }
 
 interface TabNavigatorProps {
