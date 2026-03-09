@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from "react";
+import { useState } from "react";
 import { ScrollView, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
-import useHomeQueries from "@/hooks/useHomeQueries";
+import { useHomeQueries } from "@/hooks";
 import { TrendingSection, ContentListSection } from "@/components/common";
 import { ScreenView } from "@/components/root";
 import { COLORS } from "@/constants";
@@ -29,21 +29,20 @@ export default function Home() {
     }
   };
 
-  const onRefresh = useCallback(async () => {
+  const onRefresh = async () => {
     setRefreshing(true);
     try {
-      // Invalidate and refetch all home queries
-      await queryClient.invalidateQueries({ queryKey: ["trending"] });
-      await queryClient.invalidateQueries({ queryKey: ["movies", "popular"] });
-      await queryClient.invalidateQueries({ queryKey: ["tv", "popular"] });
-      await queryClient.invalidateQueries({
-        queryKey: ["movies", "top_rated"],
-      });
-      await queryClient.invalidateQueries({ queryKey: ["tv", "top_rated"] });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["trending"] }),
+        queryClient.invalidateQueries({ queryKey: ["popular", "movies"] }),
+        queryClient.invalidateQueries({ queryKey: ["popular", "tvShows"] }),
+        queryClient.invalidateQueries({ queryKey: ["topRated", "movies"] }),
+        queryClient.invalidateQueries({ queryKey: ["topRated", "tvShows"] }),
+      ]);
     } finally {
       setRefreshing(false);
     }
-  }, [queryClient]);
+  };
 
   return (
     <ScreenView inSafeArea={false}>
@@ -60,10 +59,8 @@ export default function Home() {
           />
         }
       >
-        {/* Trending Section */}
         <TrendingSection {...trendingResult} />
 
-        {/* Popular Movies */}
         <ContentListSection
           title="Popular Movies"
           result={popularMoviesResult}
@@ -71,7 +68,6 @@ export default function Home() {
           onItemPress={handleItemPress}
         />
 
-        {/* Popular TV Shows */}
         <ContentListSection
           title="Popular TV Shows"
           result={popularTvShowsResult}
@@ -79,7 +75,6 @@ export default function Home() {
           onItemPress={handleItemPress}
         />
 
-        {/* Top Rated Movies */}
         <ContentListSection
           title="Top Rated Movies"
           result={topRatedMoviesResult}
@@ -87,7 +82,6 @@ export default function Home() {
           onItemPress={handleItemPress}
         />
 
-        {/* Top Rated TV Shows */}
         <ContentListSection
           title="Top Rated TV Shows"
           result={topRatedTvShowsResult}
