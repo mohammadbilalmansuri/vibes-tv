@@ -1,11 +1,5 @@
-import React, { useRef } from "react";
-import {
-  View,
-  Text,
-  ListRenderItem,
-  Dimensions,
-  StyleSheet,
-} from "react-native";
+import { useRef } from "react";
+import { View, Text, ListRenderItem, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 import { CircleAlert } from "lucide-react-native";
 import Animated, {
@@ -13,7 +7,7 @@ import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
   interpolate,
-  Extrapolate,
+  Extrapolation,
 } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
 import { COLORS } from "@/constants";
@@ -25,7 +19,7 @@ import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 type TrendingItem = TrendingResponse["results"][number];
 
 const AnimatedFlatList = Animated.createAnimatedComponent(
-  FlatList<TrendingItem>
+  FlatList<TrendingItem>,
 );
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -34,12 +28,12 @@ const ITEM_WIDTH_VISIBLE = SCREEN_WIDTH - PADDING_HORIZONTAL * 2;
 const ITEM_HEIGHT = ITEM_WIDTH_VISIBLE * (3 / 2);
 const ITEM_FULL_WIDTH = ITEM_WIDTH_VISIBLE;
 
-const TrendingSection = ({
+function TrendingSection({
   data,
   isLoading,
   isError,
   error,
-}: UseQueryResult<TrendingResponse, Error>) => {
+}: UseQueryResult<TrendingResponse, Error>) {
   const router = useRouter();
   const listRef = useRef<FlatList<TrendingItem>>(null);
   const activeIndex = useSharedValue(0);
@@ -49,7 +43,7 @@ const TrendingSection = ({
     data?.results.filter(
       (item) =>
         (item.media_type === "movie" || item.media_type === "tv") &&
-        (item.backdrop_path || item.poster_path)
+        (item.backdrop_path || item.poster_path),
     ) ?? [];
 
   const loopedData =
@@ -71,7 +65,6 @@ const TrendingSection = ({
   };
 
   const handlePlayPress = (type: ContentType, id: string | number) => {
-    // For demo purposes - in a real app, this would navigate to the player
     console.log("Play content:", type, id);
   };
 
@@ -105,18 +98,14 @@ const TrendingSection = ({
   };
 
   const renderItem: ListRenderItem<TrendingItem> = ({ item, index }) => {
-    // Convert TrendingItem to Content format for ContentCard
-    // TrendingContent extends BaseMovie but can also be TV shows
     const contentItem: Content =
       item.media_type === "movie"
         ? {
             ...item,
-            // Ensure movie fields are present
-            adult: item.adult || false,
-            video: item.video || false,
+            adult: item.adult ?? false,
+            video: item.video ?? false,
           }
-        : ({
-            // For TV shows, create a BaseTVShow-like object
+        : {
             id: item.id,
             backdrop_path: item.backdrop_path,
             genre_ids: item.genre_ids,
@@ -126,12 +115,16 @@ const TrendingSection = ({
             poster_path: item.poster_path,
             vote_average: item.vote_average,
             vote_count: item.vote_count,
-            first_air_date: (item as any).first_air_date || "",
-            name: (item as any).name || item.title || "",
-            origin_country: (item as any).origin_country || [],
+            first_air_date:
+              "first_air_date" in item ? (item.first_air_date as string) : "",
+            name: "name" in item ? (item.name as string) : (item.title ?? ""),
+            origin_country:
+              "origin_country" in item ? (item.origin_country as string[]) : [],
             original_name:
-              (item as any).original_name || item.original_title || "",
-          } as Content);
+              "original_name" in item
+                ? (item.original_name as string)
+                : (item.original_title ?? ""),
+          };
 
     return (
       <ContentCard
@@ -146,11 +139,7 @@ const TrendingSection = ({
     );
   };
 
-  const PaginationDot = React.memo(function PaginationDot({
-    index,
-  }: {
-    index: number;
-  }) {
+  function PaginationDot({ index }: { index: number }) {
     const dotAnimatedStyle = useAnimatedStyle(() => {
       const realDataOffset = scrollX.value - ITEM_FULL_WIDTH;
 
@@ -164,21 +153,21 @@ const TrendingSection = ({
         realDataOffset,
         inputRange,
         [0.4, 1, 0.4],
-        Extrapolate.CLAMP
+        Extrapolation.CLAMP,
       );
 
       const scale = interpolate(
         realDataOffset,
         inputRange,
         [0.8, 1.2, 0.8],
-        Extrapolate.CLAMP
+        Extrapolation.CLAMP,
       );
 
       const width = interpolate(
         realDataOffset,
         inputRange,
         [8, 24, 8],
-        Extrapolate.CLAMP
+        Extrapolation.CLAMP,
       );
 
       return {
@@ -195,7 +184,7 @@ const TrendingSection = ({
         style={dotAnimatedStyle}
       />
     );
-  });
+  }
 
   const PaginationDots = () => {
     return (
@@ -209,7 +198,7 @@ const TrendingSection = ({
 
   if (isLoading) {
     return (
-      <View style={styles.outerContainer}>
+      <View className="py-2.5 items-center">
         <View style={{ width: ITEM_WIDTH_VISIBLE, height: ITEM_HEIGHT }}>
           <Skeleton className="w-full h-full rounded-2xl" />
         </View>
@@ -219,7 +208,7 @@ const TrendingSection = ({
 
   if (isError) {
     return (
-      <View style={styles.outerContainer}>
+      <View className="py-2.5 items-center">
         <View
           style={{ width: ITEM_WIDTH_VISIBLE, height: ITEM_HEIGHT }}
           className="bg-zinc-800 justify-center items-center rounded-2xl gap-5 p-5"
@@ -238,7 +227,7 @@ const TrendingSection = ({
 
   if (filteredResults.length === 0) {
     return (
-      <View style={styles.outerContainer}>
+      <View className="py-2.5 items-center">
         <View
           style={{ width: ITEM_WIDTH_VISIBLE, height: ITEM_HEIGHT }}
           className="bg-zinc-800 justify-center items-center rounded-2xl gap-5 p-5"
@@ -285,13 +274,6 @@ const TrendingSection = ({
       {filteredResults.length > 1 && <PaginationDots />}
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  outerContainer: {
-    paddingVertical: 10,
-    alignItems: "center",
-  },
-});
+}
 
 export default TrendingSection;
