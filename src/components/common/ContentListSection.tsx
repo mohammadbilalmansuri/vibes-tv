@@ -1,4 +1,3 @@
-import React from "react";
 import {
   View,
   FlatList,
@@ -29,13 +28,13 @@ interface ContentListSectionProps {
   onItemPress?: ContentPressHandler;
 }
 
-const ContentListSection = ({
+function ContentListSection({
   title,
   result,
   skeletonCount = 6,
   loadMoreFeature = false,
   onItemPress,
-}: ContentListSectionProps) => {
+}: ContentListSectionProps) {
   const { isLoading, error } = result;
 
   const hasNextPage =
@@ -52,7 +51,6 @@ const ContentListSection = ({
   const contents = (() => {
     if (!result.data) return [];
 
-    // Check if this is an infinite query (has pages property)
     if ("pages" in result.data && Array.isArray(result.data.pages)) {
       const allResults: Content[] = [];
       for (const page of result.data.pages) {
@@ -63,7 +61,6 @@ const ContentListSection = ({
       return allResults;
     }
 
-    // For regular queries, check if data has results property
     if ("results" in result.data) {
       return result.data.results;
     }
@@ -110,6 +107,20 @@ const ContentListSection = ({
     );
   }
 
+  const handleEndReached = () => {
+    if (loadMoreFeature && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  const renderItem = ({ item }: { item: Content }) => (
+    <View style={{ marginRight: 12 }}>
+      <ContentCard item={item} variant="compact" onPress={onItemPress} />
+    </View>
+  );
+
+  const keyExtractor = (item: Content) => `${title}-${item.id}`;
+
   const renderFooter = () => {
     if (!hasNextPage) return null;
 
@@ -135,16 +146,12 @@ const ContentListSection = ({
 
   return (
     <View className="py-5 gap-2.5">
-      <Text className="text-white text-xl font-bold">{title}</Text>
+      <Text className="text-white text-xl font-bold px-4">{title}</Text>
 
       <FlatList
         data={contents}
-        renderItem={({ item }) => (
-          <View style={{ marginRight: 12 }}>
-            <ContentCard item={item} variant="compact" onPress={onItemPress} />
-          </View>
-        )}
-        keyExtractor={(item) => `${title}-${item.id}`}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
@@ -155,15 +162,14 @@ const ContentListSection = ({
         decelerationRate="fast"
         bounces={false}
         ListFooterComponent={loadMoreFeature ? renderFooter : undefined}
-        onEndReached={() => {
-          if (loadMoreFeature && hasNextPage && !isFetchingNextPage) {
-            fetchNextPage();
-          }
-        }}
+        onEndReached={handleEndReached}
         onEndReachedThreshold={0.5}
+        removeClippedSubviews
+        maxToRenderPerBatch={10}
+        windowSize={5}
       />
     </View>
   );
-};
+}
 
 export default ContentListSection;
