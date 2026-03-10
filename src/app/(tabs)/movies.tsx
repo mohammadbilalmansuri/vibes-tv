@@ -1,23 +1,42 @@
-import React, { useState, useCallback } from "react";
+import { useState } from "react";
 import { View, Text, ScrollView, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   useMoviesByGenre,
   useNowPlayingAndUpcomingMovies,
-} from "@/hooks/useMovieQueries";
-import useGenres from "@/hooks/useGenres";
+  useGenres,
+} from "@/hooks";
 import { ContentListSection } from "@/components/common";
 import { ScreenView } from "@/components/root";
 import { COLORS } from "@/constants";
-import type { ContentType } from "@/types";
+import type { ContentType, Genre } from "@/types";
+
+function GenreMoviesSection({
+  genre,
+  onItemPress,
+}: {
+  genre: Genre;
+  onItemPress: (type: ContentType, id: number) => void;
+}) {
+  const genreMovieResult = useMoviesByGenre(genre.id);
+
+  return (
+    <ContentListSection
+      title={genre.name}
+      result={genreMovieResult}
+      showTitle={true}
+      loadMoreFeature={true}
+      onItemPress={onItemPress}
+    />
+  );
+}
 
 export default function Movies() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
 
-  // Get movie data
   const [nowPlayingResult, upcomingResult] = useNowPlayingAndUpcomingMovies();
   const [movieGenresResult] = useGenres();
 
@@ -31,16 +50,17 @@ export default function Movies() {
 
   const movieGenres = movieGenresResult.data?.genres ?? [];
 
-  const onRefresh = useCallback(async () => {
+  const onRefresh = async () => {
     setRefreshing(true);
     try {
-      // Invalidate movie-related queries
-      await queryClient.invalidateQueries({ queryKey: ["movies"] });
-      await queryClient.invalidateQueries({ queryKey: ["genres", "movie"] });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["movies"] }),
+        queryClient.invalidateQueries({ queryKey: ["genres", "movie"] }),
+      ]);
     } finally {
       setRefreshing(false);
     }
-  }, [queryClient]);
+  };
 
   return (
     <ScreenView>
@@ -57,7 +77,6 @@ export default function Movies() {
           />
         }
       >
-        {/* Header */}
         <View className="px-4 py-6">
           <Text className="text-white text-3xl font-bold mb-2">Movies</Text>
           <Text className="text-white/60 text-base">
@@ -65,7 +84,6 @@ export default function Movies() {
           </Text>
         </View>
 
-        {/* Now Playing Movies */}
         <ContentListSection
           title="Now Playing"
           result={nowPlayingResult}
@@ -73,7 +91,6 @@ export default function Movies() {
           onItemPress={handleItemPress}
         />
 
-        {/* Upcoming Movies */}
         <ContentListSection
           title="Upcoming"
           result={upcomingResult}
@@ -81,24 +98,13 @@ export default function Movies() {
           onItemPress={handleItemPress}
         />
 
-        {/* Genre-based Movies */}
-        {movieGenres.map((genre) => {
-          const GenreMovies = () => {
-            const genreMovieResult = useMoviesByGenre(genre.id);
-
-            return (
-              <ContentListSection
-                key={`genre-${genre.id}`}
-                title={genre.name}
-                result={genreMovieResult}
-                showTitle={true}
-                loadMoreFeature={true}
-                onItemPress={handleItemPress}
-              />
-            );
-          };
-          return <GenreMovies key={`genre-${genre.id}`} />;
-        })}
+        {movieGenres.map((genre) => (
+          <GenreMoviesSection
+            key={`genre-${genre.id}`}
+            genre={genre}
+            onItemPress={handleItemPress}
+          />
+        ))}
       </ScrollView>
     </ScreenView>
   );
