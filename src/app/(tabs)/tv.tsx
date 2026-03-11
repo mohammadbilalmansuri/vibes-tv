@@ -1,23 +1,42 @@
-import React, { useState, useCallback } from "react";
+import { useState } from "react";
 import { View, Text, ScrollView, RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   useAiringAndOnTheAirTVShows,
   useTVShowsByGenre,
-} from "@/hooks/useTvQueries";
-import useGenres from "@/hooks/useGenres";
-import ContentListSection from "@/components/common/ContentListSection";
+  useGenres,
+} from "@/hooks";
+import { ContentListSection } from "@/components/common";
 import { ScreenView } from "@/components/root";
 import { COLORS } from "@/constants";
-import type { ContentType } from "@/types";
+import type { ContentType, Genre } from "@/types";
+
+function GenreTVShowsSection({
+  genre,
+  onItemPress,
+}: {
+  genre: Genre;
+  onItemPress: (type: ContentType, id: number) => void;
+}) {
+  const genreTVResult = useTVShowsByGenre(genre.id);
+
+  return (
+    <ContentListSection
+      title={genre.name}
+      result={genreTVResult}
+      showTitle={true}
+      loadMoreFeature={true}
+      onItemPress={onItemPress}
+    />
+  );
+}
 
 export default function TV() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
 
-  // Get TV show data
   const [airingTodayResult, onTheAirResult] = useAiringAndOnTheAirTVShows();
   const [, tvGenresResult] = useGenres();
 
@@ -29,18 +48,19 @@ export default function TV() {
     }
   };
 
-  const tvGenres = tvGenresResult.data?.genres || [];
+  const tvGenres = tvGenresResult.data?.genres ?? [];
 
-  const onRefresh = useCallback(async () => {
+  const onRefresh = async () => {
     setRefreshing(true);
     try {
-      // Invalidate TV-related queries
-      await queryClient.invalidateQueries({ queryKey: ["tv"] });
-      await queryClient.invalidateQueries({ queryKey: ["genres", "tv"] });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["tv"] }),
+        queryClient.invalidateQueries({ queryKey: ["genres", "tv"] }),
+      ]);
     } finally {
       setRefreshing(false);
     }
-  }, [queryClient]);
+  };
 
   return (
     <ScreenView>
@@ -57,7 +77,6 @@ export default function TV() {
           />
         }
       >
-        {/* Header */}
         <View className="px-4 py-6">
           <Text className="text-white text-3xl font-bold mb-2">TV Shows</Text>
           <Text className="text-white/60 text-base">
@@ -65,7 +84,6 @@ export default function TV() {
           </Text>
         </View>
 
-        {/* Airing Today TV Shows */}
         <ContentListSection
           title="Airing Today"
           result={airingTodayResult}
@@ -73,7 +91,6 @@ export default function TV() {
           onItemPress={handleItemPress}
         />
 
-        {/* On The Air TV Shows */}
         <ContentListSection
           title="On The Air"
           result={onTheAirResult}
@@ -81,23 +98,13 @@ export default function TV() {
           onItemPress={handleItemPress}
         />
 
-        {/* Genre-based TV Shows */}
-        {tvGenres.map((genre) => {
-          const GenreTVShows = () => {
-            const genreTVResult = useTVShowsByGenre(genre.id);
-            return (
-              <ContentListSection
-                key={`genre-${genre.id}`}
-                title={genre.name}
-                result={genreTVResult}
-                showTitle={true}
-                loadMoreFeature={true}
-                onItemPress={handleItemPress}
-              />
-            );
-          };
-          return <GenreTVShows key={`genre-${genre.id}`} />;
-        })}
+        {tvGenres.map((genre) => (
+          <GenreTVShowsSection
+            key={`genre-${genre.id}`}
+            genre={genre}
+            onItemPress={handleItemPress}
+          />
+        ))}
       </ScrollView>
     </ScreenView>
   );
