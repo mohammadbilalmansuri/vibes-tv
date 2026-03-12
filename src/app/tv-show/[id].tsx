@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   View,
   ScrollView,
@@ -10,18 +10,11 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Image } from "expo-image";
 import { ScreenView } from "@/components/root";
-import {
-  DetailHero,
-  VideoPlayer,
-  TabNavigator,
-  SeasonEpisodes,
-} from "@/components/detail";
-
+import { DetailHero, TabNavigator, SeasonEpisodes } from "@/components/detail";
 import { Skeleton } from "@/components/ui";
 import { useTVShowDetails } from "@/hooks";
-import getImageUrl from "@/utils/getImageUrl";
+import { getImageUrl } from "@/utils";
 import type {
-  Video,
   Episode,
   Creator,
   ProductionCompany,
@@ -35,22 +28,23 @@ export default function TVShowDetail() {
   const tvShowId = parseInt(id || "0");
   const [, setActiveTab] = useState("episodes");
 
-  const [detail, videos] = useTVShowDetails(tvShowId);
+  const [detail] = useTVShowDetails(tvShowId);
 
   const handlePlayPress = () => {
-    // In a real app, this would launch the latest episode or resume watching
+    if (!detail.data) return;
     Alert.alert(
       "Play Show",
-      `Would start playing "${detail.data?.name}" here.\n\nIn a real streaming app, this would resume watching or play the latest episode.`,
-      [{ text: "OK" }]
+      `Would start playing "${detail.data.name}" here.\n\nIn a real streaming app, this would resume watching or play the latest episode.`,
+      [{ text: "OK" }],
     );
   };
 
   const handleWatchlistPress = () => {
+    if (!detail.data) return;
     Alert.alert(
       "Add to Watchlist",
-      `Added "${detail.data?.name}" to your watchlist!`,
-      [{ text: "OK" }]
+      `Added "${detail.data.name}" to your watchlist!`,
+      [{ text: "OK" }],
     );
   };
 
@@ -67,16 +61,11 @@ export default function TVShowDetail() {
     }
   };
 
-  const handleVideoPress = (video: Video) => {
-    // VideoPlayer component handles opening YouTube videos automatically
-    console.log("Video selected:", video.name, video.type);
-  };
-
   const handleEpisodePress = (episode: Episode) => {
     Alert.alert(
       "Play Episode",
       `Would play "${episode.name}" (S${episode.season_number}E${episode.episode_number}) here.\n\nIn a real streaming app, this would launch the episode player.`,
-      [{ text: "OK" }]
+      [{ text: "OK" }],
     );
   };
 
@@ -84,19 +73,14 @@ export default function TVShowDetail() {
     return (
       <ScreenView>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-          {/* Hero Skeleton */}
           <View style={{ height: 400 }}>
             <Skeleton className="w-full h-full" />
           </View>
-
-          {/* Tab Skeleton */}
           <View className="flex-row p-4">
             {Array.from({ length: 3 }).map((_, i) => (
               <Skeleton key={i} className="flex-1 h-12 rounded mr-2" />
             ))}
           </View>
-
-          {/* Content Skeletons */}
           <View className="p-4">
             <View className="flex-row flex-wrap">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -113,7 +97,7 @@ export default function TVShowDetail() {
     );
   }
 
-  if (detail.isError || videos.isError || !detail.data) {
+  if (detail.isError || !detail.data) {
     return (
       <ScreenView>
         <View className="flex-1 items-center justify-center p-4">
@@ -121,9 +105,7 @@ export default function TVShowDetail() {
             Failed to load TV show
           </Text>
           <Text className="text-white/60 text-center mb-4">
-            {detail.error?.message ||
-              videos.error?.message ||
-              "Something went wrong"}
+            {detail.error?.message || "Something went wrong"}
           </Text>
           <Text
             className="text-blue-400 text-base"
@@ -137,14 +119,10 @@ export default function TVShowDetail() {
   }
 
   const tvShow = detail.data;
-  const tvVideos = videos.data?.results || [];
 
-  // More Info Tab Content
   const MoreInfoTab = () => (
     <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
-      {/* Show Info */}
       <View className="py-6">
-        {/* Network & Creator Info */}
         {(tvShow.networks.length > 0 || tvShow.created_by.length > 0) && (
           <View className="mb-6">
             <Text className="text-white text-lg font-bold mb-3">
@@ -188,7 +166,6 @@ export default function TVShowDetail() {
           </View>
         )}
 
-        {/* Production Info */}
         {tvShow.production_companies.length > 0 && (
           <View className="mb-6">
             <Text className="text-white text-lg font-bold mb-3">
@@ -212,7 +189,6 @@ export default function TVShowDetail() {
           </View>
         )}
 
-        {/* Languages */}
         {tvShow.spoken_languages.length > 0 && (
           <View className="mb-6">
             <Text className="text-white text-lg font-bold mb-3">Languages</Text>
@@ -230,18 +206,10 @@ export default function TVShowDetail() {
             </View>
           </View>
         )}
-
-        {/* Videos */}
-        <VideoPlayer
-          videos={tvVideos}
-          isLoading={videos.isLoading}
-          onVideoPress={handleVideoPress}
-        />
       </View>
     </ScrollView>
   );
 
-  // Seasons Overview Tab Content
   const SeasonsTab = () => (
     <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
       <View className="py-6">
@@ -250,13 +218,13 @@ export default function TVShowDetail() {
         </Text>
 
         {tvShow.seasons
-          .filter((season: Season) => season.season_number >= 0) // Include specials (season 0)
-          .sort((a: Season, b: Season) => b.season_number - a.season_number) // Latest first
+          .filter((season: Season) => season.season_number >= 0)
+          .sort((a: Season, b: Season) => b.season_number - a.season_number)
           .map((season: Season) => (
             <TouchableOpacity
               key={season.id}
               className="bg-zinc-900 p-4 rounded-xl mb-3"
-              onPress={() => setActiveTab("episodes")} // Switch to episodes tab
+              onPress={() => setActiveTab("episodes")}
             >
               <View className="flex-row">
                 {season.poster_path && (
@@ -325,9 +293,8 @@ export default function TVShowDetail() {
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[1]} // Make tabs sticky
+        stickyHeaderIndices={[1]}
       >
-        {/* Hero Section */}
         <DetailHero
           title={tvShow.name}
           backdropPath={tvShow.backdrop_path || undefined}
@@ -344,7 +311,6 @@ export default function TVShowDetail() {
           onSharePress={handleSharePress}
         />
 
-        {/* Tabs Section */}
         <View style={{ minHeight: 600 }}>
           <TabNavigator
             tabs={tabs}
