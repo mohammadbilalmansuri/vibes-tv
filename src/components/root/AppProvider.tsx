@@ -13,8 +13,8 @@ import NetInfo from "@react-native-community/netinfo";
 import * as SplashScreen from "expo-splash-screen";
 import { COLORS } from "@/constants";
 import { ChildProps } from "@/types";
+import useGenres from "@/hooks/useGenres";
 import OfflineScreen from "./OfflineScreen";
-import AppBootstrap from "./AppBootstrap";
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -31,7 +31,12 @@ const queryClient = new QueryClient({
   },
 });
 
-export default function AppProvider({ children }: ChildProps) {
+const GenrePreloader = ({ children }: ChildProps) => {
+  useGenres();
+  return <>{children}</>;
+};
+
+const AppProvider = ({ children }: ChildProps) => {
   const [isOnline, setIsOnline] = useState(true);
 
   useEffect(() => {
@@ -63,7 +68,7 @@ export default function AppProvider({ children }: ChildProps) {
         <QueryClientProvider client={queryClient}>
           <StatusBar style="light" />
           {isOnline ? (
-            <AppBootstrap>{children}</AppBootstrap>
+            <GenrePreloader>{children}</GenrePreloader>
           ) : (
             <OfflineScreen />
           )}
@@ -71,4 +76,6 @@ export default function AppProvider({ children }: ChildProps) {
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
-}
+};
+
+export default AppProvider;
