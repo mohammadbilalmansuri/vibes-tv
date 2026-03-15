@@ -12,13 +12,13 @@ import { ScreenView } from "@/components/root";
 import { COLORS } from "@/constants";
 import type { ContentType, Genre } from "@/types";
 
-function GenreMoviesSection({
+const GenreMoviesSection = ({
   genre,
   onItemPress,
 }: {
   genre: Genre;
   onItemPress: (type: ContentType, id: number) => void;
-}) {
+}) => {
   const genreMovieResult = useMoviesByGenre(genre.id);
 
   return (
@@ -30,7 +30,7 @@ function GenreMoviesSection({
       onItemPress={onItemPress}
     />
   );
-}
+};
 
 export default function Movies() {
   const router = useRouter();

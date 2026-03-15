@@ -30,13 +30,13 @@ const SEARCH_MODES = [
   },
 ];
 
-function SearchResultItem({
+const SearchResultItem = ({
   item,
   onPress,
 }: {
   item: SearchResult;
   onPress: (type: ContentType, id: number) => void;
-}) {
+}) => {
   const isMovie = item.media_type === "movie" || "title" in item;
   const contentType: ContentType = isMovie ? "movie" : "tv";
   const title = isMovie ? item.title : item.name;
@@ -80,64 +80,57 @@ function SearchResultItem({
       </View>
     </TouchableOpacity>
   );
-}
+};
 
-function SearchModeSelector({
+const SearchModeSelector = ({
   selectedMode,
   onModeChange,
 }: {
   selectedMode: SearchMode;
   onModeChange: (mode: SearchMode) => void;
-}) {
-  return (
-    <View className="flex-row px-4 py-3 gap-2">
-      {SEARCH_MODES.map(({ key, label, icon }) => (
-        <TouchableOpacity
-          key={key}
-          onPress={() => onModeChange(key)}
-          activeOpacity={0.7}
-          className={`flex-row items-center px-4 py-2 rounded-full ${
-            selectedMode === key ? "bg-rose" : "bg-shark-secondary"
+}) => (
+  <View className="flex-row px-4 py-3 gap-2">
+    {SEARCH_MODES.map(({ key, label, icon }) => (
+      <TouchableOpacity
+        key={key}
+        onPress={() => onModeChange(key)}
+        activeOpacity={0.7}
+        className={`flex-row items-center px-4 py-2 rounded-full ${
+          selectedMode === key ? "bg-rose" : "bg-shark-secondary"
+        }`}
+      >
+        {icon && <View className="mr-1">{icon}</View>}
+        <Text
+          className={`text-sm font-medium ${
+            selectedMode === key ? "text-white" : "text-white/70"
           }`}
         >
-          {icon && <View className="mr-1">{icon}</View>}
-          <Text
-            className={`text-sm font-medium ${
-              selectedMode === key ? "text-white" : "text-white/70"
-            }`}
-          >
-            {label}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </View>
-  );
-}
+          {label}
+        </Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+);
 
-function LoadingSkeletons() {
-  return (
-    <View className="px-4">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <View
-          key={i}
-          className="flex-row bg-shark-secondary rounded-xl p-3 mb-3"
-        >
-          <Skeleton
-            className="rounded-xl mr-3"
-            style={{ width: 80, height: 120 }}
-          />
-          <View className="flex-1 justify-center">
-            <Skeleton className="w-3/4 h-5 rounded mb-2" />
-            <Skeleton className="w-1/2 h-4 rounded mb-2" />
-            <Skeleton className="w-full h-8 rounded" />
-          </View>
+const LoadingSkeletons = () => (
+  <View className="px-4">
+    {Array.from({ length: 5 }).map((_, i) => (
+      <View key={i} className="flex-row bg-shark-secondary rounded-xl p-3 mb-3">
+        <Skeleton
+          className="rounded-xl mr-3"
+          style={{ width: 80, height: 120 }}
+        />
+        <View className="flex-1 justify-center">
+          <Skeleton className="w-3/4 h-5 rounded mb-2" />
+          <Skeleton className="w-1/2 h-4 rounded mb-2" />
+          <Skeleton className="w-full h-8 rounded" />
         </View>
-      ))}
-    </View>
-  );
-}
+      </View>
+    ))}
+  </View>
+);
 
-function EmptyState({ query }: { query: string }) {
+const EmptyState = ({ query }: { query: string }) => {
   if (!query.trim()) {
     return (
       <View className="flex-1 items-center justify-center px-8">
@@ -163,7 +156,7 @@ function EmptyState({ query }: { query: string }) {
       </Text>
     </View>
   );
-}
+};
 
 export default function SearchScreen() {
   const router = useRouter();
