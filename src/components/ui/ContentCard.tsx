@@ -25,7 +25,7 @@ interface ContentCardProps {
   itemWidth?: number;
 }
 
-function ContentCard({
+const ContentCard = ({
   item,
   variant,
   onPress,
@@ -34,7 +34,7 @@ function ContentCard({
   scrollX,
   index,
   itemWidth,
-}: ContentCardProps) {
+}: ContentCardProps) => {
   const isMovie = "title" in item;
   const contentType: ContentType = isMovie ? "movie" : "tv";
 
@@ -159,7 +159,7 @@ function ContentCard({
       </Animated.View>
     </TouchableOpacity>
   );
-}
+};
 
 const PADDING_HORIZONTAL = 20;
 const TRENDING_ITEM_WIDTH = SCREEN_WIDTH - PADDING_HORIZONTAL * 2;

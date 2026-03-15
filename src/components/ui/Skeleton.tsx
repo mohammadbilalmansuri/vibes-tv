@@ -40,9 +40,9 @@ const Skeleton = ({
 
   return (
     <View
-      className={cn("bg-shark-secondary overflow-hidden", className)}
+      className={cn("overflow-hidden", className)}
+      style={[{ backgroundColor: COLORS.shark.secondary }, style]}
       accessibilityRole="progressbar"
-      style={style}
     >
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
         <LinearGradient

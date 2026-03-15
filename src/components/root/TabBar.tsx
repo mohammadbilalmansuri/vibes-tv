@@ -3,11 +3,7 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { cn } from "@/utils";
 
-export default function TabBar({
-  state,
-  descriptors,
-  navigation,
-}: BottomTabBarProps) {
+const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const insets = useSafeAreaInsets();
 
   const handleTabPress = (routeName: string, isFocused: boolean) => {
@@ -59,4 +55,6 @@ export default function TabBar({
       </View>
     </View>
   );
-}
+};
+
+export default TabBar;
