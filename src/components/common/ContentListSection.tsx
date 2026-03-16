@@ -28,13 +28,13 @@ interface ContentListSectionProps {
   onItemPress?: ContentPressHandler;
 }
 
-function ContentListSection({
+const ContentListSection = ({
   title,
   result,
   skeletonCount = 6,
   loadMoreFeature = false,
   onItemPress,
-}: ContentListSectionProps) {
+}: ContentListSectionProps) => {
   const { isLoading, error } = result;
 
   const hasNextPage =
@@ -70,18 +70,17 @@ function ContentListSection({
 
   if (isLoading) {
     return (
-      <View className="mb-8">
-        <View className="px-4 mb-4">
+      <View className="py-4">
+        <View className="px-4 mb-3">
           <Skeleton className="w-40 h-6 rounded-md" />
         </View>
-        <View className="flex-row px-4">
+        <View className="flex-row px-4 gap-3">
           {Array.from({ length: skeletonCount }).map((_, i) => (
-            <View key={`skeleton-${i}`} className="mr-3">
-              <Skeleton
-                className="rounded-xl"
-                style={{ width: 120, height: 180 }}
-              />
-            </View>
+            <Skeleton
+              key={`skeleton-${i}`}
+              className="rounded-xl"
+              style={{ width: 120, height: 180 }}
+            />
           ))}
         </View>
       </View>
@@ -90,8 +89,8 @@ function ContentListSection({
 
   if (error) {
     return (
-      <View className="mb-8">
-        <View className="px-4 mb-4">
+      <View className="py-4">
+        <View className="px-4 mb-3">
           <Text className="text-white text-xl font-bold">{title}</Text>
         </View>
         <View className="mx-4 bg-zinc-900 rounded-xl p-6 items-center gap-3">
@@ -145,7 +144,7 @@ function ContentListSection({
   if (!contents.length) return null;
 
   return (
-    <View className="py-5 gap-2.5">
+    <View className="py-4 gap-3">
       <Text className="text-white text-xl font-bold px-4">{title}</Text>
 
       <FlatList
@@ -170,6 +169,6 @@ function ContentListSection({
       />
     </View>
   );
-}
+};
 
 export default ContentListSection;
