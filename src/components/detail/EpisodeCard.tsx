@@ -23,13 +23,13 @@ interface EpisodeCardProps {
   progress?: number;
 }
 
-function EpisodeCard({
+const EpisodeCard = ({
   episode,
   onPress,
   showNumber = true,
   isWatched = false,
   progress = 0,
-}: EpisodeCardProps) {
+}: EpisodeCardProps) => {
   const thumbnailUrl = getImageUrl(episode.still_path ?? null, "w500");
 
   const formatRuntime = (minutes: number) => {
@@ -156,7 +156,7 @@ function EpisodeCard({
       </View>
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
