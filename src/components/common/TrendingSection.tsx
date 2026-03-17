@@ -8,6 +8,7 @@ import Animated, {
   useAnimatedStyle,
   interpolate,
   Extrapolation,
+  SharedValue,
 } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
 import { COLORS } from "@/constants";
@@ -28,23 +29,69 @@ const ITEM_WIDTH_VISIBLE = SCREEN_WIDTH - PADDING_HORIZONTAL * 2;
 const ITEM_HEIGHT = ITEM_WIDTH_VISIBLE * (3 / 2);
 const ITEM_FULL_WIDTH = ITEM_WIDTH_VISIBLE;
 
-function TrendingSection({
-  data,
-  isLoading,
-  isError,
-  error,
-}: UseQueryResult<TrendingResponse, Error>) {
+const PaginationDot = ({
+  index,
+  scrollX,
+}: {
+  index: number;
+  scrollX: SharedValue<number>;
+}) => {
+  const dotAnimatedStyle = useAnimatedStyle(() => {
+    const realDataOffset = scrollX.value - ITEM_FULL_WIDTH;
+
+    const inputRange = [
+      (index - 1) * ITEM_FULL_WIDTH,
+      index * ITEM_FULL_WIDTH,
+      (index + 1) * ITEM_FULL_WIDTH,
+    ];
+
+    const opacity = interpolate(
+      realDataOffset,
+      inputRange,
+      [0.4, 1, 0.4],
+      Extrapolation.CLAMP,
+    );
+
+    const scale = interpolate(
+      realDataOffset,
+      inputRange,
+      [0.8, 1.2, 0.8],
+      Extrapolation.CLAMP,
+    );
+
+    const width = interpolate(
+      realDataOffset,
+      inputRange,
+      [8, 24, 8],
+      Extrapolation.CLAMP,
+    );
+
+    return {
+      opacity,
+      transform: [{ scale }],
+      width,
+    };
+  });
+
+  return (
+    <Animated.View
+      className="h-2 rounded-full mx-1.5 bg-white"
+      style={dotAnimatedStyle}
+    />
+  );
+};
+
+const TrendingCarousel = ({ data }: { data: TrendingResponse }) => {
   const router = useRouter();
   const listRef = useRef<FlatList<TrendingItem>>(null);
   const activeIndex = useSharedValue(0);
   const scrollX = useSharedValue(0);
 
-  const filteredResults =
-    data?.results.filter(
-      (item) =>
-        (item.media_type === "movie" || item.media_type === "tv") &&
-        (item.backdrop_path || item.poster_path),
-    ) ?? [];
+  const filteredResults = data.results.filter(
+    (item) =>
+      (item.media_type === "movie" || item.media_type === "tv") &&
+      (item.backdrop_path || item.poster_path),
+  );
 
   const loopedData =
     filteredResults.length > 1
@@ -139,113 +186,33 @@ function TrendingSection({
     );
   };
 
-  function PaginationDot({ index }: { index: number }) {
-    const dotAnimatedStyle = useAnimatedStyle(() => {
-      const realDataOffset = scrollX.value - ITEM_FULL_WIDTH;
-
-      const inputRange = [
-        (index - 1) * ITEM_FULL_WIDTH,
-        index * ITEM_FULL_WIDTH,
-        (index + 1) * ITEM_FULL_WIDTH,
-      ];
-
-      const opacity = interpolate(
-        realDataOffset,
-        inputRange,
-        [0.4, 1, 0.4],
-        Extrapolation.CLAMP,
-      );
-
-      const scale = interpolate(
-        realDataOffset,
-        inputRange,
-        [0.8, 1.2, 0.8],
-        Extrapolation.CLAMP,
-      );
-
-      const width = interpolate(
-        realDataOffset,
-        inputRange,
-        [8, 24, 8],
-        Extrapolation.CLAMP,
-      );
-
-      return {
-        opacity,
-        transform: [{ scale }],
-        width,
-      };
-    });
-
-    return (
-      <Animated.View
-        key={`dot-${index}`}
-        className="h-2 rounded-full mx-1.5 bg-white"
-        style={dotAnimatedStyle}
-      />
-    );
-  }
-
-  const PaginationDots = () => {
-    return (
-      <View className="flex-row justify-center items-center mt-4">
-        {filteredResults.map((_, index) => (
-          <PaginationDot key={`dot-${index}`} index={index} />
-        ))}
-      </View>
-    );
-  };
-
-  if (isLoading) {
-    return (
-      <View className="py-2.5 items-center">
-        <View style={{ width: ITEM_WIDTH_VISIBLE, height: ITEM_HEIGHT }}>
-          <Skeleton className="w-full h-full rounded-2xl" />
-        </View>
-      </View>
-    );
-  }
-
-  if (isError) {
-    return (
-      <View className="py-2.5 items-center">
-        <View
-          style={{ width: ITEM_WIDTH_VISIBLE, height: ITEM_HEIGHT }}
-          className="bg-zinc-800 justify-center items-center rounded-2xl gap-5 p-5"
-        >
-          <CircleAlert size={48} color={COLORS.yellow} strokeWidth={1.5} />
-          <Text className="text-xl font-semibold text-white text-center">
-            {error?.message || "Unable to load trending content"}
-          </Text>
-          <Text className="text-white/60 text-center -mt-2">
-            Please try again later
-          </Text>
-        </View>
-      </View>
-    );
-  }
+  const PaginationDots = () => (
+    <View className="flex-row justify-center items-center mt-4">
+      {filteredResults.map((_, index) => (
+        <PaginationDot key={`dot-${index}`} index={index} scrollX={scrollX} />
+      ))}
+    </View>
+  );
 
   if (filteredResults.length === 0) {
     return (
-      <View className="py-2.5 items-center">
+      <View className="py-4 items-center">
         <View
           style={{ width: ITEM_WIDTH_VISIBLE, height: ITEM_HEIGHT }}
-          className="bg-zinc-800 justify-center items-center rounded-2xl gap-5 p-5"
+          className="bg-zinc-800 justify-center items-center rounded-2xl gap-6 px-8"
         >
           <CircleAlert size={48} color={COLORS.yellow} strokeWidth={1.5} />
           <Text className="text-xl font-semibold text-white text-center">
             No trending content available
           </Text>
-          <Text className="text-white/60 text-center -mt-2">
-            Check back soon!
-          </Text>
+          <Text className="text-white/60 text-center">Check back soon!</Text>
         </View>
       </View>
     );
   }
 
   return (
-    <View className="py-2.5">
+    <View className="py-4">
       <View style={{ height: ITEM_HEIGHT + 20 }}>
         <AnimatedFlatList
           ref={listRef}
@@ -274,6 +241,46 @@ function TrendingSection({
       {filteredResults.length > 1 && <PaginationDots />}
     </View>
   );
-}
+};
+
+const TrendingSection = ({
+  data,
+  isLoading,
+  isError,
+  error,
+}: UseQueryResult<TrendingResponse, Error>) => {
+  if (isLoading) {
+    return (
+      <View className="py-4 items-center">
+        <View style={{ width: ITEM_WIDTH_VISIBLE, height: ITEM_HEIGHT }}>
+          <Skeleton className="w-full h-full rounded-2xl" />
+        </View>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View className="py-4 items-center">
+        <View
+          style={{ width: ITEM_WIDTH_VISIBLE, height: ITEM_HEIGHT }}
+          className="bg-zinc-800 justify-center items-center rounded-2xl gap-6 px-8"
+        >
+          <CircleAlert size={48} color={COLORS.yellow} strokeWidth={1.5} />
+          <Text className="text-xl font-semibold text-white text-center">
+            {error?.message || "Unable to load trending content"}
+          </Text>
+          <Text className="text-white/60 text-center">
+            Please try again later
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  if (!data?.results?.length) return null;
+
+  return <TrendingCarousel data={data} />;
+};
 
 export default TrendingSection;
