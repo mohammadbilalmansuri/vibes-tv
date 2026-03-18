@@ -111,7 +111,7 @@ export default function TVShowDetail() {
             className="text-blue-400 text-base"
             onPress={() => router.back()}
           >
-            ← Go Back
+            Go Back
           </Text>
         </View>
       </ScreenView>

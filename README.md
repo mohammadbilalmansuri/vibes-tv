@@ -34,6 +34,7 @@ A streaming mobile application built with React Native and the TMDB API. Created
 4. Copy `.env.example` to `.env` and replace the placeholder with your token.
 
 5. Start the development server
+   
    ```bash
    npm run start
    ```

@@ -95,7 +95,7 @@ export default function MovieDetail() {
             {detail.error?.message || "Something went wrong"}
           </Text>
           <TouchableOpacity onPress={() => router.back()}>
-            <Text className="text-white text-base">← Go Back</Text>
+            <Text className="text-white text-base">Go Back</Text>
           </TouchableOpacity>
         </View>
       </ScreenView>
